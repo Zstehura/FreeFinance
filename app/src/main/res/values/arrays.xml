@@ -1,0 +1,26 @@
+<resources>
+    <!-- Filing As Preference -->
+    <string-array name="fileas_entries">
+        <item>Single</item>
+        <item>Head of Household</item>
+        <item>Married (Filing Separately)</item>
+        <item>Married (Filing Jointly)</item>
+    </string-array>
+    <string-array name="fileas_values">
+        <item>single</item>
+        <item>head_of_household</item>
+        <item>married_separate</item>
+        <item>married_joint</item>
+    </string-array>
+
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
+    </string-array>
+</resources>
