@@ -16,6 +16,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -23,8 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 
-// TODO: add query features
-//      add bank connections
+// TODO: add bank connections
 public class RecurringPayment {
 
     // Done
@@ -39,7 +39,7 @@ public class RecurringPayment {
         private Date editDate;
         private Date moveDate;
 
-        public PaymentEdit() {}
+        public PaymentEdit() {action = ACTION_SKIP;}
 
 
         public Date getMoveDate() {return moveDate;}
@@ -108,7 +108,7 @@ public class RecurringPayment {
     public void setBankId(String bankId){this.bankId = bankId;}
     public void setNotes(String notes){this.notes = notes;}
     public void setFrequency(String frequencyType, int frequency){
-        if(frequencyType == ON || frequencyType == EVERY) {
+        if(frequencyType.equals(ON) || frequencyType.equals(EVERY)) {
             this.frequencyType = frequencyType;
             this.frequency = frequency;
         }
@@ -146,17 +146,29 @@ public class RecurringPayment {
             GregorianCalendar c = new GregorianCalendar(year, month, frequency);
             Date d = c.getTime();
             l.add(d);
+        } else {
+            GregorianCalendar c = new GregorianCalendar();
+            c.set(year,month,1);
+            c.add(Calendar.MONTH, 1);
+            GregorianCalendar temp = new GregorianCalendar();
+            temp.setTime(start);
+            while(temp.before(c)){
+                if(temp.get(Calendar.MONTH) == month && temp.get(Calendar.YEAR) == year){
+                    l.add(temp.getTime());
+                }
+                temp.add(Calendar.DATE, frequency);
+            }
+        }
+
+        for(Date d: l){
             if (edits.containsKey(d)) {
                 PaymentEdit paymentEdit = edits.get(d);
+                l.remove(d);
+                assert paymentEdit != null;
                 if(paymentEdit.getAction().equals(PaymentEdit.ACTION_MOVE)){
-                    l.set(0, paymentEdit.getMoveDate());
-                }
-                else if(paymentEdit.getAction().equals(PaymentEdit.ACTION_SKIP)){
-                    l.remove(0);
+                    l.add(paymentEdit.getMoveDate());
                 }
             }
-        } else {
-            // TODO: ADD FREQUENCY EVERY # DAYS
         }
 
         return l;

@@ -1,10 +1,13 @@
 import androidx.annotation.NonNull;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 public class TaxBrackets {
     public static final String SINGLE = "single";
@@ -16,19 +19,28 @@ public class TaxBrackets {
     public static final String PERCENTAGE = "percentage";
 
     public class Bracket{
-        private final double upperLim;
-        private final double lowerLim;
-        private final double pct;
+        private final Vector<Double> ul;
+        private final Vector<Double> ll;
+        private final Vector<Double> p;
 
-        public Bracket(double upperLim, double lowerLim, double pct) {
-            this.upperLim = upperLim;
-            this.lowerLim = lowerLim;
-            this.pct = pct;
+        public Bracket(JSONArray jsonArray) {
+            ul = new Vector<>(); ll = new Vector<>(); p = new Vector<>();
+            for(int i = 0; i < jsonArray.length(); i++) {
+                try {
+                    JSONObject temp = jsonArray.getJSONObject(i);
+                    ul.add(temp.getDouble(UPPER_LIMIT));
+                    ll.add(temp.getDouble(LOWER_LIMIT));
+                    p.add(temp.getDouble(PERCENTAGE));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
         }
 
-        public double getUpperLim(){return upperLim;}
-        public double getLowerLim(){return lowerLim;}
-        public double getPct(){return pct;}
+        public int length(){return ul.size();}
+        public double getUpperLim(int i){return ul.get(i);}
+        public double getLowerLim(int i){return ll.get(i);}
+        public double getPct(int i){return p.get(i);}
     }
 
     private Map<String, Bracket> bracket;
@@ -45,23 +57,13 @@ public class TaxBrackets {
             e.printStackTrace();
         }
     }
+
     public void readJSON(@NonNull JSONObject jsonObject){
         try {
-            JSONObject temp = jsonObject.getJSONObject(SINGLE);
-            bracket.put(SINGLE, new Bracket(temp.getDouble(UPPER_LIMIT),
-                    temp.getDouble(LOWER_LIMIT), temp.getDouble(PERCENTAGE)));
-
-            temp = jsonObject.getJSONObject(HEAD_OF_HOUSE);
-            bracket.put(HEAD_OF_HOUSE, new Bracket(temp.getDouble(UPPER_LIMIT),
-                    temp.getDouble(LOWER_LIMIT), temp.getDouble(PERCENTAGE)));
-
-            temp = jsonObject.getJSONObject(MARRIED_JOINT);
-            bracket.put(MARRIED_JOINT, new Bracket(temp.getDouble(UPPER_LIMIT),
-                    temp.getDouble(LOWER_LIMIT), temp.getDouble(PERCENTAGE)));
-
-            temp = jsonObject.getJSONObject(MARRIED_SEP);
-            bracket.put(MARRIED_SEP, new Bracket(temp.getDouble(UPPER_LIMIT),
-                    temp.getDouble(LOWER_LIMIT), temp.getDouble(PERCENTAGE)));
+            bracket.put(SINGLE, new Bracket(jsonObject.getJSONArray(SINGLE)));
+            bracket.put(MARRIED_SEP, new Bracket(jsonObject.getJSONArray(MARRIED_SEP)));
+            bracket.put(MARRIED_JOINT, new Bracket(jsonObject.getJSONArray(MARRIED_JOINT)));
+            bracket.put(HEAD_OF_HOUSE, new Bracket(jsonObject.getJSONArray(HEAD_OF_HOUSE)));
         } catch (JSONException e) {
             e.printStackTrace();
         }
