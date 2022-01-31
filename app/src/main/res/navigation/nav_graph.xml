@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/settingsFragment">
+    app:startDestination="@id/homeFragment">
 
     <fragment
         android:id="@+id/settingsFragment"
@@ -13,10 +13,34 @@
         android:id="@+id/recurringPaymentsFragment"
         android:name="com.example.financefree.RecurringPaymentsFragment"
         android:label="@string/recurring_payments"
-        tools:layout="@layout/recurring_payments_list" />
+        tools:layout="@layout/recurring_payments_list" >
+        <action
+            android:id="@+id/action_recurringPaymentsFragment_to_addEditRecurringPayment"
+            app:destination="@id/addEditRecurringPayment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.example.financefree.Profile"
         android:label="@string/profile_header"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.example.financefree.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_recurringPaymentsFragment"
+            app:destination="@id/recurringPaymentsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addEditRecurringPayment"
+        android:name="com.example.financefree.AddEditRecurringPayment"
+        android:label="fragment_add_edit_recurring_payment"
+        tools:layout="@layout/fragment_add_edit_recurring_payment" />
 </navigation>
