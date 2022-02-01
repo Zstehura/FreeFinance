@@ -10,18 +10,18 @@
             android:title="@string/home"/>
 
         <item
-            android:id="@+id/recurringPaymentsFragmentItem"
+            android:id="@+id/recurringPaymentsFragment"
             android:icon="@drawable/ic_repeat"
             android:title="@string/recurring_payments" />
 
         <item
-            android:id="@+id/profileFragmentItem"
+            android:id="@+id/profileFragment"
             android:icon="@drawable/ic_profile"
             android:title="@string/profile_header" />
 
 
         <item
-            android:id="@+id/settingsFragmentItem"
+            android:id="@+id/settingsFragment"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings" />
     </group>

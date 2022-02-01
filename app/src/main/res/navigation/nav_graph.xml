@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.financefree.SettingsFragment"
-        android:label="@string/settings" />
+        android:label="@string/settings"/>
     <fragment
         android:id="@+id/recurringPaymentsFragment"
         android:name="com.example.financefree.RecurringPaymentsFragment"
@@ -37,10 +37,22 @@
         <action
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_calendar"
+            app:destination="@id/calendar" />
     </fragment>
     <fragment
         android:id="@+id/addEditRecurringPayment"
         android:name="com.example.financefree.AddEditRecurringPayment"
         android:label="fragment_add_edit_recurring_payment"
         tools:layout="@layout/fragment_add_edit_recurring_payment" />
+    <fragment
+        android:id="@+id/calendar"
+        android:name="com.example.financefree.Calendar"
+        android:label="calendar_fragment"
+        tools:layout="@layout/calendar_fragment" >
+        <action
+            android:id="@+id/action_calendar_to_addEditRecurringPayment"
+            app:destination="@id/addEditRecurringPayment" />
+    </fragment>
 </navigation>
