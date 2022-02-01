@@ -12,6 +12,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.navigation.NavigationView;
@@ -32,14 +34,9 @@ public class MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
+                .setOpenableLayout(findViewById(R.id.drawer_layout))
+                .build();
         NavigationUI.setupWithNavController(tb, navController, appBarConfiguration);
     }
 }
-
-/*
-setOf(
-                R.id.home_menu, R.id.profile_menu, R.id.settings_menu), drawerLayout)
-
-The method setupActionBarWithNavController automatically updates
- */
