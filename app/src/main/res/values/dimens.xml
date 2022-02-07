@@ -3,4 +3,7 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="nav_header_height">100</dimen>
     <dimen name="nav_header_vertical_spacing">20</dimen>
+    <dimen name="cal_row_size">101dp</dimen>
+    <dimen name="inner_cal_row_size">100dp</dimen>
+    <dimen name="cal_column_size">55dp</dimen>
 </resources>

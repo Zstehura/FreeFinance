@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int HOME_FRAG_ID = R.id.homeFragment;
     public static final int SETTINGS_FRAG_ID = R.id.settingsFragment;
     public static final int RECPAY_FRAG_ID = R.id.recurringPaymentsFragment;
+    public static final int CAL_FRAG_ID = R.id.calendar;
 
 
     AppBarConfiguration appBarConfiguration;
@@ -53,29 +54,19 @@ public class MainActivity extends AppCompatActivity {
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(tb, navController, appBarConfiguration);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case PROFILE_FRAG_ID:
-                        navController.navigate(PROFILE_FRAG_ID);
-                        return true;
-                    case HOME_FRAG_ID:
-                        navController.navigate(HOME_FRAG_ID);
-                        return true;
-                    case SETTINGS_FRAG_ID:
-                        navController.navigate(SETTINGS_FRAG_ID);
-                        return true;
-                    case RECPAY_FRAG_ID:
-                        navController.navigate(RECPAY_FRAG_ID);
-                        return true;
-                    default:
-                        return false;
-                }
-
+        navigationView.setNavigationItemSelectedListener(item -> {
+            try {
+                navController.navigate(item.getItemId());
+                return true;
             }
+            catch (Exception e){
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            return false;
         });
     }
+
+    //public void View.blockingClickListener()
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

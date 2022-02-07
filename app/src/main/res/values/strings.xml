@@ -108,7 +108,22 @@
     <string name="file_as">Filing As...</string>
     <string name="settings">Settings</string>
     <string name="recurring_payments">Recurring Payments</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="home">Home</string>
+    <string name="jan">January</string>
+    <string name="feb">February</string>
+    <string name="mar">March</string>
+    <string name="apr">April</string>
+    <string name="may">May</string>
+    <string name="jun">June</string>
+    <string name="jul">July</string>
+    <string name="aug">August</string>
+    <string name="sep">September</string>
+    <string name="oct">October</string>
+    <string name="nov">November</string>
+    <string name="dec">December</string>
+    <string name="set">Set</string>
+    <string name="ok">Okay</string>
+    <string name="cancel">Cancel</string>
+    <string name="Calendar">Monthly</string>
 </resources>
