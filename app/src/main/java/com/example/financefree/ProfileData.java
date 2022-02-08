@@ -1,11 +1,14 @@
-import org.json.JSONArray;
+package com.example.financefree;
+
+import com.example.financefree.TaxBrackets;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Profile {
+public class ProfileData {
     public static final String FILE_AS = "file_as";
     public static final String INCOME = "income";
     public static final String PRETAX = "pretax";
@@ -16,7 +19,7 @@ public class Profile {
     private List<Double> pretax;
     private List<Double> grossAnnual;
 
-    public Profile(){
+    public ProfileData(){
         grossAnnual = new LinkedList<>();
         pretax = new LinkedList<>();
     }
@@ -71,7 +74,7 @@ public class Profile {
         double gt = getGrossTotal();
         for(int i = 0; i < brack.length(); i++){
             if(gt > brack.getLowerLim(i)){
-                if(gt > brack.getUpperLim(i) && brack.getUpperLim(i) > 0){
+                if(gt > brack.getUpperLim(i) && brack.getUpperLim(i) >= 0){
                     tax += (brack.getPct(i) * (brack.getUpperLim(i) - brack.getLowerLim(i)));
                 }
                 else {

@@ -7,13 +7,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import java.util.GregorianCalendar;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link Calendar#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class Calendar extends Fragment {
+    public int month;
+    public int year;
+
 
     public Calendar() {
         // Required empty public constructor
@@ -25,8 +31,8 @@ public class Calendar extends Fragment {
      *
      * @return A new instance of fragment HomeFragment.
      */
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static Calendar newInstance(int iMonth, int iYear) {
+        Calendar fragment = new Calendar();
         return fragment;
     }
 

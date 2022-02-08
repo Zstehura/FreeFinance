@@ -29,23 +29,24 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_recurringPaymentsFragment"
-            app:destination="@id/recurringPaymentsFragment" />
+            android:id="@+id/action_homeFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
         <action
             android:id="@+id/action_homeFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_settingsFragment"
-            app:destination="@id/settingsFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_calendar"
             app:destination="@id/calendar" />
+        <action
+            android:id="@+id/action_homeFragment_to_recurringPaymentsFragment"
+            app:destination="@id/recurringPaymentsFragment" />
     </fragment>
     <fragment
         android:id="@+id/addEditRecurringPayment"
         android:name="com.example.financefree.AddEditRecurringPayment"
         android:label="fragment_add_edit_recurring_payment"
-        tools:layout="@layout/fragment_add_edit_recurring_payment" />
+        tools:layout="@layout/fragment_add_edit_recurring_payment" >
+    </fragment>
     <fragment
         android:id="@+id/calendar"
         android:name="com.example.financefree.Calendar"

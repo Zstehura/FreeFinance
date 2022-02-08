@@ -1,3 +1,5 @@
+package com.example.financefree;
+
 import androidx.annotation.NonNull;
 
 import org.json.JSONArray;

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/customborder"
-    android:outlineProvider="none">
+    android:outlineProvider="none"
+    tools:ignore="SmallSp,HardcodedText">
 
     <LinearLayout
         android:id="@+id/Row1"
@@ -14,7 +15,7 @@
         android:background="@drawable/customborder"
         android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
     </LinearLayout>
 
@@ -34,6 +35,16 @@
             android:background="@drawable/customborder"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/num1_1"
+                android:layout_width="match_parent"
+                android:layout_height="12sp"
+                android:text="1"
+                android:textAlignment="viewStart"
+                android:textColor="@color/black"
+                android:textSize="10sp"
+                android:textStyle="bold"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -41,18 +52,14 @@
             android:layout_width="@dimen/cal_column_size"
             android:layout_height="match_parent"
             android:background="@drawable/customborder"
-            android:orientation="vertical">
-
-        </LinearLayout>
+            android:orientation="vertical"/>
 
         <LinearLayout
             android:id="@+id/Box1_3"
             android:layout_width="@dimen/cal_column_size"
             android:layout_height="match_parent"
             android:background="@drawable/customborder"
-            android:orientation="vertical">
-
-        </LinearLayout>
+            android:orientation="vertical"/>
 
         <LinearLayout
             android:id="@+id/Box1_4"
@@ -60,6 +67,8 @@
             android:layout_height="match_parent"
             android:background="@drawable/customborder"
             android:orientation="vertical">
+
+
 
         </LinearLayout>
 
@@ -83,6 +92,376 @@
 
         <LinearLayout
             android:id="@+id/Box1_7"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Row3"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cal_row_size"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/Row2"
+        tools:layout_editor_absoluteX="10dp">
+
+        <LinearLayout
+            android:id="@+id/Box2_1"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box2_2"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box2_3"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box2_4"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box2_5"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box2_6"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box2_7"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Row4"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cal_row_size"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/Row3"
+        tools:layout_editor_absoluteX="10dp">
+
+        <LinearLayout
+            android:id="@+id/Box3_1"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box3_2"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box3_3"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box3_4"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box3_5"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box3_6"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box3_7"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Row5"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cal_row_size"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/Row4"
+        tools:layout_editor_absoluteX="10dp">
+
+        <LinearLayout
+            android:id="@+id/Box4_1"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box4_2"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box4_3"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box4_4"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box4_5"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box4_6"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box4_7"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Row6"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cal_row_size"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/Row5"
+        tools:layout_editor_absoluteX="10dp">
+
+        <LinearLayout
+            android:id="@+id/Box5_1"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box5_2"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box5_3"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box5_4"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box5_5"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box5_6"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box5_7"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/Row7"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/cal_row_size"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/Row6"
+        tools:layout_editor_absoluteX="10dp">
+
+        <LinearLayout
+            android:id="@+id/Box6_1"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box6_2"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box6_3"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box6_4"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box6_5"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box6_6"
+            android:layout_width="@dimen/cal_column_size"
+            android:layout_height="match_parent"
+            android:background="@drawable/customborder"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Box6_7"
             android:layout_width="@dimen/cal_column_size"
             android:layout_height="match_parent"
             android:background="@drawable/customborder"

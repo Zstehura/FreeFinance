@@ -1,39 +1,33 @@
 package com.example.financefree;
 
-import androidx.annotation.NonNull;
+import android.os.Bundle;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.NavGraph;
-import androidx.navigation.NavGraphNavigator;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.Toast;
-
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.navigation.NavigationView;
-
-import java.lang.reflect.Array;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final int PROFILE_FRAG_ID = R.id.profileFragment;
-    public static final int HOME_FRAG_ID = R.id.homeFragment;
-    public static final int SETTINGS_FRAG_ID = R.id.settingsFragment;
-    public static final int RECPAY_FRAG_ID = R.id.recurringPaymentsFragment;
-    public static final int CAL_FRAG_ID = R.id.calendar;
+//    public static final int PROFILE_FRAG_ID = R.id.profileFragment;
+//    public static final int HOME_FRAG_ID = R.id.homeFragment;
+//    public static final int SETTINGS_FRAG_ID = R.id.settingsFragment;
+//    public static final int RECPAY_FRAG_ID = R.id.recurringPaymentsFragment;
+//    public static final int CAL_FRAG_ID = R.id.calendar;
+
+    public static final int[][] CAL_NUM_IDS = {{R.id.Box1_1, R.id.Box1_2, R.id.Box1_3,R.id.Box1_4,R.id.Box1_5,R.id.Box1_6,R.id.Box1_7},
+        {R.id.Box2_1, R.id.Box2_2, R.id.Box2_3,R.id.Box2_4,R.id.Box2_5,R.id.Box2_6,R.id.Box2_7},
+        {R.id.Box3_1, R.id.Box3_2, R.id.Box3_3,R.id.Box3_4,R.id.Box3_5,R.id.Box3_6,R.id.Box3_7},
+        {R.id.Box4_1, R.id.Box4_2, R.id.Box4_3,R.id.Box4_4,R.id.Box4_5,R.id.Box4_6,R.id.Box4_7},
+        {R.id.Box5_1, R.id.Box5_2, R.id.Box5_3,R.id.Box5_4,R.id.Box5_5,R.id.Box5_6,R.id.Box5_7},
+        {R.id.Box6_1, R.id.Box6_2, R.id.Box6_3,R.id.Box6_4,R.id.Box6_5,R.id.Box6_6,R.id.Box6_7}};
 
 
     AppBarConfiguration appBarConfiguration;
@@ -51,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
                 .setOpenableLayout(findViewById(R.id.drawer_layout))
                 .build();
-        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(tb, navController, appBarConfiguration);
+
 
         navigationView.setNavigationItemSelectedListener(item -> {
             try {
@@ -65,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
     }
-
-    //public void View.blockingClickListener()
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

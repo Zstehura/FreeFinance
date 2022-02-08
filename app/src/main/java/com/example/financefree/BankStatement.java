@@ -1,7 +1,13 @@
+package com.example.financefree;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+
+//TODO: CHANGE DATE ALGORITHM
 
 public class BankStatement {
     public static final String AMOUNT = "amount";
@@ -10,7 +16,7 @@ public class BankStatement {
 
     private double amount;
     private String bankId;
-    private Date date;
+    private GregorianCalendar date;
 
     public BankStatement(){}
 
@@ -18,7 +24,11 @@ public class BankStatement {
         try {
             amount = jsonObject.getDouble(AMOUNT);
             bankId = jsonObject.getString(BANK_ID);
-            date = new Date(jsonObject.getLong(DATE));
+            String[] temp = jsonObject.getString(DATE).split("/");
+            date = new GregorianCalendar();
+            date.set(Calendar.MONTH, Integer.parseInt(temp[0]));
+            date.set(Calendar.DAY_OF_MONTH,Integer.parseInt(temp[1]));
+            date.set(Calendar.YEAR,Integer.parseInt(temp[2]) + 2000);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -28,7 +38,8 @@ public class BankStatement {
         try {
             j.put(AMOUNT,amount);
             j.put(BANK_ID,bankId);
-            j.put(DATE,date.getTime());
+            String temp = date.get(Calendar.MONTH) + "/" + date.get(Calendar.DAY_OF_MONTH) + "/" + (date.get(Calendar.YEAR)+2000);
+            j.put(DATE,temp);
         } catch (JSONException e) {
             e.printStackTrace();
         }
