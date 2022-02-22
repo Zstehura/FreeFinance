@@ -16,7 +16,6 @@ import java.util.Map;
 
 public class BankAccount {
     public static final String NOTES = "notes";
-    public static final String DEFAULT = "default";
     public static final String ACCT_ID = "account_id";
     public static final String STATEMENTS = "statements";
     public static final String AMOUNT = "amount";
@@ -24,7 +23,6 @@ public class BankAccount {
 
     private String accountId;
     private String notes;
-    private boolean isDefault;
     private final Map<GregorianCalendar, Double> statements = new HashMap<>();
 
     public BankAccount(){}
@@ -42,16 +40,13 @@ public class BankAccount {
     public Map<GregorianCalendar, Double> getStatements() {return statements;}
     public void setAccountId(String accountId){this.accountId = accountId;}
     public void setNotes(String notes) {this.notes = notes;}
-    public void setDefault(boolean isDefault) {this.isDefault = isDefault;}
     public String getAccountId(){return accountId;}
     public String getNotes(){return notes;}
-    public boolean isDefault() {return isDefault;}
 
 
     public void readJSON(JSONObject jsonObject){
         try {
             notes = jsonObject.getString(NOTES);
-            isDefault = jsonObject.getBoolean(DEFAULT);
             accountId = jsonObject.getString(ACCT_ID);
             JSONArray jsonArray = jsonObject.getJSONArray(STATEMENTS);
             for(int i = 0; i < jsonArray.length(); i++){
@@ -69,7 +64,6 @@ public class BankAccount {
         JSONObject j = new JSONObject();
         try {
             j.put(NOTES, notes);
-            j.put(DEFAULT, isDefault);
             j.put(ACCT_ID, accountId);
             JSONArray jsonArray = new JSONArray();
             for(GregorianCalendar cal: statements.keySet()){

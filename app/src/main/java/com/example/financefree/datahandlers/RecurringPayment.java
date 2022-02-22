@@ -37,10 +37,10 @@ public class RecurringPayment {
         public static final String ACTION_SKIP = "skip";
         public static final String ACTION_CHANGE_AMNT = "change_amount";
 
-        private String action;
-        private GregorianCalendar editDate;
-        private GregorianCalendar moveDate;
-        private double newAmount;
+        private String action = "";
+        private GregorianCalendar editDate = null;
+        private GregorianCalendar moveDate = null;
+        private double newAmount = 0;
 
         public PaymentEdit() {action = ACTION_SKIP;}
 
@@ -83,14 +83,14 @@ public class RecurringPayment {
 
     }
 
-    private String paymentId;
-    private String frequencyType;
-    private int frequency;
-    private double amount;
-    private GregorianCalendar start;
-    private GregorianCalendar end;
-    private String notes;
-    private String bankId;
+    private String paymentId = "new_payment";
+    private String frequencyType = ON;
+    private int frequency = 1;
+    private double amount = 0;
+    private GregorianCalendar start = new GregorianCalendar();
+    private GregorianCalendar end = new GregorianCalendar();
+    private String notes = "";
+    private String bankId = "";
     private final Map<GregorianCalendar, PaymentEdit> edits = new HashMap<>();
 
     // Constructor

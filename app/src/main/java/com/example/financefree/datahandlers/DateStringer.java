@@ -7,11 +7,13 @@ public class DateStringer {
     public DateStringer(){}
 
     public static String CalToString(GregorianCalendar cal){
-        String s = cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DAY_OF_MONTH) + cal.get(Calendar.YEAR);
-        return s;
+        if(cal == null) return "";
+        return cal.get(Calendar.MONTH) + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR);
     }
 
     public static GregorianCalendar StringToCal(String s){
+        if(s.equals("")) return null;
+
         String[] temp = s.split("/");
         GregorianCalendar cal = new GregorianCalendar();
         cal.set(Calendar.MONTH, Integer.parseInt(temp[0]));

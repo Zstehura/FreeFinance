@@ -13,11 +13,11 @@ public class SinglePayment {
     public static final String BANK_ID = "bank_id";
     public static final String NOTES = "notes";
 
-    private double amount;
-    private GregorianCalendar date;
-    private String bankId;
-    private String name;
-    private String notes;
+    private double amount = 0;
+    private GregorianCalendar date = new GregorianCalendar();
+    private String bankId = "";
+    private String name = "";
+    private String notes = "";
 
     public SinglePayment(){}
 

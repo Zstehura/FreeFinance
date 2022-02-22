@@ -1,5 +1,7 @@
 package com.example.financefree.datahandlers;
 
+import androidx.annotation.NonNull;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,6 +12,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Vector;
 
 /*
@@ -22,12 +25,16 @@ import java.util.Vector;
  */
 
 public class DataManager {
+    // Label Constants
     public static final String FILE_AS = "file_as";
+    public static final String DEFAULT_BANK = "default_bank";
     public static final String BANK_ACCOUNTS = "bank_accts";
     public static final String SINGLE_PAYMENTS = "single_payments";
     public static final String RECURRING_PAYMENTS = "recurring_payments";
 
-    private String fileAs;
+    // Local data
+    private String fileAs = TaxBrackets.SINGLE;
+    private String defaultBankId = "";
     private final Map<Integer, TaxBrackets> taxBrackets = new HashMap<>();
     private final Map<String, BankAccount> bankAccounts = new HashMap<>();
     private final Map<String, RecurringPayment> recurringPayments = new HashMap<>();
@@ -38,7 +45,9 @@ public class DataManager {
 
     // Accessors
     public void setFileAs(String fileAs){this.fileAs = fileAs;}
+    public void setDefaultBankId(String defaultBankId){this.defaultBankId = defaultBankId;}
     public String getFileAs(){return fileAs;}
+    public String getDefaultBankId(){return defaultBankId;}
 
     public Map<String, BankAccount> getBankAccounts() {return bankAccounts;}
     public Map<String,RecurringPayment> getRecurringPayments() {return recurringPayments;}
@@ -47,23 +56,19 @@ public class DataManager {
         if(bankAccounts.containsKey(accountId)) return bankAccounts.get(accountId);
         else return null;
     }
-    public void setBankAccount(BankAccount ba){
+    public void setBankAccount(@NonNull BankAccount ba){
         if(bankAccounts.containsKey(ba.getAccountId())) bankAccounts.put(ba.getAccountId(), ba);
     }
-    public void removeBankAccount(String accountId){
-        if(bankAccounts.containsKey(accountId)) bankAccounts.remove(accountId);
-    }
+    public void removeBankAccount(String accountId){bankAccounts.remove(accountId);}
 
     public RecurringPayment getPayment(String paymentId) {
         if(recurringPayments.containsKey(paymentId)) return recurringPayments.get(paymentId);
         else return null;
     }
-    public void setPayment(RecurringPayment rp){
+    public void setPayment(@NonNull RecurringPayment rp){
         if(recurringPayments.containsKey(rp.getPaymentId())) recurringPayments.put(rp.getPaymentId(), rp);
     }
-    public void removePayment(String paymentId){
-        if(recurringPayments.containsKey(paymentId)) recurringPayments.remove(paymentId);
-    }
+    public void removePayment(String paymentId){recurringPayments.remove(paymentId);}
 
     // Read/Write Functions
     public void readTaxBracket(JSONObject jsonObject) throws  JSONException {
@@ -73,8 +78,9 @@ public class DataManager {
             taxBrackets.put(tb.getYear(), tb);
         }
     }
-    public void readJSON(JSONObject jsonObject) throws JSONException {
+    public void readJSON(@NonNull JSONObject jsonObject) throws JSONException {
         fileAs = jsonObject.getString(FILE_AS);
+        defaultBankId = jsonObject.getString(DEFAULT_BANK);
 
         // Read Bank Accounts
         JSONArray jsonArray = jsonObject.getJSONArray(BANK_ACCOUNTS);
@@ -103,7 +109,7 @@ public class DataManager {
             if(!singlePayments.containsKey(sp.getDate())) {
                 singlePayments.put(sp.getDate(), new ArrayList<>());
             }
-            singlePayments.get(sp.getDate()).add(sp);
+            Objects.requireNonNull(singlePayments.get(sp.getDate())).add(sp);
         }
     }
     public JSONObject toJSON() throws JSONException {
@@ -112,22 +118,30 @@ public class DataManager {
 
         JSONArray temp = new JSONArray();
         for(String id:bankAccounts.keySet()){
-            temp.put(bankAccounts.get(id).toJSON());
+            temp.put(Objects.requireNonNull(bankAccounts.get(id)).toJSON());
         }
         jsonObject.put(BANK_ACCOUNTS, temp);
 
         temp = new JSONArray();
         for(String id: recurringPayments.keySet()){
-            temp.put(recurringPayments.get(id).toJSONObject());
+            temp.put(Objects.requireNonNull(recurringPayments.get(id)).toJSONObject());
         }
         jsonObject.put(RECURRING_PAYMENTS, temp);
+
+        temp = new JSONArray();
+        for(List<SinglePayment> list: singlePayments.values()){
+            for(SinglePayment sp: list){
+                temp.put(sp.toJSON());
+            }
+        }
+        jsonObject.put(SINGLE_PAYMENTS, temp);
 
         return jsonObject;
     }
 
     public double calculateAnnualIncomeTax(int nYear){
         if(!taxBrackets.containsKey(nYear)) return -1;
-        TaxBrackets.Bracket br = taxBrackets.get(nYear).getBracket(fileAs);
+        TaxBrackets.Bracket br = Objects.requireNonNull(taxBrackets.get(nYear)).getBracket(fileAs);
         double d = 0;
         double tax = 0;
         for(RecurringPayment rp: recurringPayments.values()){
@@ -151,15 +165,21 @@ public class DataManager {
 
     public List<SinglePayment> getPayments(int nMonth, int nYear) {
         List<SinglePayment> paymentList = new Vector<>();
-        paymentList = singlePayments.get(nMonth + "/" + nYear);
+        GregorianCalendar cal = new GregorianCalendar(nYear,nMonth,1);
+        while(cal.get(Calendar.MONTH) == nMonth){
+            if(singlePayments.containsKey(cal)){
+                paymentList.addAll(Objects.requireNonNull(singlePayments.get(cal)));
+            }
+            cal.add(Calendar.DAY_OF_MONTH, 1);
+        }
 
         for(RecurringPayment rp: recurringPayments.values()){
             List<GregorianCalendar> gc = rp.getDatesFromMonth(nMonth, nYear);
-            for(GregorianCalendar cal: gc){
+            for(GregorianCalendar c: gc){
                 SinglePayment p = new SinglePayment();
                 p.setName(rp.getPaymentId());
                 p.setAmount(rp.getAmount());
-                p.setDate(cal);
+                p.setDate(c);
                 p.setBankId(rp.getBankId());
                 paymentList.add(p);
             }
@@ -167,7 +187,7 @@ public class DataManager {
 
         return paymentList;
     }
-    public Map<GregorianCalendar, Double> getAccountBals(String accountId, int nMonth, int nYear) {
+    public Map<GregorianCalendar, Double> getAccountBalances(String accountId, int nMonth, int nYear) {
         // Make sure account exists
         if(!bankAccounts.containsKey(accountId)) return null;
 
