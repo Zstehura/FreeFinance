@@ -1,9 +1,6 @@
-package com.example.financefree;
-
-import android.os.Build;
+package com.example.financefree.datahandlers;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,17 +8,16 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO: add bank connections
-//      ADD Action ChangeAmount
+
 public class RecurringPayment {
 
-    public static final String SOURCE_ID = "source_id";
+    public static final String PAYMENT_ID = "id";
+    public static final String BANK_ID = "bank_id";
     public static final String NOTES = "notes";
     public static final String FREQ_TYPE = "frequency_type";
     public static final String FREQUENCY = "frequency";
@@ -36,12 +32,15 @@ public class RecurringPayment {
         public static final String ACTION = "action";
         public static final String EDIT_DATE = "edit_date";
         public static final String MOVE_DATE = "move_to_date";
+        public static final String NEW_AMOUNT = "new_amount";
         public static final String ACTION_MOVE = "move";
         public static final String ACTION_SKIP = "skip";
+        public static final String ACTION_CHANGE_AMNT = "change_amount";
 
         private String action;
         private GregorianCalendar editDate;
         private GregorianCalendar moveDate;
+        private double newAmount;
 
         public PaymentEdit() {action = ACTION_SKIP;}
 
@@ -56,44 +55,35 @@ public class RecurringPayment {
         }
         public String getAction() {return action;}
         public void setAction(String action) {this.action = action;}
+        public double getNewAmount(){return newAmount;}
+        public void setNewAmount(double newAmount){this.newAmount = newAmount;}
 
-        public JSONObject toJSONObject(){
+        public JSONObject toJSONObject() throws JSONException {
             JSONObject j = new JSONObject();
-            try {
-                j.put(ACTION, action);
-                String temp = editDate.get(Calendar.MONTH) + "/" + editDate.get(Calendar.DAY_OF_MONTH) + "/" + (editDate.get(Calendar.YEAR)-2000);
-                j.put(EDIT_DATE, temp);
-                if (action.equals(ACTION_MOVE)){
-                    temp = moveDate.get(Calendar.MONTH) + "/" + moveDate.get(Calendar.DAY_OF_MONTH) + "/" + (moveDate.get(Calendar.YEAR)-2000);
-                    j.put(MOVE_DATE, temp);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+            j.put(ACTION, action);
+            j.put(EDIT_DATE, DateStringer.CalToString(editDate));
+            if (action.equals(ACTION_MOVE)){
+                j.put(MOVE_DATE, DateStringer.CalToString(moveDate));
+            }
+            else if(action.equals(ACTION_CHANGE_AMNT)){
+                j.put(NEW_AMOUNT, newAmount);
             }
             return j;
         }
-        public void readJSON(@NonNull JSONObject jsonObject){
-            try {
-                action = jsonObject.getString(ACTION);
-                editDate = new GregorianCalendar();
-                String[] temp = jsonObject.getString(EDIT_DATE).split("/");
-                editDate.set(Calendar.MONTH, Integer.parseInt(temp[0]));
-                editDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(temp[1]));
-                editDate.set(Calendar.YEAR, Integer.parseInt(temp[2]) + 2000);
-                if(action.equals(ACTION_MOVE)) {
-                    moveDate = new GregorianCalendar();
-                    temp = jsonObject.getString(MOVE_DATE).split("/");
-                    moveDate.set(Calendar.MONTH, Integer.parseInt(temp[0]));
-                    moveDate.set(Calendar.DAY_OF_MONTH, Integer.parseInt(temp[1]));
-                    moveDate.set(Calendar.YEAR, Integer.parseInt(temp[2]) + 2000);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+        public void readJSON(@NonNull JSONObject jsonObject) throws JSONException {
+            action = jsonObject.getString(ACTION);
+            editDate = DateStringer.StringToCal(jsonObject.getString(EDIT_DATE));
+            if(action.equals(ACTION_MOVE)) {
+                moveDate = DateStringer.StringToCal(jsonObject.getString(MOVE_DATE));
+            }
+            else if(action.equals(ACTION_CHANGE_AMNT)){
+                newAmount = jsonObject.getDouble(NEW_AMOUNT);
             }
         }
 
     }
 
+    private String paymentId;
     private String frequencyType;
     private int frequency;
     private double amount;
@@ -101,12 +91,12 @@ public class RecurringPayment {
     private GregorianCalendar end;
     private String notes;
     private String bankId;
-    private Map<GregorianCalendar, PaymentEdit> edits;
+    private final Map<GregorianCalendar, PaymentEdit> edits = new HashMap<>();
 
-    public RecurringPayment() {
-        edits = new HashMap<>();
-    }
+    // Constructor
+    public RecurringPayment() {}
 
+    // Accessors
     public void setBankId(String bankId){this.bankId = bankId;}
     public void setNotes(String notes){this.notes = notes;}
     public void setFrequency(String frequencyType, int frequency){
@@ -119,9 +109,11 @@ public class RecurringPayment {
             this.frequency = 0;
         }
     }
+    public void setPaymentId(String paymentId){this.paymentId = paymentId;}
     public void setAmount(double amount) {this.amount = amount;}
     public void setStart(GregorianCalendar start) {this.start = start;}
     public void setEnd(GregorianCalendar end) {this.end = end;}
+    public String getPaymentId(){return paymentId;}
     public String getBankId(){return bankId;}
     public String getNotes(){return notes;}
     public String getFrequencyType(){return frequencyType;}
@@ -140,7 +132,43 @@ public class RecurringPayment {
         edits.remove(date);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+    // read/write functions
+    public void readJSON(JSONObject jsonObject) throws JSONException {
+        JSONArray jsonArray = new JSONArray(jsonObject.getJSONArray(EDITS));
+        for(int i = 0; i < jsonArray.length(); i++){
+            PaymentEdit temp = new PaymentEdit();
+            temp.readJSON(jsonArray.getJSONObject(i));
+            edits.put(temp.getEditDate(),temp);
+        }
+        amount = jsonObject.getDouble(AMOUNT);
+        start = DateStringer.StringToCal(jsonObject.getString(START));
+        end = DateStringer.StringToCal(jsonObject.getString(END));
+        frequencyType = jsonObject.getString(FREQ_TYPE);
+        frequency = jsonObject.getInt(FREQUENCY);
+        notes = jsonObject.getString(NOTES);
+        bankId = jsonObject.getString(BANK_ID);
+        paymentId = jsonObject.getString(PAYMENT_ID);
+    }
+
+    public JSONObject toJSONObject() throws JSONException {
+        JSONObject j = new JSONObject();
+        JSONArray ja = new JSONArray();
+        for(PaymentEdit pe: edits.values()){
+            ja.put(pe.toJSONObject());
+        }
+        j.put(EDITS, ja);
+        j.put(AMOUNT, amount);
+        j.put(START, DateStringer.CalToString(start));
+        j.put(END, DateStringer.CalToString(end));
+        j.put(FREQ_TYPE, frequencyType);
+        j.put(FREQUENCY, frequency);
+        j.put(NOTES,notes);
+        j.put(BANK_ID,bankId);
+        j.put(PAYMENT_ID,paymentId);
+        return j;
+    }
+
     public List<GregorianCalendar> getDatesFromMonth(int month, int year) {
         List<GregorianCalendar> l = new ArrayList<>();
         if (frequencyType.equals(ON)) {
@@ -175,55 +203,20 @@ public class RecurringPayment {
         return l;
     }
 
-    public void readJSON(JSONObject jsonObject) {
-        try {
-            JSONArray jsonArray = new JSONArray(jsonObject.getJSONArray(EDITS));
-            for(int i = 0; i < jsonArray.length(); i++){
-                PaymentEdit temp = new PaymentEdit();
-                temp.readJSON(jsonArray.getJSONObject(i));
-                edits.put(temp.getEditDate(),temp);
-            }
-            amount = jsonObject.getDouble(AMOUNT);
-            start = new GregorianCalendar();
-            String[] temp = jsonObject.getString(START).split("/");
-            start.set(Calendar.MONTH, Integer.parseInt(temp[0]));
-            start.set(Calendar.DAY_OF_MONTH, Integer.parseInt(temp[1]));
-            start.set(Calendar.YEAR, Integer.parseInt(temp[2]) + 2000);
-            end = new GregorianCalendar();
-            temp = jsonObject.getString(END).split("/");
-            end.set(Calendar.MONTH, Integer.parseInt(temp[0]));
-            end.set(Calendar.DAY_OF_MONTH, Integer.parseInt(temp[1]));
-            end.set(Calendar.YEAR, Integer.parseInt(temp[2]) + 2000);
-            frequencyType = jsonObject.getString(FREQ_TYPE);
-            frequency = jsonObject.getInt(FREQUENCY);
-            notes = jsonObject.getString(NOTES);
-            bankId = jsonObject.getString(SOURCE_ID);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
+    public int getNumPayments(int nYear) {
+        GregorianCalendar cal = start;
+        if(frequencyType.equals(ON)) start.set(Calendar.DAY_OF_MONTH, frequency);
+        int n = 0;
+        while(cal.get(Calendar.YEAR) <= nYear && cal.before(end)){
+            if(cal.get(Calendar.YEAR) == nYear) n++;
 
-    public JSONObject toJSONObject() {
-        JSONObject j = new JSONObject();
-        try {
-            JSONArray ja = new JSONArray();
-            for(PaymentEdit pe: edits.values()){
-                ja.put(pe.toJSONObject());
-            }
-            j.put(EDITS, ja);
-            j.put(AMOUNT, amount);
-            String temp = start.get(Calendar.MONTH) + "/" + start.get(Calendar.DAY_OF_MONTH) + "/" + (start.get(Calendar.YEAR)-2000);
-            j.put(START, temp);
-            temp = end.get(Calendar.MONTH) + "/" + end.get(Calendar.DAY_OF_MONTH) + "/" + (end.get(Calendar.YEAR)-2000);
-            j.put(END, temp);
-            j.put(FREQ_TYPE, frequencyType);
-            j.put(FREQUENCY, frequency);
-            j.put(NOTES,notes);
-            j.put(SOURCE_ID,bankId);
-        } catch (JSONException e) {
-            e.printStackTrace();
+            if(frequencyType.equals(ON)) cal.add(Calendar.MONTH, 1);
+            else cal.add(Calendar.DATE, frequency);
         }
-        return j;
-    }
 
+        return n;
+    }
+    public double getAnnualTotal(int nYear) {
+        return getNumPayments(nYear) * amount;
+    }
 }
