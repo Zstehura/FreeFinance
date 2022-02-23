@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -66,7 +68,10 @@ public class BankAccount {
             j.put(NOTES, notes);
             j.put(ACCT_ID, accountId);
             JSONArray jsonArray = new JSONArray();
-            for(GregorianCalendar cal: statements.keySet()){
+            ArrayList<GregorianCalendar> gc = new ArrayList<>();
+            gc.addAll(statements.keySet());
+            Collections.sort(gc);
+            for(GregorianCalendar cal: gc){
                 JSONObject temp = new JSONObject();
                 temp.put(DATE, DateStringer.CalToString(cal));
                 temp.put(AMOUNT, statements.get(cal));

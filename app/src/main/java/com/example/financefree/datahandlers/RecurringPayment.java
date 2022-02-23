@@ -1,22 +1,19 @@
 package com.example.financefree.datahandlers;
 
-import androidx.annotation.NonNull;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
-public class RecurringPayment {
+public class RecurringPayment implements Comparable<RecurringPayment> {
 
-    public static final String PAYMENT_ID = "id";
+    public static final String PAYMENT_ID = "pay_id";
     public static final String BANK_ID = "bank_id";
     public static final String NOTES = "notes";
     public static final String FREQ_TYPE = "frequency_type";
@@ -28,61 +25,6 @@ public class RecurringPayment {
     public static final String END = "end";
     public static final String EDITS = "edits";
 
-    public class PaymentEdit {
-        public static final String ACTION = "action";
-        public static final String EDIT_DATE = "edit_date";
-        public static final String MOVE_DATE = "move_to_date";
-        public static final String NEW_AMOUNT = "new_amount";
-        public static final String ACTION_MOVE = "move";
-        public static final String ACTION_SKIP = "skip";
-        public static final String ACTION_CHANGE_AMNT = "change_amount";
-
-        private String action = "";
-        private GregorianCalendar editDate = null;
-        private GregorianCalendar moveDate = null;
-        private double newAmount = 0;
-
-        public PaymentEdit() {action = ACTION_SKIP;}
-
-
-        public GregorianCalendar getMoveDate() {return moveDate;}
-        public void setMoveDate(GregorianCalendar moveDate) {this.moveDate = moveDate;}
-        public GregorianCalendar getEditDate() {
-            return editDate;
-        }
-        public void setEditDate(GregorianCalendar editDate) {
-            this.editDate = editDate;
-        }
-        public String getAction() {return action;}
-        public void setAction(String action) {this.action = action;}
-        public double getNewAmount(){return newAmount;}
-        public void setNewAmount(double newAmount){this.newAmount = newAmount;}
-
-        public JSONObject toJSONObject() throws JSONException {
-            JSONObject j = new JSONObject();
-            j.put(ACTION, action);
-            j.put(EDIT_DATE, DateStringer.CalToString(editDate));
-            if (action.equals(ACTION_MOVE)){
-                j.put(MOVE_DATE, DateStringer.CalToString(moveDate));
-            }
-            else if(action.equals(ACTION_CHANGE_AMNT)){
-                j.put(NEW_AMOUNT, newAmount);
-            }
-            return j;
-        }
-        public void readJSON(@NonNull JSONObject jsonObject) throws JSONException {
-            action = jsonObject.getString(ACTION);
-            editDate = DateStringer.StringToCal(jsonObject.getString(EDIT_DATE));
-            if(action.equals(ACTION_MOVE)) {
-                moveDate = DateStringer.StringToCal(jsonObject.getString(MOVE_DATE));
-            }
-            else if(action.equals(ACTION_CHANGE_AMNT)){
-                newAmount = jsonObject.getDouble(NEW_AMOUNT);
-            }
-        }
-
-    }
-
     private String paymentId = "new_payment";
     private String frequencyType = ON;
     private int frequency = 1;
@@ -91,7 +33,7 @@ public class RecurringPayment {
     private GregorianCalendar end = new GregorianCalendar();
     private String notes = "";
     private String bankId = "";
-    private final Map<GregorianCalendar, PaymentEdit> edits = new HashMap<>();
+    private final List<PaymentEdit> edits = new ArrayList<>();
 
     // Constructor
     public RecurringPayment() {}
@@ -123,10 +65,10 @@ public class RecurringPayment {
     public GregorianCalendar getEnd() {return this.end;}
 
     public void addEdit(PaymentEdit paymentEdit){
-        edits.put(paymentEdit.getEditDate(), paymentEdit);
+        edits.add(paymentEdit);
     }
-    public PaymentEdit getEdit(GregorianCalendar date){
-        return edits.get(date);
+    public List<PaymentEdit> getEdits(){
+        return edits;
     }
     public void removeEdit(GregorianCalendar date){
         edits.remove(date);
@@ -135,11 +77,11 @@ public class RecurringPayment {
 
     // read/write functions
     public void readJSON(JSONObject jsonObject) throws JSONException {
-        JSONArray jsonArray = new JSONArray(jsonObject.getJSONArray(EDITS));
+        JSONArray jsonArray = jsonObject.getJSONArray(EDITS);
         for(int i = 0; i < jsonArray.length(); i++){
             PaymentEdit temp = new PaymentEdit();
             temp.readJSON(jsonArray.getJSONObject(i));
-            edits.put(temp.getEditDate(),temp);
+            edits.add(temp);
         }
         amount = jsonObject.getDouble(AMOUNT);
         start = DateStringer.StringToCal(jsonObject.getString(START));
@@ -154,7 +96,8 @@ public class RecurringPayment {
     public JSONObject toJSONObject() throws JSONException {
         JSONObject j = new JSONObject();
         JSONArray ja = new JSONArray();
-        for(PaymentEdit pe: edits.values()){
+        Collections.sort(edits);
+        for(PaymentEdit pe: edits){
             ja.put(pe.toJSONObject());
         }
         j.put(EDITS, ja);
@@ -169,8 +112,9 @@ public class RecurringPayment {
         return j;
     }
 
-    public List<GregorianCalendar> getDatesFromMonth(int month, int year) {
+    public List<SinglePayment> getDatesFromMonth(int month, int year) {
         List<GregorianCalendar> l = new ArrayList<>();
+        List<SinglePayment> singlePaymentList = new ArrayList<>();
         if (frequencyType.equals(ON)) {
             // Occurs on given date every month
             GregorianCalendar c = new GregorianCalendar(year, month, frequency);
@@ -190,17 +134,35 @@ public class RecurringPayment {
         }
 
         for(GregorianCalendar d: l){
-            if (edits.containsKey(d)) {
-                PaymentEdit paymentEdit = edits.get(d);
-                l.remove(d);
-                assert paymentEdit != null;
-                if(paymentEdit.getAction().equals(PaymentEdit.ACTION_MOVE)){
-                    l.add(paymentEdit.getMoveDate());
+            SinglePayment sp = new SinglePayment();
+            boolean skip = false;
+            sp.setAmount(amount);
+            sp.setNotes(notes);
+            sp.setDate(d);
+            sp.setName(paymentId);
+            sp.setBankId(bankId);
+            for (PaymentEdit pe: edits) {
+
+                if(pe.getEditDate().equals(d)) {
+                    switch (pe.getAction()) {
+                        case PaymentEdit.ACTION_MOVE:
+                            sp.setDate(pe.getMoveDate());
+                            break;
+                        case PaymentEdit.ACTION_SKIP:
+                            // not going to add this
+                            skip = true;
+                            break;
+                        case PaymentEdit.ACTION_CHANGE_AMNT:
+                            sp.setAmount(pe.getNewAmount());
+                            break;
+                    }
                 }
             }
+
+            if(!skip) singlePaymentList.add(sp);
         }
 
-        return l;
+        return singlePaymentList;
     }
 
     public int getNumPayments(int nYear) {
@@ -218,5 +180,17 @@ public class RecurringPayment {
     }
     public double getAnnualTotal(int nYear) {
         return getNumPayments(nYear) * amount;
+    }
+
+    @Override
+    public int compareTo(RecurringPayment recurringPayment) {
+        if(!start.equals(recurringPayment.start)){
+            return start.compareTo(recurringPayment.start);
+        } else if(!paymentId.equals(recurringPayment.paymentId)) {
+            return PaymentEdit.stringCompare(paymentId, recurringPayment.paymentId);
+        } else if(amount != recurringPayment.amount){
+            return (int)amount - (int)recurringPayment.amount;
+        }
+        return 0;
     }
 }
