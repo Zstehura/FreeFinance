@@ -14,9 +14,6 @@
         android:name="com.example.financefree.RecurringPaymentsFragment"
         android:label="@string/recurring_payments"
         tools:layout="@layout/recurring_payments_list" >
-        <action
-            android:id="@+id/action_recurringPaymentsFragment_to_addEditRecurringPayment"
-            app:destination="@id/addEditRecurringPayment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -42,18 +39,9 @@
             app:destination="@id/recurringPaymentsFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addEditRecurringPayment"
-        android:name="com.example.financefree.AddEditRecurringPayment"
-        android:label="fragment_add_edit_recurring_payment"
-        tools:layout="@layout/fragment_add_edit_recurring_payment" >
-    </fragment>
-    <fragment
         android:id="@+id/calendar"
         android:name="com.example.financefree.Calendar"
         android:label="calendar_fragment"
         tools:layout="@layout/calendar_fragment" >
-        <action
-            android:id="@+id/action_calendar_to_addEditRecurringPayment"
-            app:destination="@id/addEditRecurringPayment" />
     </fragment>
 </navigation>

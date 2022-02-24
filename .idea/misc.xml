@@ -18,6 +18,8 @@
         <entry key="app/src/main/res/layout/fragment_month_picker.xml" value="0.3319746376811594" />
         <entry key="app/src/main/res/layout/fragment_month_year_picker_dialog.xml" value="0.317481884057971" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.30978260869565216" />
+        <entry key="app/src/main/res/layout/recurring_payments.xml" value="0.29846014492753625" />
+        <entry key="app/src/main/res/layout/recurring_payments_list.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.36041666666666666" />
       </map>
     </option>

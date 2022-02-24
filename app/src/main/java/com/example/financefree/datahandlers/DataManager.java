@@ -11,10 +11,141 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Vector;
+
+
+public final class DataManager{
+    public static final String FILE_AS = "file_as";
+    public static final String DEFAULT_BANK = "default_bank";
+    public static final String BANK_ACCOUNTS = "bank_accts";
+    public static final String SINGLE_PAYMENTS = "single_payments";
+    public static final String RECURRING_PAYMENTS = "recurring_payments";
+    public static final String BILLS = "bills";
+
+    private static final String STORAGE_FILE_NAME = "appData.json";
+
+    private static String fileAs = TaxBrackets.SINGLE;
+    private static String defaultBankId = "na";
+    private static final Map<Integer, TaxBrackets> taxBrackets = new HashMap<>();
+    private static final Map<String, BankAccount> bankAccounts = new HashMap<>();
+    private static final Map<String, RecurringPayment> recurringPayments = new HashMap<>();
+    private static final Map<String, List<SinglePayment>> singlePayments = new HashMap<>();
+
+    private DataManager(){}
+
+    public static void readData(){
+
+    }
+
+    public static void writeData(){
+
+    }
+
+    public static String getFileAs(){return fileAs;}
+    public static void setFileAs(String fileAs){DataManager.fileAs = fileAs;}
+    public static String getDefaultBankId(){return defaultBankId;}
+    public static void setDefaultBankId(String defaultBankId){DataManager.defaultBankId = defaultBankId;}
+
+    public static List<TaxBrackets> getTaxBrackets(){
+        return new LinkedList<>(taxBrackets.values());
+    }
+    public static List<BankAccount> getBankAccounts(){
+        return new LinkedList<>(bankAccounts.values());
+    }
+    public static List<RecurringPayment> getRecurringPayments() {
+        return new LinkedList<>(recurringPayments.values());
+    }
+    public static List<SinglePayment> getSinglePayments(String date){
+        if(singlePayments.containsKey(date)){
+            return new LinkedList<>(Objects.requireNonNull(singlePayments.get(date)));
+        }
+        else{
+            return new LinkedList<>();
+        }
+    }
+
+    public static boolean addTaxBracket(JSONObject jsonObject){
+        TaxBrackets tb = new TaxBrackets();
+        try {
+            tb.readJSON(jsonObject);
+            taxBrackets.put(tb.getYear(), tb);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    public static boolean removeTaxBrackets(int nYear){
+        if(taxBrackets.containsKey(nYear)) {
+            taxBrackets.remove(nYear);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public static void addBankAccount(BankAccount ba){
+        bankAccounts.remove(ba.getAccountId());
+        bankAccounts.put(ba.getAccountId(), new BankAccount(ba));
+    }
+    public static BankAccount getBankAccount(String bankId) {
+        if(bankAccounts.containsKey(bankId)) return bankAccounts.get(bankId);
+        else return null;
+    }
+    public static boolean removeBankAccount(String bankId) {
+        if(bankAccounts.containsKey(bankId)) {
+            bankAccounts.remove(bankId);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public static void addRecurringPayment(RecurringPayment rp) throws CustomDate.DateErrorException {
+        recurringPayments.remove(rp.getPaymentId());
+        recurringPayments.put(rp.getPaymentId(),new RecurringPayment(rp));
+    }
+    public static RecurringPayment getRecurringPayment(String payId){
+        if(recurringPayments.containsKey(payId)) return recurringPayments.get(payId);
+        else return null;
+    }
+    public static boolean removeRecurringPayment(String payId){
+        if(recurringPayments.containsKey(payId)){
+            recurringPayments.remove(payId);
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public static void addSinglePayment(SinglePayment sp) throws CustomDate.DateErrorException {
+        if(!singlePayments.containsKey(sp.getDate().toString())){
+            singlePayments.put(sp.getDate().toString(), new LinkedList<>());
+        }
+        Objects.requireNonNull(singlePayments.get(sp.getDate().toString())).add(new SinglePayment(sp));
+    }
+    public static boolean removeSinglePayment(SinglePayment sp) {
+        if(singlePayments.containsKey(sp.getDate().toString())){
+            for(int i = 0; i < Objects.requireNonNull(singlePayments.get(sp.getDate().toString())).size(); i++){
+                SinglePayment p = Objects.requireNonNull(singlePayments.get(sp.getDate().toString())).get(i);
+                if(p.getName().equals(sp.getName()) && p.getAmount() == sp.getAmount()){
+                    Objects.requireNonNull(singlePayments.get(sp.getDate().toString())).remove(i);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+}
+
+
+
+
 
 /*
     This class handles the larger dataset of data relevant to the profile as a whole
@@ -23,7 +154,7 @@ import java.util.Vector;
       -Bank Statements
     -Tax Bracket Info
     -Recurring Payments
- */
+ *
 
 public class DataManager {
     // Label Constants
@@ -258,3 +389,5 @@ public class DataManager {
     }
 
 }
+
+*/

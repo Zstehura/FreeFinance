@@ -64,7 +64,8 @@ public class RecurringPaymentsFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new MyRecurringPaymentsRecyclerViewAdapter(PlaceholderContent.ITEMS));
+            // This line was just annoying me. Should be uncommented later
+            // recyclerView.setAdapter(new MyRecurringPaymentsRecyclerViewAdapter(PlaceholderContent.ITEMS));
         }
         return view;
     }

@@ -2,14 +2,18 @@ package com.example.financefree;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
 import android.widget.TextView;
 
-import java.util.GregorianCalendar;
+import com.example.financefree.datahandlers.CustomDate;
+import com.example.financefree.datahandlers.DataManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,12 +21,14 @@ import java.util.GregorianCalendar;
  * create an instance of this fragment.
  */
 public class Calendar extends Fragment {
-    public int month;
-    public int year;
 
+    private CustomDate currentDate;
+    private DataManager dataManager;
 
-    public Calendar() {
+    public Calendar(CustomDate cd, DataManager dm) {
         // Required empty public constructor
+        currentDate = new CustomDate(cd);
+        dataManager = dm;
     }
 
     /**
@@ -31,14 +37,32 @@ public class Calendar extends Fragment {
      *
      * @return A new instance of fragment HomeFragment.
      */
-    public static Calendar newInstance(int iMonth, int iYear) {
-        Calendar fragment = new Calendar();
-        return fragment;
+    public static Calendar newInstance(CustomDate cd, DataManager dm) {
+        Calendar calendar = new Calendar(cd, dm);
+        return calendar;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        CalendarView cv = getView().findViewById(R.id.calendarView);
+        TextView tv = getView().findViewById(R.id.txtDay);
+        RecyclerView rv = getView().findViewById(R.id.viewList);
+
+        cv.setOnDateChangeListener((calendarView, iYear, iMonth, iDay) -> {
+            try {
+                currentDate = new CustomDate(iMonth+1, iDay,iYear);
+                tv.setText(currentDate.toString());
+                // TODO: Set recycler
+            } catch (CustomDate.DateErrorException e) {
+                e.printStackTrace();
+            }
+        });
+
+        rv.setOnClickListener(view -> {
+
+        });
+
     }
 
     @Override

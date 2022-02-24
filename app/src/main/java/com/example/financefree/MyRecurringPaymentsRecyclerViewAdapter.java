@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.financefree.datahandlers.RecurringPayment;
+import com.example.financefree.datahandlers.SinglePayment;
 import com.example.financefree.placeholder.PlaceholderContent.PlaceholderItem;
 import com.example.financefree.databinding.RecurringPaymentsBinding;
 
@@ -17,10 +19,11 @@ import java.util.List;
  * TODO: Replace the implementation with code for your data type.
  */
 public class MyRecurringPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<MyRecurringPaymentsRecyclerViewAdapter.ViewHolder> {
-
     private final List<PlaceholderItem> mValues;
+    private final List<RecurringPayment> recurringPayments;
 
-    public MyRecurringPaymentsRecyclerViewAdapter(List<PlaceholderItem> items) {
+    public MyRecurringPaymentsRecyclerViewAdapter(List<PlaceholderItem> items, List<RecurringPayment> rp) {
+        recurringPayments = rp;
         mValues = items;
     }
 
