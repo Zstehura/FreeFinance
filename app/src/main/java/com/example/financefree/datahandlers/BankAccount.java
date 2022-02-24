@@ -16,6 +16,7 @@ import java.util.Map;
 
  */
 
+@SuppressWarnings("ALL")
 public class BankAccount {
     public static final String NOTES = "notes";
     public static final String ACCT_ID = "account_id";
@@ -25,21 +26,29 @@ public class BankAccount {
 
     private String accountId;
     private String notes;
-    private final Map<GregorianCalendar, Double> statements = new HashMap<>();
+    private final Map<String, Double> statements = new HashMap<>();
 
     public BankAccount(){}
 
-    public void addStatement(GregorianCalendar cal, double amount){
-        statements.put(cal, amount);
+    public BankAccount(BankAccount ba) {
+        accountId = ba.accountId;
+        notes = ba.notes;
+        for(String cd: ba.statements.keySet()){
+            statements.put(cd, ba.statements.get(cd));
+        }
     }
-    public void removeStatement(GregorianCalendar cal){
+
+    public void addStatement(CustomDate cal, double amount){
+        statements.put(cal.toString(), amount);
+    }
+    public void removeStatement(CustomDate cal){
         statements.remove(cal);
     }
-    public double getStatement(GregorianCalendar cal){
-        if(statements.containsKey(cal)) return statements.get(cal);
+    public double getStatement(CustomDate cal){
+        if(statements.containsKey(cal.toString())) return statements.get(cal.toString());
         return 0;
     }
-    public Map<GregorianCalendar, Double> getStatements() {return statements;}
+    public Map<String, Double> getStatements() {return statements;}
     public void setAccountId(String accountId){this.accountId = accountId;}
     public void setNotes(String notes) {this.notes = notes;}
     public String getAccountId(){return accountId;}
@@ -53,11 +62,11 @@ public class BankAccount {
             JSONArray jsonArray = jsonObject.getJSONArray(STATEMENTS);
             for(int i = 0; i < jsonArray.length(); i++){
                 JSONObject j = jsonArray.getJSONObject(i);
-                GregorianCalendar cal = DateStringer.StringToCal(j.getString(DATE));
-                statements.put(cal, j.getDouble(AMOUNT));
+                CustomDate cal = new CustomDate(j.getString(DATE));
+                statements.put(cal.toString(), j.getDouble(AMOUNT));
             }
 
-        } catch (JSONException e) {
+        } catch (JSONException | CustomDate.DateErrorException e) {
             e.printStackTrace();
         }
     }
@@ -68,12 +77,11 @@ public class BankAccount {
             j.put(NOTES, notes);
             j.put(ACCT_ID, accountId);
             JSONArray jsonArray = new JSONArray();
-            ArrayList<GregorianCalendar> gc = new ArrayList<>();
-            gc.addAll(statements.keySet());
+            ArrayList<String> gc = new ArrayList<>(statements.keySet());
             Collections.sort(gc);
-            for(GregorianCalendar cal: gc){
+            for(String cal: gc){
                 JSONObject temp = new JSONObject();
-                temp.put(DATE, DateStringer.CalToString(cal));
+                temp.put(DATE, cal);
                 temp.put(AMOUNT, statements.get(cal));
                 jsonArray.put(temp);
             }

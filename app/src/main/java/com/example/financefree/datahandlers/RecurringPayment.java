@@ -29,14 +29,28 @@ public class RecurringPayment implements Comparable<RecurringPayment> {
     private String frequencyType = ON;
     private int frequency = 1;
     private double amount = 0;
-    private GregorianCalendar start = new GregorianCalendar();
-    private GregorianCalendar end = new GregorianCalendar();
+    private CustomDate start = new CustomDate();
+    private CustomDate end = new CustomDate();
     private String notes = "";
     private String bankId = "";
     private final List<PaymentEdit> edits = new ArrayList<>();
 
     // Constructor
-    public RecurringPayment() {}
+    public RecurringPayment() throws CustomDate.DateErrorException {}
+
+    public RecurringPayment(RecurringPayment rp) throws CustomDate.DateErrorException {
+        paymentId = rp.paymentId;
+        frequencyType = rp.frequencyType;
+        frequency = rp.frequency;
+        amount = rp.amount;
+        start = new CustomDate(rp.start);
+        end = new CustomDate(rp.end);
+        notes = rp.notes;
+        bankId = rp.bankId;
+        for(PaymentEdit pe: rp.edits){
+            edits.add(new PaymentEdit(pe));
+        }
+    }
 
     // Accessors
     public void setBankId(String bankId){this.bankId = bankId;}
@@ -53,16 +67,16 @@ public class RecurringPayment implements Comparable<RecurringPayment> {
     }
     public void setPaymentId(String paymentId){this.paymentId = paymentId;}
     public void setAmount(double amount) {this.amount = amount;}
-    public void setStart(GregorianCalendar start) {this.start = start;}
-    public void setEnd(GregorianCalendar end) {this.end = end;}
+    public void setStart(CustomDate start) {this.start = start;}
+    public void setEnd(CustomDate end) {this.end = end;}
     public String getPaymentId(){return paymentId;}
     public String getBankId(){return bankId;}
     public String getNotes(){return notes;}
     public String getFrequencyType(){return frequencyType;}
     public int getFrequency() {return frequency;}
     public double getAmount() {return this.amount;}
-    public GregorianCalendar getStart() {return this.start;}
-    public GregorianCalendar getEnd() {return this.end;}
+    public CustomDate getStart() {return this.start;}
+    public CustomDate getEnd() {return this.end;}
 
     public void addEdit(PaymentEdit paymentEdit){
         edits.add(paymentEdit);
@@ -70,13 +84,13 @@ public class RecurringPayment implements Comparable<RecurringPayment> {
     public List<PaymentEdit> getEdits(){
         return edits;
     }
-    public void removeEdit(GregorianCalendar date){
-        edits.remove(date);
+    public void removeEdit(PaymentEdit pe){
+        edits.remove(pe);
     }
 
 
     // read/write functions
-    public void readJSON(JSONObject jsonObject) throws JSONException {
+    public void readJSON(JSONObject jsonObject) throws JSONException, CustomDate.DateErrorException {
         JSONArray jsonArray = jsonObject.getJSONArray(EDITS);
         for(int i = 0; i < jsonArray.length(); i++){
             PaymentEdit temp = new PaymentEdit();
@@ -84,8 +98,8 @@ public class RecurringPayment implements Comparable<RecurringPayment> {
             edits.add(temp);
         }
         amount = jsonObject.getDouble(AMOUNT);
-        start = DateStringer.StringToCal(jsonObject.getString(START));
-        end = DateStringer.StringToCal(jsonObject.getString(END));
+        start = new CustomDate(jsonObject.getString(START));
+        end = new CustomDate(jsonObject.getString(END));
         frequencyType = jsonObject.getString(FREQ_TYPE);
         frequency = jsonObject.getInt(FREQUENCY);
         notes = jsonObject.getString(NOTES);
@@ -102,8 +116,8 @@ public class RecurringPayment implements Comparable<RecurringPayment> {
         }
         j.put(EDITS, ja);
         j.put(AMOUNT, amount);
-        j.put(START, DateStringer.CalToString(start));
-        j.put(END, DateStringer.CalToString(end));
+        j.put(START, start.toString());
+        j.put(END, end.toString());
         j.put(FREQ_TYPE, frequencyType);
         j.put(FREQUENCY, frequency);
         j.put(NOTES,notes);
@@ -112,41 +126,39 @@ public class RecurringPayment implements Comparable<RecurringPayment> {
         return j;
     }
 
-    public List<SinglePayment> getDatesFromMonth(int month, int year) {
-        List<GregorianCalendar> l = new ArrayList<>();
+    public List<SinglePayment> getDatesFromMonth(int month, int year) throws CustomDate.DateErrorException {
+        List<String> l = new ArrayList<>();
         List<SinglePayment> singlePaymentList = new ArrayList<>();
         if (frequencyType.equals(ON)) {
             // Occurs on given date every month
-            GregorianCalendar c = new GregorianCalendar(year, month, frequency);
-            l.add(c);
+            CustomDate c = new CustomDate(month, frequency, year);
+            l.add(c.toString());
         } else {
-            GregorianCalendar c = new GregorianCalendar();
-            c.set(year,month,1);
-            c.add(Calendar.MONTH, 1);
-            GregorianCalendar temp = new GregorianCalendar();
-            temp.setTime(start.getTime());
+            CustomDate c = new CustomDate(month,1,year);
+            c.addMonths(1);
+            CustomDate temp = new CustomDate(start);
             while(temp.before(c)){
-                if(temp.get(Calendar.MONTH) == month && temp.get(Calendar.YEAR) == year){
-                    l.add(temp);
+                if(temp.get(CustomDate.MONTH) == month && temp.get(CustomDate.YEAR) == year){
+                    l.add(temp.toString());
                 }
-                temp.add(Calendar.DAY_OF_MONTH, frequency);
+                temp.addDays(frequency);
             }
         }
 
-        for(GregorianCalendar d: l){
+        for(String d: l){
             SinglePayment sp = new SinglePayment();
             boolean skip = false;
             sp.setAmount(amount);
             sp.setNotes(notes);
-            sp.setDate(d);
+            sp.setDate(new CustomDate(d));
             sp.setName(paymentId);
             sp.setBankId(bankId);
             for (PaymentEdit pe: edits) {
 
-                if(pe.getEditDate().equals(d)) {
+                if(pe.getEditDate().toString().equals(d)) {
                     switch (pe.getAction()) {
                         case PaymentEdit.ACTION_MOVE:
-                            sp.setDate(pe.getMoveDate());
+                            sp.setDate(new CustomDate(pe.getMoveDate()));
                             break;
                         case PaymentEdit.ACTION_SKIP:
                             // not going to add this
@@ -165,20 +177,20 @@ public class RecurringPayment implements Comparable<RecurringPayment> {
         return singlePaymentList;
     }
 
-    public int getNumPayments(int nYear) {
-        GregorianCalendar cal = start;
-        if(frequencyType.equals(ON)) start.set(Calendar.DAY_OF_MONTH, frequency);
+    public int getNumPayments(int nYear) throws CustomDate.DateErrorException {
+        CustomDate cal = start;
+        if(frequencyType.equals(ON)) start.set(CustomDate.DAY, frequency);
         int n = 0;
         while(cal.get(Calendar.YEAR) <= nYear && cal.before(end)){
             if(cal.get(Calendar.YEAR) == nYear) n++;
 
-            if(frequencyType.equals(ON)) cal.add(Calendar.MONTH, 1);
-            else cal.add(Calendar.DATE, frequency);
+            if(frequencyType.equals(ON)) cal.addMonths(1);
+            else cal.addDays(frequency);
         }
 
         return n;
     }
-    public double getAnnualTotal(int nYear) {
+    public double getAnnualTotal(int nYear) throws CustomDate.DateErrorException {
         return getNumPayments(nYear) * amount;
     }
 

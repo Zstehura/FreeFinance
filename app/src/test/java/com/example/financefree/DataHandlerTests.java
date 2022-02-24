@@ -2,7 +2,7 @@ package com.example.financefree;
 
 import com.example.financefree.datahandlers.BankAccount;
 import com.example.financefree.datahandlers.DataManager;
-import com.example.financefree.datahandlers.DateStringer;
+import com.example.financefree.datahandlers.CustomDate;
 import com.example.financefree.datahandlers.PaymentEdit;
 import com.example.financefree.datahandlers.RecurringPayment;
 import com.example.financefree.datahandlers.TaxBrackets;
@@ -22,15 +22,16 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("ALL")
 public class DataHandlerTests {
 
     @Test
-    public void singlePaymentTest() throws JSONException, IOException {
+    public void singlePaymentTest() throws JSONException, IOException, CustomDate.DateErrorException {
         SinglePayment sp = new SinglePayment();
 
         sp.setBankId("Bank of Someplace");
         sp.setName("New Payday!");
-        sp.setDate(DateStringer.StringToCal("2/24/2022"));
+        sp.setDate(new CustomDate("2/24/2022"));
         sp.setAmount(231.51);
         sp.setNotes("I had a great day!");
         JSONObject jActual , jTest;
@@ -45,13 +46,13 @@ public class DataHandlerTests {
     }
 
     @Test
-    public void bankAccountTest() throws JSONException, IOException {
+    public void bankAccountTest() throws JSONException, IOException, CustomDate.DateErrorException {
         BankAccount ba = new BankAccount();
         ba.setAccountId("New Bank 1");
         ba.setNotes("this is a new bank");
 
-        ba.addStatement(DateStringer.StringToCal("3/4/2019"),1234.5);
-        ba.addStatement(DateStringer.StringToCal("5/6/2007"), 452.76);
+        ba.addStatement(new CustomDate("3/4/2019"),1234.5);
+        ba.addStatement(new CustomDate("5/6/2007"), 452.76);
 
         JSONObject jExpect, jActual;
         jExpect = SampleDataHandler.get(SampleDataHandler.BANK_ACC);
@@ -65,11 +66,11 @@ public class DataHandlerTests {
     }
 
     @Test
-    public void paymentEditTest() throws JSONException, IOException {
+    public void paymentEditTest() throws JSONException, IOException, CustomDate.DateErrorException {
         PaymentEdit pe = new PaymentEdit();
-        pe.setEditDate(DateStringer.StringToCal("4/16/2022"));
+        pe.setEditDate(new CustomDate("4/16/2022"));
         pe.setAction(PaymentEdit.ACTION_MOVE);
-        pe.setMoveDate(DateStringer.StringToCal("4/13/2022"));
+        pe.setMoveDate(new CustomDate("4/13/2022"));
 
         JSONObject jsonObject = SampleDataHandler.get(SampleDataHandler.RECUR_PAY);
         JSONArray ja = jsonObject.getJSONArray(RecurringPayment.EDITS);
@@ -83,7 +84,7 @@ public class DataHandlerTests {
 
         pe = new PaymentEdit();
         pe.setAction(PaymentEdit.ACTION_SKIP);
-        pe.setEditDate(DateStringer.StringToCal("2/16/2022"));
+        pe.setEditDate(new CustomDate("2/16/2022"));
 
         jTemp = pe.toJSONObject();
         assertEquals(ja.getJSONObject(0).toString(), jTemp.toString());
@@ -94,7 +95,7 @@ public class DataHandlerTests {
 
         pe = new PaymentEdit();
         pe.setAction(PaymentEdit.ACTION_CHANGE_AMNT);
-        pe.setEditDate(DateStringer.StringToCal("4/16/2022"));
+        pe.setEditDate(new CustomDate("4/16/2022"));
         pe.setNewAmount(2200.5);
 
         jTemp = pe.toJSONObject();
@@ -106,30 +107,30 @@ public class DataHandlerTests {
     }
 
     @Test
-    public void recurringPaymentTest() throws JSONException, IOException {
+    public void recurringPaymentTest() throws JSONException, IOException, CustomDate.DateErrorException {
         RecurringPayment rp = new RecurringPayment();
         rp.setAmount(220.5);
         rp.setBankId("New Bank 1");
         rp.setNotes("This is my payment for my car loan every month on the 16th");
         rp.setFrequency(RecurringPayment.ON, 16);
         rp.setPaymentId("Car Payment");
-        rp.setStart(DateStringer.StringToCal("5/14/2021"));
-        rp.setEnd(DateStringer.StringToCal("12/31/2099"));
+        rp.setStart(new CustomDate("5/14/2021"));
+        rp.setEnd(new CustomDate("12/31/2099"));
 
         PaymentEdit edit = new PaymentEdit();
-        edit.setEditDate(DateStringer.StringToCal("4/16/2022"));
+        edit.setEditDate(new CustomDate("4/16/2022"));
         edit.setAction(PaymentEdit.ACTION_MOVE);
-        edit.setMoveDate(DateStringer.StringToCal("4/13/2022"));
+        edit.setMoveDate(new CustomDate("4/13/2022"));
         rp.addEdit(edit);
 
         edit = new PaymentEdit();
         edit.setAction(PaymentEdit.ACTION_SKIP);
-        edit.setEditDate(DateStringer.StringToCal("2/16/2022"));
+        edit.setEditDate(new CustomDate("2/16/2022"));
         rp.addEdit(edit);
 
         edit = new PaymentEdit();
         edit.setAction(PaymentEdit.ACTION_CHANGE_AMNT);
-        edit.setEditDate(DateStringer.StringToCal("4/16/2022"));
+        edit.setEditDate(new CustomDate("4/16/2022"));
         edit.setNewAmount(2200.5);
         rp.addEdit(edit);
 
@@ -193,7 +194,7 @@ public class DataHandlerTests {
     }
 
     @Test
-    public void dataManagerTest() throws JSONException, IOException {
+    public void dataManagerTest() throws JSONException, IOException, CustomDate.DateErrorException {
         DataManager dm = new DataManager();
 
         dm.readTaxBracket(SampleDataHandler.get(SampleDataHandler.TAX_BRACK));
@@ -203,31 +204,31 @@ public class DataHandlerTests {
         BankAccount ba = new BankAccount();
         ba.setAccountId("First Bank");
         ba.setNotes("This is the first bank");
-        ba.addStatement(DateStringer.StringToCal("1/1/2004"), 100);
-        ba.addStatement(DateStringer.StringToCal("2/3/2004"), 200);
-        ba.addStatement(DateStringer.StringToCal("2/8/2004"), 400);
+        ba.addStatement(new CustomDate("1/1/2004"), 100d);
+        ba.addStatement(new CustomDate("2/3/2004"), 200d);
+        ba.addStatement(new CustomDate("2/8/2004"), 400d);
         dm.setBankAccount(ba);
         ba = new BankAccount();
         ba.setAccountId("Second Credit Union"); // default
         ba.setNotes("Second account");
-        ba.addStatement(DateStringer.StringToCal("1/1/2004"), 1000);
-        ba.addStatement(DateStringer.StringToCal("2/12/2004"),900);
-        ba.addStatement(DateStringer.StringToCal("2/27/2004"), 300);
+        ba.addStatement(new CustomDate("1/1/2004"), 1000d);
+        ba.addStatement(new CustomDate("2/12/2004"),900d);
+        ba.addStatement(new CustomDate("2/27/2004"), 300d);
         dm.setBankAccount(ba);
         dm.setDefaultBankId("First Bank");
 
         // Add Recurring Payments
         RecurringPayment rp = new RecurringPayment();
         PaymentEdit pe = new PaymentEdit();
-        rp.setEnd(DateStringer.StringToCal("12/31/2099"));
-        rp.setStart(DateStringer.StringToCal("1/23/2004"));
+        rp.setEnd(new CustomDate("12/31/2099"));
+        rp.setStart(new CustomDate("1/23/2004"));
         rp.setFrequency(RecurringPayment.EVERY, 14);
         rp.setAmount(800);
         rp.setBankId("First Bank");
         rp.setPaymentId("Paycheck");
         rp.setNotes("Paycheck from Microcenter");
         pe.setAction(PaymentEdit.ACTION_CHANGE_AMNT);
-        pe.setEditDate(DateStringer.StringToCal("2/6/2004"));
+        pe.setEditDate(new CustomDate("2/6/2004"));
         pe.setNewAmount(883.82);
         rp.addEdit(pe);
         dm.setRecurringPayment(rp);
@@ -238,16 +239,16 @@ public class DataHandlerTests {
         rp.setNotes("Monthly car payment");
         rp.setBankId("Second Credit Union");
         rp.setFrequency(RecurringPayment.ON,15);
-        rp.setStart(DateStringer.StringToCal("3/4/2003"));
-        rp.setEnd(DateStringer.StringToCal("3/4/2013"));
+        rp.setStart(new CustomDate("3/4/2003"));
+        rp.setEnd(new CustomDate("3/4/2013"));
         pe = new PaymentEdit();
         pe.setAction(PaymentEdit.ACTION_MOVE);
-        pe.setEditDate(DateStringer.StringToCal("2/15/2004"));
-        pe.setMoveDate(DateStringer.StringToCal("2/12/2004"));
+        pe.setEditDate(new CustomDate("2/15/2004"));
+        pe.setMoveDate(new CustomDate("2/12/2004"));
         rp.addEdit(pe);
         pe = new PaymentEdit();
         pe.setAction(PaymentEdit.ACTION_CHANGE_AMNT);
-        pe.setEditDate(DateStringer.StringToCal("2/15/2004"));
+        pe.setEditDate(new CustomDate("2/15/2004"));
         pe.setNewAmount(-320.6);
         rp.addEdit(pe);
         dm.setRecurringPayment(rp);
@@ -255,7 +256,7 @@ public class DataHandlerTests {
         // Add Single Payments
         SinglePayment sp = new SinglePayment();
         sp.setAmount(-15);
-        sp.setDate(DateStringer.StringToCal("2/7/2004"));
+        sp.setDate(new CustomDate("2/7/2004"));
         sp.setName("Spotify");
         sp.setBankId("First Bank");
         dm.setSinglePayment(sp);
@@ -263,7 +264,7 @@ public class DataHandlerTests {
         sp.setBankId("First Bank");
         sp.setName("Discover credit");
         sp.setAmount(-250);
-        sp.setDate(DateStringer.StringToCal("2/23/2004"));
+        sp.setDate(new CustomDate("2/23/2004"));
         dm.setSinglePayment(sp);
 
         JSONObject jExpected = SampleDataHandler.get(SampleDataHandler.DATA_MGR);
@@ -278,27 +279,38 @@ public class DataHandlerTests {
         // TODO: Check individual functions
 
         // Check bank balance calculator
-        Map<GregorianCalendar, Double> mExpected = new HashMap<>(), mActual;
+        Map<String, Double> mExpected = new HashMap<>(), mActual;
         // Start with First Bank
         mActual = dm.getAccountBalances("First Bank",2,2004);
-        GregorianCalendar gc = DateStringer.StringToCal("2/1/2004"); assert gc != null;
-        mExpected.put(gc, 100.0); gc.add(Calendar.DAY_OF_MONTH,1); // 2/1 > 2/2
-        mExpected.put(gc, 100.0); gc.add(Calendar.DAY_OF_MONTH,1); // 2/2
-        mExpected.put(gc, 200.0); gc.add(Calendar.DAY_OF_MONTH,1); // 2/3
-        mExpected.put(gc, 200.0); gc.add(Calendar.DAY_OF_MONTH,1); // 2/4
-        mExpected.put(gc, 200.0); gc.add(Calendar.DAY_OF_MONTH,1); // 2/5
-        mExpected.put(gc, 200.0); gc.add(Calendar.DAY_OF_MONTH,1); // 2/6
-        mExpected.put(gc, 200.0); gc.add(Calendar.DAY_OF_MONTH,1); // 2/7
-        mExpected.put(gc, 200.0); gc.add(Calendar.DAY_OF_MONTH,1); // 2/8
-        mExpected.put(gc, 200.0); gc.add(Calendar.DAY_OF_MONTH,1);
-        mExpected.put(gc, 200.0); gc.add(Calendar.DAY_OF_MONTH,1);
+        CustomDate cd = new CustomDate("2/1/2004");
+        mExpected.put(cd.toString(), 100.0); cd.addDays(1);   // 2/1 = 100
+        mExpected.put(cd.toString(), 100.0); cd.addDays(1);   // 2/2 = 100
+        mExpected.put(cd.toString(), 200.0); cd.addDays(1);   // 2/3 = 200
+        mExpected.put(cd.toString(), 200.0); cd.addDays(1);   // 2/4 = 200
+        mExpected.put(cd.toString(), 200.0); cd.addDays(1);   // 2/5 = 200
+        mExpected.put(cd.toString(), 1083.82); cd.addDays(1); // 2/6 = 1083.82
+        mExpected.put(cd.toString(), 1068.82); cd.addDays(1); // 2/7 = 1063.82
+        mExpected.put(cd.toString(), 400.0); cd.addDays(1);   // 2/8 = 400
+        moveUntil(mExpected, cd, 20, 400);           // 2/8 > 2/20
+        mExpected.put(cd.toString(), 1200.0); cd.addDays(1);  // 2/20 = 1200
+        moveUntil(mExpected,cd,23,1200);             // 2/20 > 2/23
+        mExpected.put(cd.toString(), 950.0); cd.addDays(1);   // 2/23 = 950
+        moveUntil(mExpected,cd,1,950);               // 2/23 > 2/28
+
+        cd = new CustomDate(2,1,2004);
+        while(cd.get(CustomDate.MONTH) != 3){
+            assertEquals(mExpected.get(cd.toString()), mActual.get(cd.toString()), 0.001);
+            cd.addDays(1);
+        }
+
+
     }
 
 
-    public void moveUntil(Map<GregorianCalendar,Double> map, GregorianCalendar cal, int day, double amount) {
-        while(cal.get(Calendar.DAY_OF_MONTH) != day){
-            map.put(cal,amount);
-            cal.add(Calendar.DAY_OF_MONTH, 1);
+    public void moveUntil(Map<String,Double> map, CustomDate cal, int day, double amount) {
+        while(cal.get(CustomDate.DAY) != day){
+            map.put(cal.toString(),amount);
+            cal.addDays(1);
         }
     }
 }

@@ -42,16 +42,16 @@
   "single_payments":[
     {
       "bank_id":"First Bank",
-      "name":"Spotify",
-      "date":"2/7/2004",
-      "amount":-15,
+      "name":"Discover credit",
+      "date":"2/23/2004",
+      "amount":-250,
       "notes":""
     },
     {
       "bank_id":"First Bank",
-      "name":"Discover credit",
-      "date":"2/23/2004",
-      "amount":-250,
+      "name":"Spotify",
+      "date":"2/7/2004",
+      "amount":-15,
       "notes":""
     }
   ],

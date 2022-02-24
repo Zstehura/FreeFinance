@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Vector;
 
 public class TaxBrackets {
@@ -19,12 +20,11 @@ public class TaxBrackets {
     public static final String PERCENTAGE = "percentage";
 
     public class Bracket{
-        private final Vector<Double> ul;
-        private final Vector<Double> ll;
-        private final Vector<Double> p;
+        private final Vector<Double> ul = new Vector<>();
+        private final Vector<Double> ll = new Vector<>();
+        private final Vector<Double> p = new Vector<>();
 
         public Bracket(JSONArray jsonArray) {
-            ul = new Vector<>(); ll = new Vector<>(); p = new Vector<>();
             for(int i = 0; i < jsonArray.length(); i++) {
                 try {
                     JSONObject temp = jsonArray.getJSONObject(i);
@@ -37,6 +37,12 @@ public class TaxBrackets {
             }
         }
 
+        public Bracket(Bracket bracket) {
+            ul.addAll(bracket.ul);
+            ll.addAll(bracket.ll);
+            p.addAll(bracket.p);
+        }
+
         public int length(){return ul.size();}
         public double getUpperLim(int i){return ul.get(i);}
         public double getLowerLim(int i){return ll.get(i);}
@@ -47,6 +53,12 @@ public class TaxBrackets {
     private final Map<String, Bracket> bracket = new HashMap<>();
 
     public TaxBrackets(){}
+    public TaxBrackets(TaxBrackets tb) {
+        year = tb.year;
+        for (String s: tb.bracket.keySet()){
+            bracket.put(s, new Bracket(Objects.requireNonNull(tb.bracket.get(s))));
+        }
+    }
 
     public void readJSON(JSONObject jsonObject) throws JSONException {
         year = jsonObject.getInt(YEAR);

@@ -17,19 +17,26 @@ public class PaymentEdit implements Comparable<PaymentEdit> {
     public static final String ACTION_CHANGE_AMNT = "change_amount";
 
     private String action = "";
-    private GregorianCalendar editDate = null;
-    private GregorianCalendar moveDate = null;
+    private CustomDate editDate = new CustomDate("1/1/2000");
+    private CustomDate moveDate = new CustomDate("1/1/2000");
     private double newAmount = 0;
 
-    public PaymentEdit() {action = ACTION_SKIP;}
+    public PaymentEdit() throws CustomDate.DateErrorException {action = ACTION_SKIP;}
+
+    public PaymentEdit(PaymentEdit pe) throws CustomDate.DateErrorException {
+        action = pe.action;
+        editDate = new CustomDate(pe.editDate);
+        moveDate = new CustomDate(pe.moveDate);
+        newAmount = pe.newAmount;
+    }
 
 
-    public GregorianCalendar getMoveDate() {return moveDate;}
-    public void setMoveDate(GregorianCalendar moveDate) {this.moveDate = moveDate;}
-    public GregorianCalendar getEditDate() {
+    public CustomDate getMoveDate() {return moveDate;}
+    public void setMoveDate(CustomDate moveDate) {this.moveDate = moveDate;}
+    public CustomDate getEditDate() {
         return editDate;
     }
-    public void setEditDate(GregorianCalendar editDate) {
+    public void setEditDate(CustomDate editDate) {
         this.editDate = editDate;
     }
     public String getAction() {return action;}
@@ -40,20 +47,20 @@ public class PaymentEdit implements Comparable<PaymentEdit> {
     public JSONObject toJSONObject() throws JSONException {
         JSONObject j = new JSONObject();
         j.put(ACTION, action);
-        j.put(EDIT_DATE, DateStringer.CalToString(editDate));
+        j.put(EDIT_DATE, editDate.toString());
         if (action.equals(ACTION_MOVE)){
-            j.put(MOVE_DATE, DateStringer.CalToString(moveDate));
+            j.put(MOVE_DATE, moveDate.toString());
         }
         else if(action.equals(ACTION_CHANGE_AMNT)){
             j.put(NEW_AMOUNT, newAmount);
         }
         return j;
     }
-    public void readJSON(@NonNull JSONObject jsonObject) throws JSONException {
+    public void readJSON(@NonNull JSONObject jsonObject) throws JSONException, CustomDate.DateErrorException {
         action = jsonObject.getString(ACTION);
-        editDate = DateStringer.StringToCal(jsonObject.getString(EDIT_DATE));
+        editDate = new CustomDate(jsonObject.getString(EDIT_DATE));
         if(action.equals(ACTION_MOVE)) {
-            moveDate = DateStringer.StringToCal(jsonObject.getString(MOVE_DATE));
+            moveDate = new CustomDate(jsonObject.getString(MOVE_DATE));
         }
         else if(action.equals(ACTION_CHANGE_AMNT)){
             newAmount = jsonObject.getDouble(NEW_AMOUNT);
@@ -65,7 +72,7 @@ public class PaymentEdit implements Comparable<PaymentEdit> {
         if(paymentEdit.editDate == this.editDate){
             return stringCompare(action, paymentEdit.action);
         }
-        return editDate.getTime().compareTo(paymentEdit.editDate.getTime());
+        return editDate.compareTo(paymentEdit.editDate);
     }
 
     public static int stringCompare(String str1, String str2)    {

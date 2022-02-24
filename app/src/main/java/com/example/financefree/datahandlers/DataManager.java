@@ -32,6 +32,7 @@ public class DataManager {
     public static final String BANK_ACCOUNTS = "bank_accts";
     public static final String SINGLE_PAYMENTS = "single_payments";
     public static final String RECURRING_PAYMENTS = "recurring_payments";
+    public static final String BILLS = "bills";
 
     // Local data
     private String fileAs = TaxBrackets.SINGLE;
@@ -39,7 +40,8 @@ public class DataManager {
     private final Map<Integer, TaxBrackets> taxBrackets = new HashMap<>();
     private final Map<String, BankAccount> bankAccounts = new HashMap<>();
     private final Map<String, RecurringPayment> recurringPayments = new HashMap<>();
-    private final Map<GregorianCalendar, List<SinglePayment>> singlePayments = new HashMap<>();
+    private final Map<String, List<SinglePayment>> singlePayments = new HashMap<>();
+    private final Map<String, Bill> bills = new HashMap<>();
 
     // Constructor
     public DataManager(){}
@@ -50,42 +52,44 @@ public class DataManager {
     public String getFileAs(){return fileAs;}
     public String getDefaultBankId(){return defaultBankId;}
 
+    public Map<String, Bill> getBills() {return bills;}
     public Map<String, BankAccount> getBankAccounts() {return bankAccounts;}
     public Map<String,RecurringPayment> getRecurringPayments() {return recurringPayments;}
-
+    public Bill getBill(String billId){
+        if(bills.containsKey(billId)) return bills.get(billId);
+        else return null;
+    }
     public BankAccount getBankAccount(String accountId) {
         if(bankAccounts.containsKey(accountId)) return bankAccounts.get(accountId);
         else return null;
     }
-    public void setBankAccount(@NonNull BankAccount ba){
-        bankAccounts.put(ba.getAccountId(), ba);
-    }
-    public void removeBankAccount(String accountId){bankAccounts.remove(accountId);}
-
     public RecurringPayment getRecurringPayment(String paymentId) {
         if(recurringPayments.containsKey(paymentId)) return recurringPayments.get(paymentId);
         else return null;
     }
-    public void setRecurringPayment(@NonNull RecurringPayment rp){
-        recurringPayments.put(rp.getPaymentId(), rp);
-    }
-    public void removeRecurringPayment(String paymentId){recurringPayments.remove(paymentId);}
-
-    public List<SinglePayment> getPayments(GregorianCalendar gc) {
-        if(singlePayments.containsKey(gc)) return singlePayments.get(gc);
+    public List<SinglePayment> getPayments(CustomDate gc) {
+        if(singlePayments.containsKey(gc.toString())) return singlePayments.get(gc.toString());
         else return new Vector<>();
     }
-    public void setSinglePayment(SinglePayment sp){
-        if(!singlePayments.containsKey(sp.getDate())){
-            singlePayments.put(sp.getDate(), new ArrayList<>());
-        }
-        Objects.requireNonNull(singlePayments.get(sp.getDate())).add(sp);
+    public void setBill(Bill bill){bills.put(bill.getBillId(), new Bill(bill));}
+    public void setBankAccount(@NonNull BankAccount ba){bankAccounts.put(ba.getAccountId(), new BankAccount(ba));}
+    public void setRecurringPayment(@NonNull RecurringPayment rp) throws CustomDate.DateErrorException {
+        recurringPayments.put(rp.getPaymentId(), new RecurringPayment(rp));
     }
+    public void setSinglePayment(SinglePayment sp) throws CustomDate.DateErrorException {
+        if(!singlePayments.containsKey(sp.getDate().toString())){
+            singlePayments.put(sp.getDate().toString(), new ArrayList<>());
+        }
+        Objects.requireNonNull(singlePayments.get(sp.getDate().toString())).add(new SinglePayment(sp));
+    }
+    public void removeBill(String billId) {bills.remove(billId);}
+    public void removeBankAccount(String accountId){bankAccounts.remove(accountId);}
+    public void removeRecurringPayment(String paymentId){recurringPayments.remove(paymentId);}
     public void removeSinglePayment(SinglePayment sp) {
-        if(singlePayments.containsKey(sp.getDate())){
-            for(int i = 0; i < Objects.requireNonNull(singlePayments.get(sp.getDate())).size(); i++){
-                if(Objects.requireNonNull(singlePayments.get(sp.getDate())).get(i).equals(sp)){
-                    Objects.requireNonNull(singlePayments.get(sp.getDate())).remove(i);
+        if(singlePayments.containsKey(sp.getDate().toString())){
+            for(int i = 0; i < Objects.requireNonNull(singlePayments.get(sp.getDate().toString())).size(); i++){
+                if(Objects.requireNonNull(singlePayments.get(sp.getDate().toString())).get(i).equals(sp)){
+                    Objects.requireNonNull(singlePayments.get(sp.getDate().toString())).remove(i);
                     break;
                 }
             }
@@ -97,10 +101,10 @@ public class DataManager {
         TaxBrackets tb = new TaxBrackets();
         tb.readJSON(jsonObject);
         if(!taxBrackets.containsKey(tb.getYear())){
-            taxBrackets.put(tb.getYear(), tb);
+            taxBrackets.put(tb.getYear(), new TaxBrackets(tb));
         }
     }
-    public void readJSON(@NonNull JSONObject jsonObject) throws JSONException {
+    public void readJSON(@NonNull JSONObject jsonObject) throws JSONException, CustomDate.DateErrorException {
         fileAs = jsonObject.getString(FILE_AS);
         defaultBankId = jsonObject.getString(DEFAULT_BANK);
 
@@ -110,7 +114,7 @@ public class DataManager {
             JSONObject j = jsonArray.getJSONObject(i);
             BankAccount ba = new BankAccount();
             ba.readJSON(j);
-            bankAccounts.put(ba.getAccountId(), ba);
+            bankAccounts.put(ba.getAccountId(), new BankAccount(ba));
         }
 
         // Read recurringPayments
@@ -119,7 +123,7 @@ public class DataManager {
             JSONObject j = jsonArray.getJSONObject(i);
             RecurringPayment rp = new RecurringPayment();
             rp.readJSON(j);
-            recurringPayments.put(rp.getPaymentId(), rp);
+            recurringPayments.put(rp.getPaymentId(), new RecurringPayment(rp));
         }
 
         // Read singlePayments
@@ -128,10 +132,19 @@ public class DataManager {
             JSONObject j = jsonArray.getJSONObject(i);
             SinglePayment sp = new SinglePayment();
             sp.readJSON(j);
-            if(!singlePayments.containsKey(sp.getDate())) {
-                singlePayments.put(sp.getDate(), new ArrayList<>());
+            if(!singlePayments.containsKey(sp.getDate().toString())) {
+                singlePayments.put(sp.getDate().toString(), new ArrayList<>());
             }
-            Objects.requireNonNull(singlePayments.get(sp.getDate())).add(sp);
+            Objects.requireNonNull(singlePayments.get(sp.getDate().toString())).add(sp);
+        }
+
+        // Read Bills
+        jsonArray = jsonObject.getJSONArray(BILLS);
+        for(int i = 0; i < jsonArray.length(); i++) {
+            JSONObject j = jsonArray.getJSONObject(i);
+            Bill b = new Bill();
+            b.readJSON(j);
+            bills.put(b.getBillId(), new Bill(b));
         }
     }
     public JSONObject toJSON() throws JSONException {
@@ -152,7 +165,7 @@ public class DataManager {
         jsonObject.put(RECURRING_PAYMENTS, temp);
 
         temp = new JSONArray();
-        List<GregorianCalendar> gc = new ArrayList<>(singlePayments.keySet());
+        List<String> gc = new ArrayList<>(singlePayments.keySet());
         Collections.sort(gc);
         for(int i = 0; i < gc.size(); i++){
             for(SinglePayment sp: Objects.requireNonNull(singlePayments.get(gc.get(i)))){
@@ -161,10 +174,16 @@ public class DataManager {
         }
         jsonObject.put(SINGLE_PAYMENTS, temp);
 
+        temp = new JSONArray();
+        for(String id: bills.keySet()){
+            temp.put(Objects.requireNonNull(bills.get(id)).toJSON());
+        }
+        jsonObject.put(BILLS, temp);
+
         return jsonObject;
     }
 
-    public double calculateAnnualIncomeTax(int nYear){
+    public double calculateAnnualIncomeTax(int nYear) throws CustomDate.DateErrorException {
         if(!taxBrackets.containsKey(nYear)) return -1;
         TaxBrackets.Bracket br = Objects.requireNonNull(taxBrackets.get(nYear)).getBracket(fileAs);
         double d = 0;
@@ -188,14 +207,14 @@ public class DataManager {
         return tax;
     }
 
-    public List<SinglePayment> getPayments(int nMonth, int nYear) {
+    public List<SinglePayment> getPayments(int nMonth, int nYear) throws CustomDate.DateErrorException {
         List<SinglePayment> paymentList = new Vector<>();
-        GregorianCalendar cal = new GregorianCalendar(nYear,nMonth,1);
+        CustomDate cal = new CustomDate(nMonth,1,nYear);
         while(cal.get(Calendar.MONTH) == nMonth){
-            if(singlePayments.containsKey(cal)){
-                paymentList.addAll(Objects.requireNonNull(singlePayments.get(cal)));
+            if(singlePayments.containsKey(cal.toString())){
+                paymentList.addAll(Objects.requireNonNull(singlePayments.get(cal.toString())));
             }
-            cal.add(Calendar.DAY_OF_MONTH, 1);
+            cal.addDays(1);
         }
 
         for(RecurringPayment rp: recurringPayments.values()){
@@ -204,35 +223,35 @@ public class DataManager {
 
         return paymentList;
     }
-    public Map<GregorianCalendar, Double> getAccountBalances(String accountId, int nMonth, int nYear) {
+    public Map<String, Double> getAccountBalances(String accountId, int nMonth, int nYear) throws CustomDate.DateErrorException {
         // Make sure account exists
         if(!bankAccounts.containsKey(accountId)) return null;
 
-        Map<GregorianCalendar, Double> acct = new HashMap<>();
+        Map<String, Double> acct = new HashMap<>();
         BankAccount ba = bankAccounts.get(accountId);
         assert(ba != null);
-        GregorianCalendar cal = new GregorianCalendar(nYear,nMonth, 1);
+        CustomDate cal = new CustomDate(nMonth, 1, nYear);
         double bal = 0;
 
         //Get starting amount
-        while(bal == 0 && cal.get(Calendar.YEAR) > 2000) {
+        while(bal == 0 && cal.get(CustomDate.YEAR) > 1900) {
             bal = ba.getStatement(cal);
-            cal.add(Calendar.DAY_OF_MONTH, -1);
+            cal.addDays(-1);
         }
 
         // Work out balance each day
-        cal = new GregorianCalendar(nYear,nMonth,1);
+        cal = new CustomDate(nMonth,1,nYear);
         List<SinglePayment> payments = getPayments(nMonth,nYear);
         while(cal.get(Calendar.MONTH) == nMonth){
             if(ba.getStatement(cal) != 0) bal = ba.getStatement(cal);
             for(SinglePayment sp: payments){
-                if(sp.getDate().equals(cal) && sp.getBankId().equals(accountId)){
+                if(sp.getDate().toString().equals(cal.toString()) && sp.getBankId().equals(accountId)){
                     bal += sp.getAmount();
                 }
             }
 
-            acct.put(cal, bal);
-            cal.add(Calendar.DAY_OF_MONTH, 1);
+            acct.put(cal.toString(), bal);
+            cal.addDays(1);
         }
 
         return acct;
