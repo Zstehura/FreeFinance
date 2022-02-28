@@ -29,6 +29,11 @@ public class SinglePayment {
         notes = sp.notes;
     }
 
+    public SinglePayment(JSONObject jsonObject) throws CustomDate.DateErrorException, JSONException {
+        this();
+        readJSON(jsonObject);
+    }
+
     public void setAmount(double amount){this.amount = amount;}
     public void setDate(CustomDate date) {this.date = date;}
     public void setName(String name) {this.name = name;}

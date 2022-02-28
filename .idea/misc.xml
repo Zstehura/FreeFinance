@@ -21,6 +21,8 @@
         <entry key="app/src/main/res/layout/recurring_payments.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/layout/recurring_payments_list.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.36041666666666666" />
+        <entry key="app/src/main/res/xml/clear_data.xml" value="0.29846014492753625" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.1" />
       </map>
     </option>
   </component>

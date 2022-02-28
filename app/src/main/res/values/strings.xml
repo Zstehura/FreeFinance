@@ -126,4 +126,5 @@
     <string name="ok">Okay</string>
     <string name="cancel">Cancel</string>
     <string name="Calendar">Monthly</string>
+    <string name="clear_all_data">Clear All Data</string>
 </resources>

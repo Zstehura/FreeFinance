@@ -52,6 +52,11 @@ public class RecurringPayment implements Comparable<RecurringPayment> {
         }
     }
 
+    public RecurringPayment(JSONObject jsonObject) throws CustomDate.DateErrorException, JSONException {
+        this();
+        readJSON(jsonObject);
+    }
+
     // Accessors
     public void setBankId(String bankId){this.bankId = bankId;}
     public void setNotes(String notes){this.notes = notes;}

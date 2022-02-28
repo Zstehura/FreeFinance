@@ -17,6 +17,12 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="Clear Data">
+        <Preference
+            app:title="@string/clear_all_data"
+            app:key="@string/clear_all_data" />
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/sync_header">
 
         <SwitchPreferenceCompat

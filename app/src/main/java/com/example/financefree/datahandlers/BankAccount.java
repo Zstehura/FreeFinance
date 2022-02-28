@@ -38,6 +38,11 @@ public class BankAccount {
         }
     }
 
+    public BankAccount(JSONObject jsonObject){
+        this();
+        readJSON(jsonObject);
+    }
+
     public void addStatement(CustomDate cal, double amount){
         statements.put(cal.toString(), amount);
     }

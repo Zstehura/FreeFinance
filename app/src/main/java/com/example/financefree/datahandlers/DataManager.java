@@ -1,21 +1,15 @@
 package com.example.financefree.datahandlers;
 
-import androidx.annotation.NonNull;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.GregorianCalendar;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Vector;
 
 
 public final class DataManager{
@@ -24,9 +18,7 @@ public final class DataManager{
     public static final String BANK_ACCOUNTS = "bank_accts";
     public static final String SINGLE_PAYMENTS = "single_payments";
     public static final String RECURRING_PAYMENTS = "recurring_payments";
-    public static final String BILLS = "bills";
-
-    private static final String STORAGE_FILE_NAME = "appData.json";
+    public static final String STORAGE_FILE_NAME = "appData.json";
 
     private static String fileAs = TaxBrackets.SINGLE;
     private static String defaultBankId = "na";
@@ -37,12 +29,56 @@ public final class DataManager{
 
     private DataManager(){}
 
-    public static void readData(){
+    public static void readData(String content) throws IOException, JSONException, CustomDate.DateErrorException {
+        if(content.equals("")) {
+            content = dataOut();
+        }
+
+        JSONObject jsonObject;
+        JSONArray jaTemp;
+        jsonObject = new JSONObject(content);
+        fileAs = jsonObject.getString(FILE_AS);
+        defaultBankId = jsonObject.getString(DEFAULT_BANK);
+        jaTemp = jsonObject.getJSONArray(BANK_ACCOUNTS);
+        for(int i = 0; i < jaTemp.length(); i++){
+            addBankAccount(new BankAccount(jaTemp.getJSONObject(i)));
+        }
+        jaTemp = jsonObject.getJSONArray(RECURRING_PAYMENTS);
+        for(int i = 0; i < jaTemp.length(); i++){
+            addRecurringPayment(new RecurringPayment(jaTemp.getJSONObject(i)));
+        }
+        jaTemp = jsonObject.getJSONArray(SINGLE_PAYMENTS);
+        for(int i = 0; i < jaTemp.length();i++){
+            addSinglePayment(new SinglePayment(jaTemp.getJSONObject(i)));
+        }
+
+        //TODO: add check/download TaxBrackets from pastebin
 
     }
 
-    public static void writeData(){
+    public static String dataOut() throws IOException, JSONException {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jaBa = new JSONArray();
+        JSONArray jaSp = new JSONArray();
+        JSONArray jaRp = new JSONArray();
+        jsonObject.put(FILE_AS, fileAs);
+        jsonObject.put(DEFAULT_BANK, defaultBankId);
 
+        for(RecurringPayment rp: recurringPayments.values()){
+            jaRp.put(rp.toJSONObject());
+        }
+        jsonObject.put(RECURRING_PAYMENTS, jaRp);
+        for(List<SinglePayment> l: singlePayments.values()){
+            for(SinglePayment sp: l){
+                jaSp.put(sp.toJSON());
+            }
+        }
+        jsonObject.put(SINGLE_PAYMENTS, jaSp);
+        for(BankAccount ba: bankAccounts.values()){
+            jaBa.put(ba.toJSON());
+        }
+        jsonObject.put(BANK_ACCOUNTS, jaBa);
+        return jsonObject.toString();
     }
 
     public static String getFileAs(){return fileAs;}
