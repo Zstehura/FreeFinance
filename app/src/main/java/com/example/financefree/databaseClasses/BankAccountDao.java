@@ -16,7 +16,7 @@ public interface BankAccountDao {
     BankAccount getById(long bankId);
 
     @Insert
-    void insertAll(BankAccount... users);
+    void insertAll(BankAccount... bankAccounts);
 
     @Delete
     void delete(BankAccount bankAccount);

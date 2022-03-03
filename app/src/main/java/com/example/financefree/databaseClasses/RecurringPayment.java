@@ -13,12 +13,12 @@ public class RecurringPayment {
     @PrimaryKey(autoGenerate = true)
     public long rp_id;
 
-    public long bankId;
-    public String notes;
+    public String name;
     public int frequencyType;
     public int frequency;
     public double amount;
     public CustomDate start;
-    public CustomDate end;
-
+    public CustomDate endDate;
+    public String notes;
+    public long bankId;
 }
