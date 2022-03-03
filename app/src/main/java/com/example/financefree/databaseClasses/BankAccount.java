@@ -8,9 +8,10 @@ import java.util.List;
 
 @Entity
 public class BankAccount {
-    @PrimaryKey
-    public String bank_id;
+    @PrimaryKey(autoGenerate = true)
+    public long bank_id;
 
-    @ColumnInfo(name = "notes")
+
+    public String accountName;
     public String notes;
 }

@@ -9,10 +9,10 @@ import com.example.financefree.datahandlers.CustomDate;
 
 @Entity
 public class Statement {
-    @PrimaryKey
-    public String s_id;
+    @PrimaryKey(autoGenerate = true)
+    public long s_id;
 
     public double amount;
     public CustomDate date;
-    public String bank_id;
+    public long bank_id;
 }

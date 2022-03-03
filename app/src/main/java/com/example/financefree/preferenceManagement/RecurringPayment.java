@@ -12,7 +12,8 @@ public class RecurringPayment {
         public CustomDate new_date;
         public double new_amount;
         public int action;
-
     }
+
+
 
 }

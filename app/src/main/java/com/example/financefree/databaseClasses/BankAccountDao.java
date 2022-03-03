@@ -13,12 +13,11 @@ public interface BankAccountDao {
     List<BankAccount> getAll();
 
     @Query(value = "SELECT * FROM BankAccount WHERE bank_id LIKE :bankId LIMIT 1")
-    BankAccount getById(String bankId);
+    BankAccount getById(long bankId);
 
     @Insert
     void insertAll(BankAccount... users);
 
     @Delete
     void delete(BankAccount bankAccount);
-
 }

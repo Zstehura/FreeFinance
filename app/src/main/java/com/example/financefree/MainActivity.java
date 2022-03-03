@@ -79,11 +79,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        try {
-            DataManager.readData(sp.getString(APP_DATA,"null"));
-        } catch (IOException | JSONException | CustomDate.DateErrorException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     DataManager.readData(sp.getString(APP_DATA,"null"));
+        // } catch (IOException | JSONException | CustomDate.DateErrorException e) {
+        //     e.printStackTrace();
+        // }
     }
 
 
