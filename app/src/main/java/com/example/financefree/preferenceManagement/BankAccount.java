@@ -1,6 +1,6 @@
 package com.example.financefree.preferenceManagement;
 
-import com.example.financefree.datahandlers.CustomDate;
+import com.example.financefree.structures.CustomDate;
 
 import java.util.Map;
 

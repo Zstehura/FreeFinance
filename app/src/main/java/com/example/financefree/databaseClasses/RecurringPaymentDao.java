@@ -4,8 +4,9 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
-import com.example.financefree.datahandlers.CustomDate;
+import com.example.financefree.structures.CustomDate;
 
 import java.util.List;
 
@@ -19,6 +20,9 @@ public interface RecurringPaymentDao {
 
     @Query("SELECT * FROM RecurringPayment WHERE start >= :customDate AND endDate <= :customDate")
     List<RecurringPayment> getFromDate(CustomDate customDate);
+
+    @Update
+    void updateAccount(RecurringPayment recurringPayment);
 
     @Insert
     void insertAll(RecurringPayment... recurringPayments);

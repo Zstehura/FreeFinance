@@ -1,4 +1,4 @@
-package com.example.financefree.datahandlers;
+package com.example.financefree.structures;
 
 import androidx.annotation.NonNull;
 

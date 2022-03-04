@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -18,6 +19,9 @@ public interface PaymentEditDao {
 
     @Query("SELECT * FROM PaymentEdit WHERE rp_id LIKE :rp_id")
     List<PaymentEdit> getEditsByPayment(long rp_id);
+
+    @Update
+    void updateAccount(PaymentEdit paymentEdit);
 
     @Insert
     void insertAll(PaymentEdit... paymentEdits);

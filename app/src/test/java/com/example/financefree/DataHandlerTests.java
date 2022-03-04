@@ -1,8 +1,7 @@
 package com.example.financefree;
 
 import com.example.financefree.datahandlers.BankAccount;
-import com.example.financefree.datahandlers.DataManager;
-import com.example.financefree.datahandlers.CustomDate;
+import com.example.financefree.structures.CustomDate;
 import com.example.financefree.datahandlers.PaymentEdit;
 import com.example.financefree.datahandlers.RecurringPayment;
 import com.example.financefree.datahandlers.TaxBrackets;
@@ -17,8 +16,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 

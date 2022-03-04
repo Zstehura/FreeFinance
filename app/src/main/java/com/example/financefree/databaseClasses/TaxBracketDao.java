@@ -4,6 +4,7 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import java.util.List;
 
@@ -21,6 +22,9 @@ public interface TaxBracketDao {
 
     @Query("SELECT * FROM TaxBracket WHERE year == :year AND filingAs LIKE :fileAs")
     List<TaxBracket> getBracketsFileAs(int year, String fileAs);
+
+    @Update
+    void updateAccount(TaxBracket taxBracket);
 
     @Insert
     void insertAll(SinglePayment... singlePayments);

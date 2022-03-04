@@ -5,8 +5,9 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
-import com.example.financefree.datahandlers.CustomDate;
+import com.example.financefree.structures.CustomDate;
 
 import java.util.List;
 
@@ -30,6 +31,9 @@ public interface BankStatementDao {
 
     @Query("SELECT * FROM BankStatement WHERE s_id LIKE :id")
     BankStatement getStatement(long id);
+
+    @Update
+    void updateAccount(BankStatement bankStatement);
 
     @Insert
     void insertAll(BankStatement... bankStatements);

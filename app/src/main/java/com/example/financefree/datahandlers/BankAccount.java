@@ -1,12 +1,13 @@
 package com.example.financefree.datahandlers;
 
+import com.example.financefree.structures.CustomDate;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 

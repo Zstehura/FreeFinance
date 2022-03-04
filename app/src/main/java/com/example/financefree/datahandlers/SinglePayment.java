@@ -1,10 +1,9 @@
 package com.example.financefree.datahandlers;
 
+import com.example.financefree.structures.CustomDate;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class SinglePayment {
     public static final String AMOUNT = "amount";

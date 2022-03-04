@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
-import com.example.financefree.datahandlers.CustomDate;
+import com.example.financefree.structures.CustomDate;
 import com.example.financefree.datahandlers.DataManager;
 
 /**

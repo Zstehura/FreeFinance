@@ -2,10 +2,10 @@ package com.example.financefree.datahandlers;
 
 import androidx.annotation.NonNull;
 
+import com.example.financefree.structures.CustomDate;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.GregorianCalendar;
 
 public class PaymentEdit implements Comparable<PaymentEdit> {
     public static final String ACTION = "action";

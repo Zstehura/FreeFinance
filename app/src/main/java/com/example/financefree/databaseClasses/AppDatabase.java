@@ -10,6 +10,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract BankAccountDao bankAccountDao();
     public abstract BankStatementDao bankStatementDao();
     public abstract RecurringPaymentDao recurringPaymentDao();
+    public abstract PaymentEditDao paymentEditDao();
     public abstract SinglePaymentDao singlePaymentDao();
     public abstract TaxBracketDao taxBracketDao();
 }

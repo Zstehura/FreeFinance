@@ -1,10 +1,8 @@
 package com.example.financefree;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -18,17 +16,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
-import com.example.financefree.datahandlers.CustomDate;
-import com.example.financefree.datahandlers.DataManager;
 import com.google.android.material.navigation.NavigationView;
-
-import org.json.JSONException;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Files;
 
 public class MainActivity extends AppCompatActivity {
 

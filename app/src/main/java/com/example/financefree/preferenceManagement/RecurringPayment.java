@@ -1,6 +1,6 @@
 package com.example.financefree.preferenceManagement;
 
-import com.example.financefree.datahandlers.CustomDate;
+import com.example.financefree.structures.CustomDate;
 
 public class RecurringPayment {
     public static final int ACTION_MOVE_DATE = 0;

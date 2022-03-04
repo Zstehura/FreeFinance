@@ -1,13 +1,12 @@
 package com.example.financefree.datahandlers;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 
-import org.json.JSONArray;
+import com.example.financefree.structures.CustomDate;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;

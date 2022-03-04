@@ -13,9 +13,9 @@ import android.view.ViewGroup;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Profile extends Fragment {
+public class ProfileFragment extends Fragment {
 
-    public Profile() {
+    public ProfileFragment() {
         // Required empty public constructor
     }
 
