@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 import com.example.financefree.datahandlers.CustomDate;
 
 @Entity
-public class Statement {
+public class BankStatement {
     @PrimaryKey(autoGenerate = true)
     public long s_id;
 

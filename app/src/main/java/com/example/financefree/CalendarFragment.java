@@ -2,7 +2,6 @@ package com.example.financefree;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,15 +16,15 @@ import com.example.financefree.datahandlers.DataManager;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Calendar#newInstance} factory method to
+ * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Calendar extends Fragment {
+public class CalendarFragment extends Fragment {
 
     private CustomDate currentDate;
     private DataManager dataManager;
 
-    public Calendar(CustomDate cd, DataManager dm) {
+    public CalendarFragment(CustomDate cd, DataManager dm) {
         // Required empty public constructor
         currentDate = new CustomDate(cd);
         dataManager = dm;
@@ -37,9 +36,9 @@ public class Calendar extends Fragment {
      *
      * @return A new instance of fragment HomeFragment.
      */
-    public static Calendar newInstance(CustomDate cd, DataManager dm) {
-        Calendar calendar = new Calendar(cd, dm);
-        return calendar;
+    public static CalendarFragment newInstance(CustomDate cd, DataManager dm) {
+        CalendarFragment calendarFragment = new CalendarFragment(cd, dm);
+        return calendarFragment;
     }
 
     @Override
