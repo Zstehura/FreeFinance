@@ -1,6 +1,8 @@
 package com.example.financefree.databaseClasses;
 
-import com.example.financefree.structures.CustomDate;
+import com.example.financefree.structures.parseDate;
+import com.example.financefree.structures.payment;
+import com.example.financefree.structures.statement;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -9,30 +11,30 @@ public final class DatabaseAccessor {
 
     private DatabaseAccessor(){}
 
-    public static List<SinglePayment> getPaymentsOnDate(AppDatabase db, CustomDate date){
-        List<SinglePayment> l;
+    public static List<payment> getPaymentsOnDate(AppDatabase db, long date){
+        List<payment> l = new LinkedList<>();
         SinglePaymentDao spd = db.singlePaymentDao();
         RecurringPaymentDao rpd = db.recurringPaymentDao();
         PaymentEditDao ped = db.paymentEditDao();
 
-        l = new LinkedList<>(spd.getAllByDate(date));
+        for(SinglePayment sp: spd.getAllByDate(date)){
+            payment p = new payment(sp.amount, sp.date,sp.name,sp.bank_id);
+            l.add(p);
+        }
 
         for(RecurringPayment rp: rpd.getFromDate(date)){
             List<PaymentEdit> lpe = ped.getEditsByPayment(rp.rp_id);
-            SinglePayment sp = new SinglePayment();
+            payment p = new payment(rp.amount,date,rp.name,rp.bankId);
             boolean skip = false;
             boolean add = false;
-            sp.amount = rp.amount;
-            sp.bank_id = rp.bankId;
-            sp.name = rp.name;
             for(PaymentEdit pe: lpe){
                 if(pe.edit_date == date || pe.move_to_date == date) {
                     if (pe.action == PaymentEdit.ACTION_SKIP) {
                         skip = true;
                     } else if (pe.action == PaymentEdit.ACTION_CHANGE_AMOUNT) {
-                        sp.amount = pe.new_amount;
+                        p.amount = pe.new_amount;
                     } else if (pe.action == PaymentEdit.ACTION_MOVE_DATE) {
-                        sp.date = new CustomDate(pe.move_to_date);
+                        p.date = pe.move_to_date;
                         add = true;
                     } else {
                         ped.delete(pe);
@@ -40,35 +42,56 @@ public final class DatabaseAccessor {
                 }
             }
             if(rp.frequencyType == RecurringPayment.EVERY && !skip){
-                CustomDate cd = new CustomDate(rp.start);
-                while(cd.before(date)){
-                    cd.addDays(rp.frequency);
+                long cd = rp.startDate;
+                while(cd < date){
+                    cd += rp.frequency;
                 }
-                if(cd.equals(date)){
+                if(cd == date){
                     add = true;
                 }
             }
-            else if(!skip){
-                if(date.get(CustomDate.DAY) == rp.frequency){
-                    add = true;
-                }
+            else if(!skip && parseDate.getDay(date) == rp.frequency){
+                add = true;
             }
 
             if(add && !skip) {
-                sp.date = date;
-                l.add(sp);
+                p.date = date;
+                l.add(p);
             }
         }
-
-
         return l;
     }
 
-    public static List<BankStatement> getStatementsOnDate(AppDatabase db, CustomDate date){
+    public static List<statement> getStatementsOnDate(AppDatabase db, long date){
+        List<statement> l = new LinkedList<>();
+        BankStatementDao bsd = db.bankStatementDao();
+        BankAccountDao bad = db.bankAccountDao();
 
+        List<BankAccount> bal = bad.getAll();
+        for(BankAccount ba: bal){
+            statement s = new statement(ba.bank_id, 0, date);
+            long d = date;
+            BankStatement bs;
+            do{
+                bs = bsd.getStatement(ba.bank_id, d);
+                d--;
+            } while(bs == null);
+            // Get a starting off point
+            s.amount = bs.amount;
 
-        return new LinkedList<>();
+            // add in relevant payments leading up to the date in question
+            while(d < date){
+                List<payment> paymentList = getPaymentsOnDate(db, d);
+                for(payment p: paymentList){
+                    if(p.bankId == s.bankId){
+                        s.amount += p.amount;
+                    }
+                }
+                d++;
+            }
+            l.add(s);
+        }
+
+        return l;
     }
-
-
 }

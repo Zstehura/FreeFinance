@@ -7,8 +7,6 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.example.financefree.structures.CustomDate;
-
 import java.util.List;
 
 @Dao
@@ -17,20 +15,23 @@ public interface BankStatementDao {
     @Query("SELECT * FROM BankStatement")
     List<BankStatement> getAll();
 
-    @Query("SELECT * FROM BankStatement WHERE bank_id LIKE :id")
+    @Query("SELECT * FROM BankStatement WHERE bank_id == :id")
     List<BankStatement> getByBankId(long id);
 
-    @Query("SELECT * FROM BankStatement WHERE bank_id LIKE :id AND date <= :date")
-    List<BankStatement> getAllBefore(long id, CustomDate date);
+    @Query("SELECT * FROM BankStatement WHERE bank_id == :id AND date <= :date")
+    List<BankStatement> getAllBefore(long id, long date);
 
-    @Query("SELECT * FROM BankStatement WHERE bank_id LIKE :id AND date >= :date")
-    List<BankStatement> getAllAfter(long id, CustomDate date);
+    @Query("SELECT * FROM BankStatement WHERE bank_id == :id AND date >= :date")
+    List<BankStatement> getAllAfter(long id, long date);
 
-    @Query("SELECT * FROM BankStatement WHERE bank_id LIKE :id AND date <= :date2 AND date >= :date1")
-    List<BankStatement> getAllBetween(long id, CustomDate date1, CustomDate date2);
+    @Query("SELECT * FROM BankStatement WHERE bank_id == :id AND date >= :date1 AND date <= :date2")
+    List<BankStatement> getAllBetween(long id, long date1, long date2);
 
-    @Query("SELECT * FROM BankStatement WHERE s_id LIKE :id")
-    BankStatement getStatement(long id);
+    @Query("SELECT * FROM BankStatement WHERE bank_id == :bank_id AND date == :date LIMIT 1")
+    BankStatement getStatement(long bank_id, long date);
+
+    @Query("SELECT * FROM BankStatement WHERE s_id == :s_id")
+    BankStatement getStatement(long s_id);
 
     @Update
     void updateAccount(BankStatement bankStatement);

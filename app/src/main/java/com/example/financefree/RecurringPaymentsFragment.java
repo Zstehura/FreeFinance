@@ -12,8 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.financefree.placeholder.PlaceholderContent;
-
 /**
  * A fragment representing a list of Items.
  */
@@ -65,7 +63,7 @@ public class RecurringPaymentsFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             // This line was just annoying me. Should be uncommented later
-            // recyclerView.setAdapter(new MyRecurringPaymentsRecyclerViewAdapter(PlaceholderContent.ITEMS));
+            // recyclerView.setAdapter(new MyRecurringPaymentsRecyclerViewAdapter(RecyclerContent.ITEMS));
         }
         return view;
     }

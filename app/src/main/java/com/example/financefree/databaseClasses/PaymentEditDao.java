@@ -14,11 +14,14 @@ public interface PaymentEditDao {
     @Query("SELECT * FROM PaymentEdit")
     List<PaymentEdit> getAll();
 
-    @Query("SELECT * FROM PaymentEdit WHERE edit_id LIKE :id")
+    @Query("SELECT * FROM PaymentEdit WHERE edit_id == :id")
     PaymentEdit getEdit(long id);
 
-    @Query("SELECT * FROM PaymentEdit WHERE rp_id LIKE :rp_id")
+    @Query("SELECT * FROM PaymentEdit WHERE rp_id == :rp_id")
     List<PaymentEdit> getEditsByPayment(long rp_id);
+
+    @Query("SELECT * FROM PaymentEdit WHERE rp_id == :rp_id AND edit_date == :date")
+    List<PaymentEdit> getEditsByDate(long rp_id, long date);
 
     @Update
     void updateAccount(PaymentEdit paymentEdit);

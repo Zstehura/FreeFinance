@@ -13,7 +13,7 @@ public interface BankAccountDao {
     @Query(value = "SELECT * FROM BankAccount")
     List<BankAccount> getAll();
 
-    @Query(value = "SELECT * FROM BankAccount WHERE bank_id LIKE :bankId LIMIT 1")
+    @Query(value = "SELECT * FROM BankAccount WHERE bank_id == :bankId LIMIT 1")
     BankAccount getById(long bankId);
 
     @Update

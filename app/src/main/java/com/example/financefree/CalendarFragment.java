@@ -11,8 +11,6 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
-import com.example.financefree.structures.CustomDate;
-import com.example.financefree.datahandlers.DataManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +19,9 @@ import com.example.financefree.datahandlers.DataManager;
  */
 public class CalendarFragment extends Fragment {
 
+
+    //TODO: switch this all around
+    /*
     private CustomDate currentDate;
     private DataManager dataManager;
 
@@ -29,13 +30,14 @@ public class CalendarFragment extends Fragment {
         currentDate = new CustomDate(cd);
         dataManager = dm;
     }
-
+*/
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
      * @return A new instance of fragment HomeFragment.
      */
+    /*
     public static CalendarFragment newInstance(CustomDate cd, DataManager dm) {
         CalendarFragment calendarFragment = new CalendarFragment(cd, dm);
         return calendarFragment;
@@ -49,13 +51,11 @@ public class CalendarFragment extends Fragment {
         RecyclerView rv = getView().findViewById(R.id.viewList);
 
         cv.setOnDateChangeListener((calendarView, iYear, iMonth, iDay) -> {
-            try {
+
                 currentDate = new CustomDate(iMonth+1, iDay,iYear);
                 tv.setText(currentDate.toString());
                 // TODO: Set recycler
-            } catch (CustomDate.DateErrorException e) {
-                e.printStackTrace();
-            }
+
         });
 
         rv.setOnClickListener(view -> {
@@ -70,4 +70,6 @@ public class CalendarFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.calendar_fragment, container, false);
     }
+
+     */
 }

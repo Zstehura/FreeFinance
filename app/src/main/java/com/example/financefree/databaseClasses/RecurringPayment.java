@@ -3,8 +3,6 @@ package com.example.financefree.databaseClasses;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.financefree.structures.CustomDate;
-
 @Entity
 public class RecurringPayment {
     public static final int ON = 1;
@@ -17,8 +15,8 @@ public class RecurringPayment {
     public int frequencyType;
     public int frequency;
     public double amount;
-    public CustomDate start;
-    public CustomDate endDate;
+    public long startDate;
+    public long endDate;
     public String notes;
     public long bankId;
 }

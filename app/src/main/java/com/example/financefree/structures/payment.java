@@ -2,17 +2,17 @@ package com.example.financefree.structures;
 
 public class payment {
     public double amount;
-    public CustomDate date;
+    public long date;
     public String name;
     public long bankId;
 
-    public payment(double amount, CustomDate date,String name, long bankId){
+    public payment(double amount, long date,String name, long bankId){
         this.amount = amount;
-        this.date = new CustomDate(date);
+        this.date = date;
         this.name = name;
         this.bankId = bankId;
     }
-    public payment() throws CustomDate.DateErrorException {
-        this(0, new CustomDate(1,1,2000), "new payment", 0);
+    public payment() {
+        this(0, parseDate.getLong(1,1,2000), "new payment", 0);
     }
 }

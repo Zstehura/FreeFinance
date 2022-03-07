@@ -3,8 +3,6 @@ package com.example.financefree.databaseClasses;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.example.financefree.structures.CustomDate;
-
 @Entity
 public class PaymentEdit {
     public static final int ACTION_SKIP = 0;
@@ -16,7 +14,7 @@ public class PaymentEdit {
 
     public long rp_id;
     public int action;
-    public CustomDate edit_date;
-    public CustomDate move_to_date;
+    public long edit_date;
+    public long move_to_date;
     public double new_amount;
 }
