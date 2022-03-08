@@ -1,4 +1,4 @@
-package com.example.financefree.placeholder;
+package com.example.financefree;
 
 import androidx.annotation.NonNull;
 
@@ -45,6 +45,7 @@ public class RecyclerContent {
             this.bankName = bankName;
         }
 
+        @NonNull
         @Override
         public String toString() {
             String str = name + " ";

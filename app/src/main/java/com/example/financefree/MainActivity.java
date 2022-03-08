@@ -1,6 +1,5 @@
 package com.example.financefree;
 
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,33 +8,20 @@ import android.widget.Toast;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.preference.PreferenceManager;
 
+import com.example.financefree.databaseClasses.AppDatabase;
 import com.google.android.material.navigation.NavigationView;
+
 
 public class MainActivity extends AppCompatActivity {
 
-//    public static final int PROFILE_FRAG_ID = R.id.profileFragment;
-//    public static final int HOME_FRAG_ID = R.id.homeFragment;
-//    public static final int SETTINGS_FRAG_ID = R.id.settingsFragment;
-//    public static final int RECPAY_FRAG_ID = R.id.recurringPaymentsFragment;
-//    public static final int CAL_FRAG_ID = R.id.calendar;
-
-    /*
-    public static final int[][] CAL_NUM_IDS = {{R.id.Box1_1, R.id.Box1_2, R.id.Box1_3,R.id.Box1_4,R.id.Box1_5,R.id.Box1_6,R.id.Box1_7},
-        {R.id.Box2_1, R.id.Box2_2, R.id.Box2_3,R.id.Box2_4,R.id.Box2_5,R.id.Box2_6,R.id.Box2_7},
-        {R.id.Box3_1, R.id.Box3_2, R.id.Box3_3,R.id.Box3_4,R.id.Box3_5,R.id.Box3_6,R.id.Box3_7},
-        {R.id.Box4_1, R.id.Box4_2, R.id.Box4_3,R.id.Box4_4,R.id.Box4_5,R.id.Box4_6,R.id.Box4_7},
-        {R.id.Box5_1, R.id.Box5_2, R.id.Box5_3,R.id.Box5_4,R.id.Box5_5,R.id.Box5_6,R.id.Box5_7},
-        {R.id.Box6_1, R.id.Box6_2, R.id.Box6_3,R.id.Box6_4,R.id.Box6_5,R.id.Box6_6,R.id.Box6_7}};
-*/
-
-    public static final String APP_DATA = "finance_data";
+    public static final String DATABASE_NAME = "finance_data";
     AppBarConfiguration appBarConfiguration;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -45,12 +31,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toolbar tb = findViewById(R.id.toolbar);
+        DrawerLayout dl = findViewById(R.id.drawer_layout);
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         assert navHostFragment != null;
         NavigationView navigationView = findViewById(R.id.nav_view);
         NavController navController = navHostFragment.getNavController();
         appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph())
-                .setOpenableLayout(findViewById(R.id.drawer_layout))
+                .setOpenableLayout(dl)
                 .build();
         NavigationUI.setupWithNavController(tb, navController, appBarConfiguration);
 
@@ -58,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             try {
                 navController.navigate(item.getItemId());
+                dl.closeDrawers();
                 return true;
             }
             catch (Exception e){
@@ -66,12 +54,62 @@ public class MainActivity extends AppCompatActivity {
             return false;
         });
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         // try {
         //     DataManager.readData(sp.getString(APP_DATA,"null"));
         // } catch (IOException | JSONException | CustomDate.DateErrorException e) {
         //     e.printStackTrace();
         // }
+/*
+        db = Room.databaseBuilder(getApplicationContext(), AppDatabase.class, DATABASE_NAME).build();
+
+        BankAccount ba = db.bankAccountDao().testDb();
+        if(ba == null) {
+            ba = new BankAccount();
+            ba.accountName = "New Bank Account";
+            ba.notes = "The first test bank account. Try making some changes or adding your own!";
+            db.bankAccountDao().insertAll(ba);
+        }
+        SinglePayment sp = db.singlePaymentDao().testDb();
+        if(sp == null){
+            sp = new SinglePayment();
+            sp.date = parseDate.getLong(3,4,2022);
+            sp.name = "First payment - Netflix";
+            sp.amount = -8.99;
+            sp.bank_id = ba.bank_id;
+            db.singlePaymentDao().insertAll(sp);
+        }
+        RecurringPayment rp = db.recurringPaymentDao().testDb();
+        if(rp == null){
+            rp = new RecurringPayment();
+            rp.name = "Example Paycheck";
+            rp.frequencyType = RecurringPayment.EVERY;
+            rp.frequency = 14;
+            rp.startDate = parseDate.getLong(1,7,2022);
+            rp.endDate = parseDate.getLong(1,1,2099);
+            rp.amount = 500;
+            rp.bankId = ba.bank_id;
+            rp.notes = "This is a sample paycheck. It's set to repeat every 2 weeks, but you can change that to " +
+                    "however often you get paid!";
+            db.recurringPaymentDao().insertAll(rp);
+        }
+        BankStatement bs = db.bankStatementDao().testDb();
+        if(bs == null) {
+            bs = new BankStatement();
+            bs.amount = 100;
+            bs.bank_id = ba.bank_id;
+            bs.date = parseDate.getLong(3,5,2022);
+            db.bankStatementDao().insertAll(bs);
+        }
+        PaymentEdit pe = db.paymentEditDao().testDb();
+        if(pe == null){
+            pe = new PaymentEdit();
+            pe.rp_id = rp.rp_id;
+            pe.edit_date = parseDate.getLong(3,18,2022);
+            pe.action = PaymentEdit.ACTION_MOVE_DATE;
+            pe.move_to_date = parseDate.getLong(3,17,2022);
+            db.paymentEditDao().insertAll(pe);
+        }
+*/
     }
 
 

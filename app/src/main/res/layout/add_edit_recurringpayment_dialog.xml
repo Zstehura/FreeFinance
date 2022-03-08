@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:columnCount="2">
+
+        <!-- Name  -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtNameRecur"
+            android:text="@string/name"
+            android:textSize="24sp"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtNameRecur"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <!-- Amount -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtAmountRecur"
+            android:text="@string/amount"
+            android:textSize="24sp"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtAmountRecur"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="numberDecimal"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <!-- Bank Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/spnBankIdRecur"
+            android:text="@string/bank"
+            android:textSize="24sp"
+            android:padding="@dimen/text_margin"/>
+
+        <Spinner
+            android:id="@+id/spnBankIdRecur"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <!-- Frequency -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/spnFreqTypeRecur"
+            android:text="@string/frequency"
+            android:textSize="24sp"
+            android:padding="@dimen/text_margin"/>
+
+        <Spinner
+            android:id="@+id/spnFreqTypeRecur"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+        <!-- Empty label -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="24sp"
+            android:padding="@dimen/text_margin"/>
+        <EditText
+            android:id="@+id/txtFreqRecur"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="number"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <!-- Start Date -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtStartDateRecur"
+            android:text="@string/start_date"
+            android:textSize="24sp"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtStartDateRecur"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="date"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <!-- Start Date -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtEndDateRecur"
+            android:text="@string/end_date"
+            android:textSize="24sp"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtEndDateRecur"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="date"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <!-- Notes -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtStartDateRecur"
+            android:text="@string/notes"
+            android:textSize="24sp"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtNotesRecur"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:hint="@string/notes"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:minHeight="48dp"
+            android:minLines="2"
+            android:padding="@dimen/text_margin"
+            android:textColorHint="#A1887F"
+            android:verticalScrollbarPosition="right"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+    </GridLayout>
+</ScrollView>

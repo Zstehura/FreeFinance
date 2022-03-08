@@ -10,6 +10,8 @@ import java.util.List;
 
 @Dao
 public interface TaxBracketDao {
+    @Query("SELECT * FROM TaxBracket LIMIT 1")
+    TaxBracket testDb();
 
     @Query("SELECT * FROM TaxBracket")
     List<TaxBracket> getAll();

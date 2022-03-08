@@ -10,6 +10,8 @@ import java.util.List;
 
 @Dao
 public interface PaymentEditDao {
+    @Query("SELECT * FROM PaymentEdit LIMIT 1")
+    PaymentEdit testDb();
 
     @Query("SELECT * FROM PaymentEdit")
     List<PaymentEdit> getAll();

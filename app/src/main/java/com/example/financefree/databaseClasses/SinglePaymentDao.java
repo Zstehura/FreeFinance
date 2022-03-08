@@ -10,6 +10,9 @@ import java.util.List;
 
 @Dao
 public interface SinglePaymentDao {
+    @Query("SELECT * FROM SinglePayment LIMIT 1")
+    SinglePayment testDb();
+
     @Query("SELECT * FROM SinglePayment")
     List<SinglePayment> getAll();
 

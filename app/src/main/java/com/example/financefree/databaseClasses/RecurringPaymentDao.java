@@ -10,6 +10,9 @@ import java.util.List;
 
 @Dao
 public interface RecurringPaymentDao {
+    @Query("SELECT * FROM RecurringPayment LIMIT 1")
+    RecurringPayment testDb();
+
     @Query("SELECT * FROM RecurringPayment")
     List<RecurringPayment> getAll();
 

@@ -1,4 +1,4 @@
-package com.example.financefree;
+package com.example.financefree.dialogs;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -13,6 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+
+import com.example.financefree.R;
 
 import java.util.Calendar;
 

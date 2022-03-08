@@ -94,4 +94,7 @@ public final class DatabaseAccessor {
 
         return l;
     }
+
+    //TODO: Make taxbracket update
+    //  getEstimatedIncomeTax
 }

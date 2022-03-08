@@ -11,6 +11,8 @@ import java.util.List;
 
 @Dao
 public interface BankStatementDao {
+    @Query("SELECT * FROM BankStatement LIMIT 1")
+    BankStatement testDb();
 
     @Query("SELECT * FROM BankStatement")
     List<BankStatement> getAll();

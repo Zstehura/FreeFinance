@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.financefree.placeholder.RecyclerContent.ListItem;
+import com.example.financefree.RecyclerContent.ListItem;
 import com.example.financefree.databinding.RecurringPaymentsBinding;
 
 import java.util.List;

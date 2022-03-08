@@ -10,6 +10,9 @@ import java.util.List;
 
 @Dao
 public interface BankAccountDao {
+    @Query("SELECT * FROM BankAccount LIMIT 1")
+    BankAccount testDb();
+
     @Query(value = "SELECT * FROM BankAccount")
     List<BankAccount> getAll();
 
