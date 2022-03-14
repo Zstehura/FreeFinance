@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:columnCount="2">
+
+        <!-- Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtNameSing"
+            android:text="@string/name"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtNameSing"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"/>
+
+        <!-- Amount -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtAmountSing"
+            android:text="@string/amount"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtAmountSing"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="numberDecimal"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"/>
+
+        <!-- Date -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtDateSing"
+            android:text="@string/name"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtDateSing"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="date"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"/>
+
+        <!-- Bank -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/spnBankIdSing"
+            android:text="@string/bank"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"/>
+
+        <Spinner
+            android:id="@+id/spnBankIdSing"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"/>
+
+    </GridLayout>
+
+</ScrollView>

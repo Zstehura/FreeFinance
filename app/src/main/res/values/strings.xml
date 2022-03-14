@@ -122,4 +122,6 @@
     <string name="payments">View Payments</string>
     <string name="banks">View Banks</string>
     <string name="temp">replace me!</string>
+    <string name="clear_data_older_than">Clear Data Older Than...</string>
+    <string name="bank_accounts">Bank Accounts</string>
 </resources>

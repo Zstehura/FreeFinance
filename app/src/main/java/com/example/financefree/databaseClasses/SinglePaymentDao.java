@@ -25,6 +25,12 @@ public interface SinglePaymentDao {
     @Query("SELECT * FROM SinglePayment WHERE bank_id == :bank_id")
     List<SinglePayment> getFromBank(long bank_id);
 
+    @Query("DELETE FROM SinglePayment WHERE 1 == 1")
+    void deleteAll();
+
+    @Query("DELETE FROM SinglePayment WHERE date < :date")
+    void deleteOlderThan(long date);
+
     @Update
     void updateAccount(SinglePayment singlePayment);
 

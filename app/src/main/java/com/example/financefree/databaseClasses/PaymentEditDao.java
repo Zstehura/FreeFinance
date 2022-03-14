@@ -25,6 +25,12 @@ public interface PaymentEditDao {
     @Query("SELECT * FROM PaymentEdit WHERE rp_id == :rp_id AND edit_date == :date")
     List<PaymentEdit> getEditsByDate(long rp_id, long date);
 
+    @Query("DELETE FROM PaymentEdit WHERE 1 == 1")
+    void deleteAll();
+
+    @Query("DELETE FROM PaymentEdit WHERE edit_date < :date")
+    void deleteOlderThan(long date);
+
     @Update
     void updateAccount(PaymentEdit paymentEdit);
 

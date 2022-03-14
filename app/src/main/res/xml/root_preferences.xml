@@ -17,24 +17,19 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Clear Data">
+    <PreferenceCategory app:title="Data Management">
+
         <Preference
             app:title="@string/clear_all_data"
-            app:key="@string/clear_all_data" />
-    </PreferenceCategory>
+            app:key="clear_all_data" />
 
-    <PreferenceCategory app:title="@string/sync_header">
-
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
+        <ListPreference
+            app:defaultValue="-1"
+            app:entries="@array/clear_data_entries"
+            app:entryValues="@array/clear_data_values"
+            app:key="clear_data_older_than"
+            app:title="@string/clear_data_older_than"
+            app:useSimpleSummaryProvider="true"/>
 
     </PreferenceCategory>
 

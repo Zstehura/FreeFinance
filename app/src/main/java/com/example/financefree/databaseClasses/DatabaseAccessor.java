@@ -97,6 +97,36 @@ public final class DatabaseAccessor {
         return l;
     }
 
+    public static String getBankName(long id) {
+        BankAccountDao bad = db.bankAccountDao();
+        BankAccount ba = bad.getById(id);
+        if(ba != null) return ba.accountName;
+        else return "";
+    }
+
+    public static boolean clearData(long date) {
+        BankAccountDao bad = db.bankAccountDao();
+        BankStatementDao bsd = db.bankStatementDao();
+        PaymentEditDao ped = db.paymentEditDao();
+        RecurringPaymentDao rpd = db.recurringPaymentDao();
+        SinglePaymentDao spd = db.singlePaymentDao();
+        if(date == 0) {
+            bad.deleteAll();
+            bsd.deleteAll();
+            ped.deleteAll();
+            rpd.deleteAll();
+            spd.deleteAll();
+        }
+        else {
+            bsd.deleteOlderThan(date);
+            ped.deleteOlderThan(date);
+            rpd.deleteOlderThan(date);
+            spd.deleteOlderThan(date);
+        }
+
+        return true;
+    }
+
     //TODO: Make taxbracket update
     //  getEstimatedIncomeTax
 }

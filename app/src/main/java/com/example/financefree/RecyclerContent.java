@@ -48,14 +48,29 @@ public class RecyclerContent {
             this.id = id;
         }
 
-        @NonNull
-        @Override
-        public String toString() {
-            String str = name + " ";
+        public String amountToString(){
+            String str = "";
             if(amount > 0) str += "+";
             else str += "-";
             str += "$" + Math.abs(amount);
             return str;
+        }
+
+        public String limitedDesc(){
+            StringBuilder str = new StringBuilder();
+            int i = 0;
+            while(i < 30 && i < subName.length()){
+                str.append(subName.charAt(i));
+                i++;
+            }
+            if (i == 30) str.append("...");
+            return str.toString();
+        }
+
+        @NonNull
+        @Override
+        public String toString() {
+            return name + " " + amountToString();
         }
     }
 }

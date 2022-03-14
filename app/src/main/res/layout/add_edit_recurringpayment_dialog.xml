@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/txtNameRecur"
             android:text="@string/name"
-            android:textSize="24sp"
+            android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
         <EditText
@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/txtAmountRecur"
             android:text="@string/amount"
-            android:textSize="24sp"
+            android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
         <EditText
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/spnBankIdRecur"
             android:text="@string/bank"
-            android:textSize="24sp"
+            android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
         <Spinner
@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/spnFreqTypeRecur"
             android:text="@string/frequency"
-            android:textSize="24sp"
+            android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
         <Spinner
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="24sp"
+            android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
         <EditText
             android:id="@+id/txtFreqRecur"
@@ -105,7 +105,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/txtStartDateRecur"
             android:text="@string/start_date"
-            android:textSize="24sp"
+            android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
         <EditText
@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/txtEndDateRecur"
             android:text="@string/end_date"
-            android:textSize="24sp"
+            android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
         <EditText
@@ -143,7 +143,7 @@
             android:layout_height="wrap_content"
             android:labelFor="@id/txtStartDateRecur"
             android:text="@string/notes"
-            android:textSize="24sp"
+            android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
         <EditText

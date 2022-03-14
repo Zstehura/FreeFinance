@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.financefree.RecyclerContent.ListItem;
+import com.example.financefree.databaseClasses.BankAccount;
 import com.example.financefree.databaseClasses.DatabaseAccessor;
 import com.example.financefree.databaseClasses.RecurringPayment;
 import com.example.financefree.databinding.RecurringPaymentsBinding;
@@ -18,13 +19,13 @@ import java.util.List;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link ListItem}.
  */
-public class MyRecurringPaymentsRecyclerViewAdapter extends RecyclerView.Adapter<MyRecurringPaymentsRecyclerViewAdapter.ViewHolder> {
+public class MyBankAccountRecyclerViewAdapter extends RecyclerView.Adapter<MyBankAccountRecyclerViewAdapter.ViewHolder> {
     private final List<ListItem> itemList;
 
-    public MyRecurringPaymentsRecyclerViewAdapter() {
+    public MyBankAccountRecyclerViewAdapter() {
         itemList = new LinkedList<>();
-        for(RecurringPayment rp: DatabaseAccessor.db.recurringPaymentDao().getAll()){
-            itemList.add(new ListItem(rp.name,rp.amount,rp.notes,'r',rp.rp_id));
+        for(BankAccount ba: DatabaseAccessor.db.bankAccountDao().getAll()){
+            itemList.add(new ListItem(ba.accountName, 0, ba.notes, 'b', ba.bank_id));
         }
     }
 

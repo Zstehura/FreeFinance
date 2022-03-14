@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,22 +41,24 @@ public class HomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        /*
-        NavHostFragment navHostFragment = (NavHostFragment) getActivity().getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        assert navHostFragment != null;
-        NavController navController = navHostFragment.getNavController();
-        Button b = getActivity().findViewById(R.id.btnMonthly);
-        b.setOnClickListener(view -> {
+        view.findViewById(R.id.btnMonthly).setOnClickListener(view1 -> {
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.calendar);
-        }); */
+        });
+        view.findViewById(R.id.btnBanks);
+
+
 
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return view;
     }
 }

@@ -48,30 +48,26 @@ public class CalendarFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CalendarView cv = getView().findViewById(R.id.calendarView);
-        TextView tv = getView().findViewById(R.id.txtDay);
-        RecyclerView rv = getView().findViewById(R.id.viewList);
-
-        cv.setOnDateChangeListener((calendarView, iYear, iMonth, iDay) -> {
-            currentDate = parseDate.getLong(iMonth, iDay, iYear);
-            tv.setText(parseDate.getString(currentDate));
-            List<statement> statements = DatabaseAccessor.getStatementsOnDate(currentDate);
-            List<payment> payments = DatabaseAccessor.getPaymentsOnDate(currentDate);
-            
-
-
-        });
-
-        rv.setOnClickListener(view -> {
-
-        });
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.calendar_fragment, container, false);
+        View view = inflater.inflate(R.layout.calendar_fragment, container, false);
+        CalendarView cv = view.findViewById(R.id.calendarView);
+        TextView tv = view.findViewById(R.id.txtDay);
+        RecyclerView rv = view.findViewById(R.id.viewList);
+
+        // TODO: Make this actually work
+        cv.setOnDateChangeListener((calendarView, iYear, iMonth, iDay) -> {
+            currentDate = parseDate.getLong(iMonth, iDay, iYear);
+            tv.setText(parseDate.getString(currentDate));
+            rv.setAdapter(new MyDailyRecyclerViewAdapter(currentDate));
+        });
+
+        rv.setOnClickListener(v -> {
+
+        });
+        return view;
     }
 }

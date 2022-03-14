@@ -16,45 +16,40 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.databaseClasses.RecurringPayment;
+import com.example.financefree.databaseClasses.SinglePayment;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AddEditRecurringPaymentDialog extends DialogFragment {
+public class AddEditSinglePaymentDialog extends DialogFragment {
 
     public static final String NAME_KEY = "name";
-    public static final String FREQUENCY_TYPE_KEY = "frequency_type";
-    public static final String FREQUENCY_KEY = "frequency";
     public static final String AMOUNT_KEY = "amount";
-    public static final String START_DATE_KEY = "start_date";
-    public static final String END_DATE_KEY = "end_date";
-    public static final String NOTES_KEY = "notes";
+    public static final String DATE_KEY = "date";
     public static final String BANK_ID_KEY = "bank_id";
-    public static final String ID_KEY = "key";
+    public static final String ID_KEY = "id";
     public static final String BANK_NAMES_KEY = "bank_names";
     public static final String BANK_IDS_KEY = "bank_ids";
 
-    public interface RecurringPaymentDialogListener {
+    public interface SinglePaymentDialogListener {
         void onDialogPositiveClick(DialogFragment dialog);
         void onDialogNegativeClick(DialogFragment dialog);
     }
 
-    private RecurringPaymentDialogListener listener;
+    private SinglePaymentDialogListener listener;
 
     List<String> bankNames;
     List<Long> bankIds;
-    String name, notes;
-    int freq_type, freq;
-    long dateSt, dateEn, bankId, rpId;
+    String name;
+    long date, bankId, spId;
     double amount;
 
     @Override
     public void onAttach(@NonNull Context context){
         super.onAttach(context);
         try {
-            listener = (RecurringPaymentDialogListener) context;
+            listener = (SinglePaymentDialogListener) context;
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -67,14 +62,10 @@ public class AddEditRecurringPaymentDialog extends DialogFragment {
         Bundle extras = getArguments();
         if(extras != null){
             name = extras.getString(NAME_KEY);
-            freq_type = extras.getInt(FREQUENCY_TYPE_KEY);
-            freq = extras.getInt(FREQUENCY_KEY);
             amount = extras.getDouble(AMOUNT_KEY);
-            dateSt = extras.getLong(START_DATE_KEY);
-            dateEn = extras.getLong(END_DATE_KEY);
-            notes = extras.getString(NOTES_KEY);
+            date = extras.getLong(DATE_KEY);
             bankId = extras.getLong(BANK_ID_KEY);
-            rpId = extras.getLong(ID_KEY);
+            spId = extras.getLong(ID_KEY);
             bankNames = extras.getStringArrayList(BANK_NAMES_KEY);
             bankIds = extras.getParcelable(BANK_IDS_KEY);
         }
@@ -85,11 +76,12 @@ public class AddEditRecurringPaymentDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // TODO: Update all of this after layout is done
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        View dialog = inflater.inflate(R.layout.add_edit_recurringpayment_dialog,null);
-        Spinner spnBank = (Spinner) dialog.findViewById(R.id.spnBankIdRecur);
+        View dialog = inflater.inflate(R.layout.add_edit_singlepayment_dialog,null);
+        Spinner spnBank = (Spinner) dialog.findViewById(R.id.spnBankIdSing);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, bankNames);
         spnBank.setAdapter(adapter);
         spnBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -104,27 +96,22 @@ public class AddEditRecurringPaymentDialog extends DialogFragment {
             }
         });
 
-        ;builder.setView(dialog)
-                .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(AddEditRecurringPaymentDialog.this))
-                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(AddEditRecurringPaymentDialog.this));
+        builder.setView(dialog)
+                .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(AddEditSinglePaymentDialog.this))
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(AddEditSinglePaymentDialog.this));
 
         return builder.create();
     }
 
     @NonNull
-    public static AddEditRecurringPaymentDialog newInstance(@NonNull RecurringPayment recurringPayment, @NonNull Map<Long, String> banks){
-        AddEditRecurringPaymentDialog f = new AddEditRecurringPaymentDialog();
+    public static AddEditSinglePaymentDialog newInstance(@NonNull SinglePayment singlePayment, @NonNull Map<Long, String> banks){
+        AddEditSinglePaymentDialog f = new AddEditSinglePaymentDialog();
 
         Bundle args = new Bundle();
-        args.putString(NAME_KEY, recurringPayment.name);
-        args.putInt(FREQUENCY_TYPE_KEY, recurringPayment.frequencyType);
-        args.putInt(FREQUENCY_KEY, recurringPayment.frequency);
-        args.putDouble(AMOUNT_KEY, recurringPayment.amount);
-        args.putLong(START_DATE_KEY, recurringPayment.startDate);
-        args.putLong(END_DATE_KEY, recurringPayment.endDate);
-        args.putString(NOTES_KEY, recurringPayment.notes);
-        args.putLong(BANK_ID_KEY, recurringPayment.bankId);
-        args.putLong(ID_KEY, recurringPayment.rp_id);
+        args.putString(NAME_KEY, singlePayment.name);
+        args.putDouble(AMOUNT_KEY, singlePayment.amount);
+        args.putLong(DATE_KEY, singlePayment.date);
+        args.putLong(ID_KEY, singlePayment.sp_id);
         args.putStringArrayList(BANK_NAMES_KEY, new ArrayList<>(banks.values()));
         args.putParcelable(BANK_IDS_KEY, (Parcelable) banks.keySet());
         f.setArguments(args);

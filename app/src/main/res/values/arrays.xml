@@ -13,6 +13,20 @@
         <item>married_joint</item>
     </string-array>
 
-    <!-- Reply Preference -->
+    <!-- Clear Data Preference -->
+    <string-array name="clear_data_entries">
+        <item>3 months</item>
+        <item>6 months</item>
+        <item>1 year</item>
+        <item>2 years</item>
+        <item>Never</item>
+    </string-array>
+    <integer-array name="clear_data_values">
+        <item>90</item>
+        <item>180</item>
+        <item>365</item>
+        <item>720</item>
+        <item>-1</item>
+    </integer-array>
 
 </resources>

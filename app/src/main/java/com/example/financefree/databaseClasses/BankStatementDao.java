@@ -35,6 +35,12 @@ public interface BankStatementDao {
     @Query("SELECT * FROM BankStatement WHERE s_id == :s_id")
     BankStatement getStatement(long s_id);
 
+    @Query("DELETE FROM BankStatement WHERE 1 == 1")
+    void deleteAll();
+
+    @Query("DELETE FROM BankStatement WHERE date < :date")
+    void deleteOlderThan(long date);
+
     @Update
     void updateAccount(BankStatement bankStatement);
 

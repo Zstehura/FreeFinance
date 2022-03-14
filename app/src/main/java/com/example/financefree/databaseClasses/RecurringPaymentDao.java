@@ -22,6 +22,12 @@ public interface RecurringPaymentDao {
     @Query("SELECT * FROM RecurringPayment WHERE startDate <= :date AND endDate >= :date")
     List<RecurringPayment> getFromDate(long date);
 
+    @Query("DELETE FROM RecurringPayment WHERE 1 == 1")
+    void deleteAll();
+
+    @Query("DELETE FROM RecurringPayment WHERE endDate < :date")
+    void deleteOlderThan(long date);
+
     @Update
     void updateAccount(RecurringPayment recurringPayment);
 

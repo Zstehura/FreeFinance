@@ -37,6 +37,9 @@
         <action
             android:id="@+id/action_homeFragment_to_recurringPaymentsFragment"
             app:destination="@id/recurringPaymentsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_bankAccountsFragment2"
+            app:destination="@id/bankAccountsFragment" />
     </fragment>
     <fragment
         android:id="@+id/calendar"
@@ -44,4 +47,9 @@
         android:label="calendar_fragment"
         tools:layout="@layout/calendar_fragment" >
     </fragment>
+    <fragment
+        android:id="@+id/bankAccountsFragment"
+        android:name="com.example.financefree.BankAccountsFragment"
+        android:label="fragment_bank_accounts"
+        tools:layout="@layout/fragment_bank_accounts" />
 </navigation>
