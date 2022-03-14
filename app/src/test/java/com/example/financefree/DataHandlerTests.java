@@ -4,7 +4,6 @@ import com.example.financefree.structures.parseDate;
 
 import org.junit.Test;
 
-@SuppressWarnings("ALL")
 public class DataHandlerTests {
 
     @Test

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".HomeFragment">
 
     <GridLayout
@@ -31,6 +32,32 @@
             android:text="@string/payments"
             android:textAlignment="center"/>
 
+        <Button
+            android:id="@+id/btnBanks"
+            android:layout_width="@dimen/button_square_side"
+            android:layout_height="@dimen/button_square_side"
+            android:layout_margin="@dimen/text_margin"
+            android:text="@string/banks"
+            android:textAlignment="center"/>
+
+        <Button
+            android:id="@+id/btnOther"
+            android:layout_width="@dimen/button_square_side"
+            android:layout_height="@dimen/button_square_side"
+            android:layout_margin="@dimen/text_margin"
+            android:text="@string/temp"
+            android:textAlignment="center"/>
 
     </GridLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btnSettings"
+        android:layout_width="@dimen/settings_button_side"
+        android:layout_height="@dimen/settings_button_height"
+        android:layout_marginTop="@dimen/text_margin"
+        android:textAlignment="center"
+        android:text="@string/settings"
+        android:layout_gravity="center"
+        android:backgroundTint="@color/dark_gray"/>
+
+</LinearLayout>

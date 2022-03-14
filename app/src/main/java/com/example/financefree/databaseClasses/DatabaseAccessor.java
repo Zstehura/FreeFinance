@@ -9,22 +9,24 @@ import java.util.List;
 
 public final class DatabaseAccessor {
 
+    public static AppDatabase db = null;
+
     private DatabaseAccessor(){}
 
-    public static List<payment> getPaymentsOnDate(AppDatabase db, long date){
+    public static List<payment> getPaymentsOnDate(long date){
         List<payment> l = new LinkedList<>();
         SinglePaymentDao spd = db.singlePaymentDao();
         RecurringPaymentDao rpd = db.recurringPaymentDao();
         PaymentEditDao ped = db.paymentEditDao();
 
         for(SinglePayment sp: spd.getAllByDate(date)){
-            payment p = new payment(sp.amount, sp.date,sp.name,sp.bank_id);
+            payment p = new payment(sp.amount, sp.date,sp.name,sp.bank_id, 's', sp.sp_id);
             l.add(p);
         }
 
         for(RecurringPayment rp: rpd.getFromDate(date)){
             List<PaymentEdit> lpe = ped.getEditsByPayment(rp.rp_id);
-            payment p = new payment(rp.amount,date,rp.name,rp.bankId);
+            payment p = new payment(rp.amount,date,rp.name,rp.bankId, 'r', rp.rp_id);
             boolean skip = false;
             boolean add = false;
             for(PaymentEdit pe: lpe){
@@ -62,14 +64,14 @@ public final class DatabaseAccessor {
         return l;
     }
 
-    public static List<statement> getStatementsOnDate(AppDatabase db, long date){
+    public static List<statement> getStatementsOnDate(long date){
         List<statement> l = new LinkedList<>();
         BankStatementDao bsd = db.bankStatementDao();
         BankAccountDao bad = db.bankAccountDao();
 
         List<BankAccount> bal = bad.getAll();
         for(BankAccount ba: bal){
-            statement s = new statement(ba.bank_id, 0, date);
+            statement s = new statement(ba.bank_id, 0, date, ba.accountName);
             long d = date;
             BankStatement bs;
             do{
@@ -81,7 +83,7 @@ public final class DatabaseAccessor {
 
             // add in relevant payments leading up to the date in question
             while(d < date){
-                List<payment> paymentList = getPaymentsOnDate(db, d);
+                List<payment> paymentList = getPaymentsOnDate(d);
                 for(payment p: paymentList){
                     if(p.bankId == s.bankId){
                         s.amount += p.amount;

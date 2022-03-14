@@ -17,7 +17,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.financefree.Profile"
+        android:name="com.example.financefree.ProfileFragment"
         android:label="@string/profile_header"
         tools:layout="@layout/fragment_profile" />
     <fragment
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/calendar"
-        android:name="com.example.financefree.Calendar"
+        android:name="com.example.financefree.CalendarFragment"
         android:label="calendar_fragment"
         tools:layout="@layout/calendar_fragment" >
     </fragment>

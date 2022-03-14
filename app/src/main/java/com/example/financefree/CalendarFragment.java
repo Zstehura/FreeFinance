@@ -11,7 +11,12 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
+import com.example.financefree.databaseClasses.DatabaseAccessor;
 import com.example.financefree.structures.parseDate;
+import com.example.financefree.structures.payment;
+import com.example.financefree.structures.statement;
+
+import java.util.List;
 
 
 /**
@@ -50,7 +55,9 @@ public class CalendarFragment extends Fragment {
         cv.setOnDateChangeListener((calendarView, iYear, iMonth, iDay) -> {
             currentDate = parseDate.getLong(iMonth, iDay, iYear);
             tv.setText(parseDate.getString(currentDate));
-            // TODO: Set recycler
+            List<statement> statements = DatabaseAccessor.getStatementsOnDate(currentDate);
+            List<payment> payments = DatabaseAccessor.getPaymentsOnDate(currentDate);
+            
 
 
         });

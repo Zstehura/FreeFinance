@@ -3,4 +3,6 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="dialog_width">300dp</dimen>
     <dimen name="button_square_side">150dp</dimen>
+    <dimen name="settings_button_height">100dp</dimen>
+    <dimen name="settings_button_side">332dp</dimen>
 </resources>

@@ -25,8 +25,8 @@ public class RecyclerContent {
         ITEMS.add(item);
     }
 
-    private static ListItem createPlaceholderItem(String name, double amount, String bankName) {
-        return new ListItem(name, amount, bankName);
+    private static ListItem createListItem(String name, double amount, String subName, char cType, long id) {
+        return new ListItem(name, amount, subName, cType, id);
     }
 
 
@@ -36,13 +36,16 @@ public class RecyclerContent {
     public static class ListItem {
         public final String name;
         public final double amount;
-        public final String bankName;
+        public final String subName;
+        public final char cType;
+        public final long id;
 
-
-        public ListItem(String name, double amount, String bankName) {
+        public ListItem(String name, double amount, String subName, char cType, long id) {
             this.name = name;
             this.amount = amount;
-            this.bankName = bankName;
+            this.subName = subName;
+            this.cType = cType;
+            this.id = id;
         }
 
         @NonNull
