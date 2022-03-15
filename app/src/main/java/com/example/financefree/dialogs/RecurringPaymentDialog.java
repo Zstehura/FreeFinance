@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +20,12 @@ import androidx.fragment.app.DialogFragment;
 import com.example.financefree.R;
 import com.example.financefree.databaseClasses.RecurringPayment;
 import com.example.financefree.structures.BankList;
+import com.example.financefree.structures.parseDate;
+
+
+//
+//  TODO:   TEST THIS DIALOG
+//
 
 public class RecurringPaymentDialog extends DialogFragment {
 
@@ -76,10 +85,12 @@ public class RecurringPaymentDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Initialize dialog settings
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-
         View dialog = inflater.inflate(R.layout.dialog_recurring_payment,null);
+
+        // populate bank choices
         Spinner spnBank = (Spinner) dialog.findViewById(R.id.spnBankIdRecur);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, banks.names);
         spnBank.setAdapter(adapter);
@@ -88,17 +99,69 @@ public class RecurringPaymentDialog extends DialogFragment {
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
                 bankId = banks.ids.get(position);
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
                 bankId = 0;
             }
         });
 
-        ;builder.setView(dialog)
+        // Set all values
+        EditText etName, etNotes, etFreq, etStart, etEnd, etAmount;
+        Spinner spnFreqType;
+        CheckBox chkNoEnd;
+        etName = dialog.findViewById(R.id.txtNameRecur);
+        etNotes = dialog.findViewById(R.id.txtNotesRecur);
+        etFreq = dialog.findViewById(R.id.txtFreqRecur);
+        etStart = dialog.findViewById(R.id.txtStartDateRecur);
+        etEnd = dialog.findViewById(R.id.txtEndDateRecur);
+        etAmount = dialog.findViewById(R.id.txtAmountRecur);
+        spnFreqType = dialog.findViewById(R.id.spnFreqTypeRecur);
+        chkNoEnd = dialog.findViewById(R.id.chkNoEndRecur);
+        etName.setText(name);
+        etNotes.setText(notes);
+        etFreq.setText(String.valueOf(freq));
+        etStart.setText(parseDate.getString(dateSt));
+        if(dateEn > parseDate.getLong(12,31,2098)){
+            etEnd.setText("");
+            etEnd.setEnabled(false);
+            chkNoEnd.setChecked(true);
+        }
+        else {
+            etEnd.setText(parseDate.getString(dateEn));
+            chkNoEnd.setChecked(false);
+        }
+        chkNoEnd.setOnClickListener(view ->{
+            if(chkNoEnd.isChecked()){
+                etEnd.setText("");
+                etEnd.setEnabled(false);
+            }
+            else {
+                etEnd.setText(parseDate.getString(dateEn));
+                etEnd.setEnabled(true);
+            }
+        });
+        etAmount.setText(String.valueOf(amount));
+        if(freq_type == RecurringPayment.ON) {
+            spnFreqType.setSelection(0);
+        }
+        else {
+            spnFreqType.setSelection(1);
+        }
+        spnFreqType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                if(position == 0) freq_type = RecurringPayment.ON;
+                else freq_type = RecurringPayment.EVERY;
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Toast.makeText(getContext(), "This shouldn't be an option, homie", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        builder.setView(dialog)
                 .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(RecurringPaymentDialog.this))
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(RecurringPaymentDialog.this));
-
         return builder.create();
     }
 
@@ -106,20 +169,30 @@ public class RecurringPaymentDialog extends DialogFragment {
     public static RecurringPaymentDialog newInstance(RecurringPayment recurringPayment){
         RecurringPaymentDialog f = new RecurringPaymentDialog();
 
-        // TODO: Add functionality for null: means new
-
         Bundle args = new Bundle();
-        args.putString(NAME_KEY, recurringPayment.name);
-        args.putInt(FREQUENCY_TYPE_KEY, recurringPayment.frequencyType);
-        args.putInt(FREQUENCY_KEY, recurringPayment.frequency);
-        args.putDouble(AMOUNT_KEY, recurringPayment.amount);
-        args.putLong(START_DATE_KEY, recurringPayment.startDate);
-        args.putLong(END_DATE_KEY, recurringPayment.endDate);
-        args.putString(NOTES_KEY, recurringPayment.notes);
-        args.putLong(BANK_ID_KEY, recurringPayment.bankId);
-        args.putLong(ID_KEY, recurringPayment.rp_id);
+        if (recurringPayment == null) {
+            args.putString(NAME_KEY, "");
+            args.putInt(FREQUENCY_TYPE_KEY, RecurringPayment.ON);
+            args.putInt(FREQUENCY_KEY, 1);
+            args.putDouble(AMOUNT_KEY, 0);
+            args.putLong(START_DATE_KEY, parseDate.getLong(1,1,2020));
+            args.putLong(END_DATE_KEY, parseDate.getLong(1,1,2099));
+            args.putString(NOTES_KEY, "");
+            args.putLong(BANK_ID_KEY, -1);
+            args.putLong(ID_KEY, -1);
+        }
+        else {
+            args.putString(NAME_KEY, recurringPayment.name);
+            args.putInt(FREQUENCY_TYPE_KEY, recurringPayment.frequencyType);
+            args.putInt(FREQUENCY_KEY, recurringPayment.frequency);
+            args.putDouble(AMOUNT_KEY, recurringPayment.amount);
+            args.putLong(START_DATE_KEY, recurringPayment.startDate);
+            args.putLong(END_DATE_KEY, recurringPayment.endDate);
+            args.putString(NOTES_KEY, recurringPayment.notes);
+            args.putLong(BANK_ID_KEY, recurringPayment.bankId);
+            args.putLong(ID_KEY, recurringPayment.rp_id);
+        }
         f.setArguments(args);
-
         return f;
     }
 }
