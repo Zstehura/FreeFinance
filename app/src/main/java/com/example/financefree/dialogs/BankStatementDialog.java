@@ -16,28 +16,32 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.databaseClasses.PaymentEdit;
-import com.example.financefree.databaseClasses.SinglePayment;
+import com.example.financefree.databaseClasses.BankStatement;
+import com.example.financefree.databaseClasses.DatabaseAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AddEditPaymentEditDialog extends DialogFragment {
-    public static final String MOVE_TO_KEY = "move_to_date";
-    public static final String ACTION_KEY = "action";
+public class BankStatementDialog extends DialogFragment {
+
+    // TODO: Change const
+    public static final String NAME_KEY = "name";
     public static final String AMOUNT_KEY = "amount";
     public static final String DATE_KEY = "date";
+    public static final String BANK_ID_KEY = "bank_id";
     public static final String ID_KEY = "id";
-    public static final String NEW_AMOUNT = "new_amount";
+    public static final String BANK_NAMES_KEY = "bank_names";
+    public static final String BANK_IDS_KEY = "bank_ids";
 
-    public interface PaymentEditDialogListener {
+    public interface BankStatementDialogListener {
         void onDialogPositiveClick(DialogFragment dialog);
         void onDialogNegativeClick(DialogFragment dialog);
     }
 
-    private PaymentEditDialogListener listener;
+    private BankStatementDialogListener listener;
 
+    // TODO: Change vars
     List<String> bankNames;
     List<Long> bankIds;
     String name;
@@ -48,22 +52,27 @@ public class AddEditPaymentEditDialog extends DialogFragment {
     public void onAttach(@NonNull Context context){
         super.onAttach(context);
         try {
-            listener = (PaymentEditDialogListener) context;
+            listener = (BankStatementDialogListener) context;
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
+
+    // TODO: Change create
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Bundle extras = getArguments();
         if(extras != null){
-            // TODO: Replace these
+            name = extras.getString(NAME_KEY);
             amount = extras.getDouble(AMOUNT_KEY);
             date = extras.getLong(DATE_KEY);
+            bankId = extras.getLong(BANK_ID_KEY);
             spId = extras.getLong(ID_KEY);
+            bankNames = extras.getStringArrayList(BANK_NAMES_KEY);
+            bankIds = extras.getParcelable(BANK_IDS_KEY);
         }
     }
 
@@ -76,7 +85,7 @@ public class AddEditPaymentEditDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        View dialog = inflater.inflate(R.layout.add_edit_singlepayment_dialog,null);
+        View dialog = inflater.inflate(R.layout.dialog_single_payment,null);
         Spinner spnBank = (Spinner) dialog.findViewById(R.id.spnBankIdSing);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, bankNames);
         spnBank.setAdapter(adapter);
@@ -93,24 +102,25 @@ public class AddEditPaymentEditDialog extends DialogFragment {
         });
 
         builder.setView(dialog)
-                .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(AddEditPaymentEditDialog.this))
-                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(AddEditPaymentEditDialog.this));
+                .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(BankStatementDialog.this))
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(BankStatementDialog.this));
 
         return builder.create();
     }
 
+
+    // TODO: Change all this around
     @NonNull
-    public static AddEditPaymentEditDialog newInstance(@NonNull PaymentEdit paymentEdit, @NonNull Map<Long, String> banks){
-        AddEditPaymentEditDialog f = new AddEditPaymentEditDialog();
+    public static BankStatementDialog newInstance(@NonNull BankStatement bankStatement, @NonNull Map<Long, String> banks){
+        BankStatementDialog f = new BankStatementDialog();
 
         Bundle args = new Bundle();
-        // TODO: Replace these
-        // args.putString(NAME_KEY, paymentEdit.name);
-        // args.putDouble(AMOUNT_KEY, paymentEdit.amount);
-        // args.putLong(DATE_KEY, paymentEdit.date);
-        // args.putLong(ID_KEY, paymentEdit.sp_id);
-        // args.putStringArrayList(BANK_NAMES_KEY, new ArrayList<>(banks.values()));
-        // args.putParcelable(BANK_IDS_KEY, (Parcelable) banks.keySet());
+        args.putString(NAME_KEY, DatabaseAccessor.getBankName(bankStatement.bank_id));
+        args.putDouble(AMOUNT_KEY, bankStatement.amount);
+        args.putLong(DATE_KEY, bankStatement.date);
+        args.putLong(ID_KEY, bankStatement.s_id);
+        args.putStringArrayList(BANK_NAMES_KEY, new ArrayList<>(banks.values()));
+        args.putParcelable(BANK_IDS_KEY, (Parcelable) banks.keySet());
         f.setArguments(args);
 
         return f;

@@ -11,13 +11,31 @@ import androidx.annotation.Nullable;
 
 // TODO: Add functionality
 
-class BankAccountsFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ * Use the {@link BankAccountsFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class BankAccountsFragment extends Fragment {
+    public BankAccountsFragment(){}
+
+    public static BankAccountsFragment newInstance() {
+        BankAccountsFragment fragment = new BankAccountsFragment();
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_bank_accounts, container, false);
+        View view = inflater.inflate(R.layout.fragment_bank_accounts, container, false);
+
+        return view;
     }
 }

@@ -37,7 +37,7 @@
             android:layout_width="@dimen/button_square_side"
             android:layout_height="@dimen/button_square_side"
             android:layout_margin="@dimen/text_margin"
-            android:text="@string/banks"
+            android:text="@string/BankLists"
             android:textAlignment="center"/>
 
         <Button

@@ -54,7 +54,20 @@ public class HomeFragment extends Fragment {
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.calendar);
         });
-        view.findViewById(R.id.btnBanks);
+        view.findViewById(R.id.btnBanks).setOnClickListener(view1 -> {
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.bankAccountsFragment);
+        });
+        view.findViewById(R.id.btnPayments).setOnClickListener(view1 -> {
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.recurringPaymentsFragment);
+        });
+        view.findViewById(R.id.btnSettings).setOnClickListener(view1 -> {
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.settingsFragment);
+        });
+
+        // TODO: Add 5th option
 
 
 

@@ -25,6 +25,10 @@ public interface BankAccountDao {
     @Query("DELETE FROM BankAccount WHERE 1 == 1")
     void deleteAll();
 
+    @Query("SELECT bank_id FROM BankAccount WHERE 1 == 1")
+    List<Long> getAllBankIDs();
+
+
     @Update
     int updateAccount(BankAccount bankAccount);
 

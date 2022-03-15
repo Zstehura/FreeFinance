@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,12 +16,9 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
 import com.example.financefree.databaseClasses.RecurringPayment;
+import com.example.financefree.structures.BankList;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-public class AddEditRecurringPaymentDialog extends DialogFragment {
+public class RecurringPaymentDialog extends DialogFragment {
 
     public static final String NAME_KEY = "name";
     public static final String FREQUENCY_TYPE_KEY = "frequency_type";
@@ -33,8 +29,6 @@ public class AddEditRecurringPaymentDialog extends DialogFragment {
     public static final String NOTES_KEY = "notes";
     public static final String BANK_ID_KEY = "bank_id";
     public static final String ID_KEY = "key";
-    public static final String BANK_NAMES_KEY = "bank_names";
-    public static final String BANK_IDS_KEY = "bank_ids";
 
     public interface RecurringPaymentDialogListener {
         void onDialogPositiveClick(DialogFragment dialog);
@@ -43,8 +37,7 @@ public class AddEditRecurringPaymentDialog extends DialogFragment {
 
     private RecurringPaymentDialogListener listener;
 
-    List<String> bankNames;
-    List<Long> bankIds;
+    BankList banks = new BankList();
     String name, notes;
     int freq_type, freq;
     long dateSt, dateEn, bankId, rpId;
@@ -75,8 +68,6 @@ public class AddEditRecurringPaymentDialog extends DialogFragment {
             notes = extras.getString(NOTES_KEY);
             bankId = extras.getLong(BANK_ID_KEY);
             rpId = extras.getLong(ID_KEY);
-            bankNames = extras.getStringArrayList(BANK_NAMES_KEY);
-            bankIds = extras.getParcelable(BANK_IDS_KEY);
         }
     }
 
@@ -88,14 +79,14 @@ public class AddEditRecurringPaymentDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        View dialog = inflater.inflate(R.layout.add_edit_recurringpayment_dialog,null);
+        View dialog = inflater.inflate(R.layout.dialog_recurring_payment,null);
         Spinner spnBank = (Spinner) dialog.findViewById(R.id.spnBankIdRecur);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, bankNames);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, banks.names);
         spnBank.setAdapter(adapter);
         spnBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                bankId = bankIds.get(position);
+                bankId = banks.ids.get(position);
             }
 
             @Override
@@ -105,15 +96,17 @@ public class AddEditRecurringPaymentDialog extends DialogFragment {
         });
 
         ;builder.setView(dialog)
-                .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(AddEditRecurringPaymentDialog.this))
-                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(AddEditRecurringPaymentDialog.this));
+                .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(RecurringPaymentDialog.this))
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(RecurringPaymentDialog.this));
 
         return builder.create();
     }
 
     @NonNull
-    public static AddEditRecurringPaymentDialog newInstance(@NonNull RecurringPayment recurringPayment, @NonNull Map<Long, String> banks){
-        AddEditRecurringPaymentDialog f = new AddEditRecurringPaymentDialog();
+    public static RecurringPaymentDialog newInstance(RecurringPayment recurringPayment){
+        RecurringPaymentDialog f = new RecurringPaymentDialog();
+
+        // TODO: Add functionality for null: means new
 
         Bundle args = new Bundle();
         args.putString(NAME_KEY, recurringPayment.name);
@@ -125,8 +118,6 @@ public class AddEditRecurringPaymentDialog extends DialogFragment {
         args.putString(NOTES_KEY, recurringPayment.notes);
         args.putLong(BANK_ID_KEY, recurringPayment.bankId);
         args.putLong(ID_KEY, recurringPayment.rp_id);
-        args.putStringArrayList(BANK_NAMES_KEY, new ArrayList<>(banks.values()));
-        args.putParcelable(BANK_IDS_KEY, (Parcelable) banks.keySet());
         f.setArguments(args);
 
         return f;

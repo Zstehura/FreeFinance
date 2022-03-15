@@ -1,5 +1,6 @@
 package com.example.financefree.databaseClasses;
 
+import com.example.financefree.structures.BankList;
 import com.example.financefree.structures.parseDate;
 import com.example.financefree.structures.payment;
 import com.example.financefree.structures.statement;
@@ -95,6 +96,10 @@ public final class DatabaseAccessor {
         }
 
         return l;
+    }
+
+    public static List<Long> getBankIds(){
+        return db.bankAccountDao().getAllBankIDs();
     }
 
     public static String getBankName(long id) {

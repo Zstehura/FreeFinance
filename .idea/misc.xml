@@ -14,9 +14,13 @@
         <entry key="..\:/Users/Zack/Desktop/TEMP/FinanceFree/app/src/main/res/xml/root_preferences.xml" value="0.2726449275362319" />
         <entry key="app/src/main/res/drawable/customborder.xml" value="0.2835" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.153125" />
-        <entry key="app/src/main/res/layout/add_edit_recurringpayment_dialog.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/add_edit_paymentedit_dialog.xml" value="0.2776268115942029" />
+        <entry key="app/src/main/res/layout/add_edit_recurringpayment_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/add_edit_singlepayment_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/bank_account_dialog.xml" value="0.2776268115942029" />
+        <entry key="app/src/main/res/layout/bank_statement_dialog.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/calendar_fragment.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/dialog_single_payment.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/fragment_bank_accounts.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/fragment_month_picker.xml" value="0.3319746376811594" />

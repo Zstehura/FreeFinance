@@ -16,14 +16,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.databaseClasses.SinglePayment;
+import com.example.financefree.databaseClasses.BankAccount;
+import com.example.financefree.databaseClasses.DatabaseAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class AddEditSinglePaymentDialog extends DialogFragment {
+public class BankAccountDialog extends DialogFragment {
 
+    // TODO: Change const
     public static final String NAME_KEY = "name";
     public static final String AMOUNT_KEY = "amount";
     public static final String DATE_KEY = "date";
@@ -32,13 +34,14 @@ public class AddEditSinglePaymentDialog extends DialogFragment {
     public static final String BANK_NAMES_KEY = "bank_names";
     public static final String BANK_IDS_KEY = "bank_ids";
 
-    public interface SinglePaymentDialogListener {
+    public interface BankAccountDialogListener {
         void onDialogPositiveClick(DialogFragment dialog);
         void onDialogNegativeClick(DialogFragment dialog);
     }
 
-    private SinglePaymentDialogListener listener;
+    private BankAccountDialogListener listener;
 
+    // TODO: Change vars
     List<String> bankNames;
     List<Long> bankIds;
     String name;
@@ -49,12 +52,14 @@ public class AddEditSinglePaymentDialog extends DialogFragment {
     public void onAttach(@NonNull Context context){
         super.onAttach(context);
         try {
-            listener = (SinglePaymentDialogListener) context;
+            listener = (BankAccountDialogListener) context;
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
+
+    // TODO: Change create
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +85,7 @@ public class AddEditSinglePaymentDialog extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-        View dialog = inflater.inflate(R.layout.add_edit_singlepayment_dialog,null);
+        View dialog = inflater.inflate(R.layout.dialog_single_payment,null);
         Spinner spnBank = (Spinner) dialog.findViewById(R.id.spnBankIdSing);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, bankNames);
         spnBank.setAdapter(adapter);
@@ -97,21 +102,23 @@ public class AddEditSinglePaymentDialog extends DialogFragment {
         });
 
         builder.setView(dialog)
-                .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(AddEditSinglePaymentDialog.this))
-                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(AddEditSinglePaymentDialog.this));
+                .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(BankAccountDialog.this))
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(BankAccountDialog.this));
 
         return builder.create();
     }
 
+
+    // TODO: Change all this around
     @NonNull
-    public static AddEditSinglePaymentDialog newInstance(@NonNull SinglePayment singlePayment, @NonNull Map<Long, String> banks){
-        AddEditSinglePaymentDialog f = new AddEditSinglePaymentDialog();
+    public static BankAccountDialog newInstance(@NonNull BankAccount bankAccount, @NonNull Map<Long, String> banks){
+        BankAccountDialog f = new BankAccountDialog();
 
         Bundle args = new Bundle();
-        args.putString(NAME_KEY, singlePayment.name);
-        args.putDouble(AMOUNT_KEY, singlePayment.amount);
-        args.putLong(DATE_KEY, singlePayment.date);
-        args.putLong(ID_KEY, singlePayment.sp_id);
+        args.putString(NAME_KEY, DatabaseAccessor.getBankName(bankAccount.bank_id));
+        // args.putDouble(AMOUNT_KEY, bankAccount.amount);
+        // args.putLong(DATE_KEY, bankAccount.date);
+        // args.putLong(ID_KEY, bankAccount.s_id);
         args.putStringArrayList(BANK_NAMES_KEY, new ArrayList<>(banks.values()));
         args.putParcelable(BANK_IDS_KEY, (Parcelable) banks.keySet());
         f.setArguments(args);

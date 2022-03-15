@@ -120,7 +120,7 @@
     <string name="notes_hint">Notes: Remember NEVER save sensitive data (like account numbers and passwords) in this app!</string>
     <string name="monthly">Monthly\n View</string>
     <string name="payments">View Payments</string>
-    <string name="banks">View Banks</string>
+    <string name="BankLists">View Banks</string>
     <string name="temp">replace me!</string>
     <string name="clear_data_older_than">Clear Data Older Than...</string>
     <string name="bank_accounts">Bank Accounts</string>
