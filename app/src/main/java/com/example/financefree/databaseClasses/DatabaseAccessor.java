@@ -1,18 +1,33 @@
 package com.example.financefree.databaseClasses;
 
-import com.example.financefree.structures.BankList;
+import android.app.Application;
+
+import androidx.lifecycle.AndroidViewModel;
+
 import com.example.financefree.structures.parseDate;
 import com.example.financefree.structures.payment;
 import com.example.financefree.structures.statement;
 
+import java.nio.channels.AsynchronousChannelGroup;
 import java.util.LinkedList;
 import java.util.List;
 
-public final class DatabaseAccessor {
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.core.Completable;
+import io.reactivex.rxjava3.core.Flowable;
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.core.Single;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-    public static AppDatabase db = null;
+public class DatabaseAccessor extends AndroidViewModel {
 
-    private DatabaseAccessor(){}
+    private static AppDatabase db;
+
+    public DatabaseAccessor(Application application){
+        super(application);
+        db = AppDatabase.getAppDatabase(application);
+    }
 
     public static List<payment> getPaymentsOnDate(long date){
         List<payment> l = new LinkedList<>();
@@ -69,7 +84,7 @@ public final class DatabaseAccessor {
         List<statement> l = new LinkedList<>();
         BankStatementDao bsd = db.bankStatementDao();
         BankAccountDao bad = db.bankAccountDao();
-
+/*
         List<BankAccount> bal = bad.getAll();
         for(BankAccount ba: bal){
             statement s = new statement(ba.bank_id, 0, date, ba.accountName);
@@ -94,19 +109,27 @@ public final class DatabaseAccessor {
             }
             l.add(s);
         }
-
+*/
         return l;
     }
 
-    public static List<Long> getBankIds(){
-        return db.bankAccountDao().getAllBankIDs();
-    }
+    //public static List<Long> getBankIds(){
+    //    Single<List<Long>> lTemp; //= db.bankAccountDao().getAllBankIDs().onErrorReturnItem(new LinkedList<>());
+    //    return lTemp.blockingGet();
+    //}
 
-    public static String getBankName(long id) {
-        BankAccountDao bad = db.bankAccountDao();
-        BankAccount ba = bad.getById(id);
-        if(ba != null) return ba.accountName;
-        else return "";
+    //public static String getBankName(long id) {
+    //    Single<String> str = db.bankAccountDao().getName(id).onErrorReturnItem("");
+    //    return str.blockingGet();
+    //}
+
+    public static Flowable<List<BankAccount>> getBankAccounts() {return db.bankAccountDao().getAll();}
+    public static Disposable insertBankAccounts(BankAccount... ba) {
+        return Completable.fromRunnable(() -> {
+            db.bankAccountDao().insertAll(ba);
+        })
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     public static boolean clearData(long date) {
@@ -116,7 +139,7 @@ public final class DatabaseAccessor {
         RecurringPaymentDao rpd = db.recurringPaymentDao();
         SinglePaymentDao spd = db.singlePaymentDao();
         if(date == 0) {
-            bad.deleteAll();
+            // bad.deleteAll();
             bsd.deleteAll();
             ped.deleteAll();
             rpd.deleteAll();

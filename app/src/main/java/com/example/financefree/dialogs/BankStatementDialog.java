@@ -115,7 +115,7 @@ public class BankStatementDialog extends DialogFragment {
         BankStatementDialog f = new BankStatementDialog();
 
         Bundle args = new Bundle();
-        args.putString(NAME_KEY, DatabaseAccessor.getBankName(bankStatement.bank_id));
+       // args.putString(NAME_KEY, DatabaseAccessor.getBankName(bankStatement.bank_id));
         args.putDouble(AMOUNT_KEY, bankStatement.amount);
         args.putLong(DATE_KEY, bankStatement.date);
         args.putLong(ID_KEY, bankStatement.s_id);

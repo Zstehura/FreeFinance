@@ -23,9 +23,9 @@ public class MyRecurringPaymentsRecyclerViewAdapter extends RecyclerView.Adapter
 
     public MyRecurringPaymentsRecyclerViewAdapter() {
         itemList = new LinkedList<>();
-        for(RecurringPayment rp: DatabaseAccessor.db.recurringPaymentDao().getAll()){
-            itemList.add(new ListItem(rp.name,rp.amount,rp.notes,'r',rp.rp_id));
-        }
+        //for(RecurringPayment rp: DatabaseAccessor.db.recurringPaymentDao().getAll()){
+        //    itemList.add(new ListItem(rp.name,rp.amount,rp.notes,'r',rp.rp_id));
+        //}
     }
 
     @NonNull

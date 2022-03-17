@@ -1,5 +1,6 @@
 package com.example.financefree;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,14 +8,23 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
+import com.example.financefree.databaseClasses.BankAccount;
+import com.example.financefree.databaseClasses.DatabaseAccessor;
+import com.example.financefree.dialogs.RecurringPaymentDialog;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
+
+import io.reactivex.Completable;
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +32,8 @@ import java.util.Objects;
  * create an instance of this fragment.
  */
 public class HomeFragment extends Fragment {
+
+
 
     public HomeFragment() {
         // Required empty public constructor
@@ -50,6 +62,12 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
+        DatabaseAccessor da = new DatabaseAccessor(getActivity().getApplication());
+        BankAccount ba = new BankAccount();
+        ba.accountName = "Test Account";
+        ba.notes = "";
+        DatabaseAccessor.insertBankAccounts(ba);
+
         view.findViewById(R.id.btnMonthly).setOnClickListener(view1 -> {
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.calendar);
@@ -68,7 +86,22 @@ public class HomeFragment extends Fragment {
         });
 
         // TODO: Add 5th option
-
+        view.findViewById(R.id.btnOther).setOnClickListener(view1 -> {
+            DatabaseAccessor.getBankAccounts().observeOn(Schedulers.io())
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            bankAccounts -> {
+                                Log.v("Room With Rx", String.valueOf(bankAccounts.size()));
+                            },
+                            throwable -> {
+                                Log.v("Room With Rx: ", throwable.getMessage());
+                            }
+                    );
+            // Toast.makeText(getContext(), "Account name: " + s, Toast.LENGTH_LONG).show();
+            // RecurringPaymentDialog d = RecurringPaymentDialog.newInstance(null);
+            // d.show(getParentFragmentManager(), null);
+            // Toast.makeText(getContext(),"Name: " + d.name + " | Amount: " + String.valueOf(d.amount), Toast.LENGTH_LONG).show();
+        });
 
 
         // Inflate the layout for this fragment

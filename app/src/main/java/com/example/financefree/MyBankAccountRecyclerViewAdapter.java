@@ -24,9 +24,10 @@ public class MyBankAccountRecyclerViewAdapter extends RecyclerView.Adapter<MyBan
 
     public MyBankAccountRecyclerViewAdapter() {
         itemList = new LinkedList<>();
-        for(BankAccount ba: DatabaseAccessor.db.bankAccountDao().getAll()){
-            itemList.add(new ListItem(ba.accountName, 0, ba.notes, 'b', ba.bank_id));
-        }
+        // TODO: Edit back
+        // for(BankAccount ba: DatabaseAccessor.db.bankAccountDao().getAll()){
+        //     itemList.add(new ListItem(ba.accountName, 0, ba.notes, 'b', ba.bank_id));
+        // }
     }
 
     @NonNull

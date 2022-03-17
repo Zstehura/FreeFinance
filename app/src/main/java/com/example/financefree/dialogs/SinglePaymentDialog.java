@@ -86,7 +86,7 @@ public class SinglePaymentDialog extends DialogFragment {
         spnBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                bankId = banks.ids.get(position);
+           //     bankId = banks.ids.get(position);
             }
 
             @Override

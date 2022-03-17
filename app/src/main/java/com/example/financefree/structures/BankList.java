@@ -7,12 +7,12 @@ import java.util.List;
 
 public class BankList {
     public final List<String> names;
-    public final List<Long> ids;
+  //  public final List<Long> ids;
     public BankList(){
-        ids = DatabaseAccessor.getBankIds();
+       // ids = DatabaseAccessor.getBankIds();
         names = new LinkedList<>();
-        for(long n: ids){
-            names.add(DatabaseAccessor.getBankName(n));
-        }
+      //  for(long n: ids){
+        //    names.add(DatabaseAccessor.getBankName(n));
+       // }
     }
 }

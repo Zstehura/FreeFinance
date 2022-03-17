@@ -46,11 +46,11 @@ public class RecurringPaymentDialog extends DialogFragment {
 
     private RecurringPaymentDialogListener listener;
 
-    BankList banks = new BankList();
-    String name, notes;
-    int freq_type, freq;
-    long dateSt, dateEn, bankId, rpId;
-    double amount;
+    public BankList banks = new BankList();
+    public String name, notes;
+    public int freq_type, freq;
+    public long dateSt, dateEn, bankId, rpId;
+    public double amount;
 
     @Override
     public void onAttach(@NonNull Context context){
@@ -97,7 +97,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         spnBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                bankId = banks.ids.get(position);
+          //      bankId = banks.ids.get(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
