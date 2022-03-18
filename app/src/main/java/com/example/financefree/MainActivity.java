@@ -15,7 +15,6 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.financefree.databaseClasses.DatabaseViewModel;
 import com.google.android.material.navigation.NavigationView;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     public static final String DATABASE_NAME = "finance_data";
     AppBarConfiguration appBarConfiguration;
 
-    public DatabaseViewModel dbView;
+   // public DatabaseAccessor dba;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -57,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
             }
             return false;
         });
+      //  dba = new DatabaseAccessor(getApplication());
 
         //dbView = new DatabaseViewModel(this.getApplication());
        // dbView.getBankAccounts().subscribeOn(Schedulers.computation())

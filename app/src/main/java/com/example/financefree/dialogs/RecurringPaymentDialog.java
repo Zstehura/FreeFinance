@@ -18,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.databaseClasses.RecurringPayment;
 import com.example.financefree.structures.BankList;
 import com.example.financefree.structures.parseDate;
 
@@ -141,6 +140,7 @@ public class RecurringPaymentDialog extends DialogFragment {
             }
         });
         etAmount.setText(String.valueOf(amount));
+        /*
         if(freq_type == RecurringPayment.ON) {
             spnFreqType.setSelection(0);
         }
@@ -159,6 +159,8 @@ public class RecurringPaymentDialog extends DialogFragment {
             }
         });
 
+         */
+
         builder.setView(dialog)
                 .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(RecurringPaymentDialog.this))
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(RecurringPaymentDialog.this));
@@ -166,10 +168,11 @@ public class RecurringPaymentDialog extends DialogFragment {
     }
 
     @NonNull
-    public static RecurringPaymentDialog newInstance(RecurringPayment recurringPayment){
+    public static RecurringPaymentDialog newInstance() {// RecurringPayment recurringPayment){
         RecurringPaymentDialog f = new RecurringPaymentDialog();
 
         Bundle args = new Bundle();
+        /*
         if (recurringPayment == null) {
             args.putString(NAME_KEY, "");
             args.putInt(FREQUENCY_TYPE_KEY, RecurringPayment.ON);
@@ -192,6 +195,7 @@ public class RecurringPaymentDialog extends DialogFragment {
             args.putLong(BANK_ID_KEY, recurringPayment.bankId);
             args.putLong(ID_KEY, recurringPayment.rp_id);
         }
+        */
         f.setArguments(args);
         return f;
     }

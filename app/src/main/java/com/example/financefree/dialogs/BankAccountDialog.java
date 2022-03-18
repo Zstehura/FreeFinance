@@ -16,23 +16,18 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.databaseClasses.BankAccount;
-import com.example.financefree.databaseClasses.DatabaseAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class BankAccountDialog extends DialogFragment {
 
-    // TODO: Change const
-    public static final String NAME_KEY = "name";
-    public static final String AMOUNT_KEY = "amount";
-    public static final String DATE_KEY = "date";
-    public static final String BANK_ID_KEY = "bank_id";
-    public static final String ID_KEY = "id";
-    public static final String BANK_NAMES_KEY = "bank_names";
-    public static final String BANK_IDS_KEY = "bank_ids";
+    // public static AppDatabase db;
+
 
     public interface BankAccountDialogListener {
         void onDialogPositiveClick(DialogFragment dialog);
@@ -40,13 +35,8 @@ public class BankAccountDialog extends DialogFragment {
     }
 
     private BankAccountDialogListener listener;
-
-    // TODO: Change vars
-    List<String> bankNames;
-    List<Long> bankIds;
-    String name;
-    long date, bankId, spId;
-    double amount;
+    public long bankId;
+    // public BankAccount ba;
 
     @Override
     public void onAttach(@NonNull Context context){
@@ -63,17 +53,6 @@ public class BankAccountDialog extends DialogFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Bundle extras = getArguments();
-        if(extras != null){
-            name = extras.getString(NAME_KEY);
-            amount = extras.getDouble(AMOUNT_KEY);
-            date = extras.getLong(DATE_KEY);
-            bankId = extras.getLong(BANK_ID_KEY);
-            spId = extras.getLong(ID_KEY);
-            bankNames = extras.getStringArrayList(BANK_NAMES_KEY);
-            bankIds = extras.getParcelable(BANK_IDS_KEY);
-        }
     }
 
     @NonNull
@@ -81,25 +60,32 @@ public class BankAccountDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+       // db = AppDatabase.getAppDatabase(this.getContext());
+
         // TODO: Update all of this after layout is done
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
 
         View dialog = inflater.inflate(R.layout.dialog_single_payment,null);
-        Spinner spnBank = (Spinner) dialog.findViewById(R.id.spnBankIdSing);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, bankNames);
-        spnBank.setAdapter(adapter);
-        spnBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-                bankId = bankIds.get(position);
-            }
+        /*
+        if(bankId >= 0) {
+            // means there is a legitimate bank account to find, populate with
+            db.bankAccountDao().getById(bankId)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe( bankAccount -> {
+                        ba = bankAccount;
+                    },
+                    throwable -> {
+                        System.out.println("BankAccountDialog: " + throwable.getMessage());
+                    });
+        }
+        else {
+            // means this is a create new situation
+            ba = new BankAccount();
+        }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                bankId = 0;
-            }
-        });
+         */
 
         builder.setView(dialog)
                 .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(BankAccountDialog.this))
@@ -111,18 +97,9 @@ public class BankAccountDialog extends DialogFragment {
 
     // TODO: Change all this around
     @NonNull
-    public static BankAccountDialog newInstance(@NonNull BankAccount bankAccount, @NonNull Map<Long, String> banks){
+    public static BankAccountDialog newInstance(long bankId){
         BankAccountDialog f = new BankAccountDialog();
-
-        Bundle args = new Bundle();
-      //  args.putString(NAME_KEY, DatabaseAccessor.getBankName(bankAccount.bank_id));
-        // args.putDouble(AMOUNT_KEY, bankAccount.amount);
-        // args.putLong(DATE_KEY, bankAccount.date);
-        // args.putLong(ID_KEY, bankAccount.s_id);
-        args.putStringArrayList(BANK_NAMES_KEY, new ArrayList<>(banks.values()));
-        args.putParcelable(BANK_IDS_KEY, (Parcelable) banks.keySet());
-        f.setArguments(args);
-
+        f.bankId = bankId;
         return f;
     }
 }

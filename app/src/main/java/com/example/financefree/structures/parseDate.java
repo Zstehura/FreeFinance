@@ -1,10 +1,7 @@
 package com.example.financefree.structures;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public final class parseDate {
@@ -35,10 +32,9 @@ public final class parseDate {
         return gc.get(Calendar.DAY_OF_MONTH);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public static long genID() {
-        GregorianCalendar gc = new GregorianCalendar();
-        return gc.toInstant().getEpochSecond();
+        Date d = new Date();
+        return d.getTime();
     }
 
 }

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.financefree.RecyclerContent.ListItem;
-import com.example.financefree.databaseClasses.DatabaseAccessor;
 import com.example.financefree.databinding.RecurringPaymentsBinding;
 import com.example.financefree.structures.payment;
 import com.example.financefree.structures.statement;
@@ -25,14 +24,14 @@ public class MyDailyRecyclerViewAdapter extends RecyclerView.Adapter<MyDailyRecy
     public MyDailyRecyclerViewAdapter(long date) {
         // Generate list of statements
         itemList = new LinkedList<>();
-        List<statement> statements = DatabaseAccessor.getStatementsOnDate(date);
-        for(statement s: statements){
-            itemList.add(new ListItem(s.bankName, s.amount, "", 'b', s.bankId));
-        }
-        List<payment> payments = DatabaseAccessor.getPaymentsOnDate(date);
-        for(payment p: payments){
-            itemList.add(new ListItem(p.name,p.amount,String.valueOf(p.bankId),p.cType,p.id));
-        }
+       // List<statement> statements = DatabaseAccessor.getStatementsOnDate(date);
+       // for(statement s: statements){
+       //     itemList.add(new ListItem(s.bankName, s.amount, "", 'b', s.bankId));
+       // }
+       // List<payment> payments = DatabaseAccessor.getPaymentsOnDate(date);
+       // for(payment p: payments){
+       //     itemList.add(new ListItem(p.name,p.amount,String.valueOf(p.bankId),p.cType,p.id));
+       // }
     }
 
     @NonNull

@@ -31,6 +31,8 @@
 
     <string-array name="freq_type_entries">
         <item>On date every month</item>
+        <item>On date every… months</item>
+        <item>On the… Day of Week every month</item>
         <item>Every… days</item>
     </string-array>
 

@@ -1,8 +1,11 @@
 package com.example.financefree;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -15,9 +18,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.example.financefree.databaseClasses.BankAccount;
-import com.example.financefree.databaseClasses.DatabaseAccessor;
+import com.example.financefree.dialogs.BankAccountDialog;
 import com.example.financefree.dialogs.RecurringPaymentDialog;
+import com.example.financefree.fileClasses.BankAccount;
+import com.example.financefree.structures.parseDate;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
@@ -56,17 +60,29 @@ public class HomeFragment extends Fragment {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressWarnings("ConstantConditions")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        DatabaseAccessor da = new DatabaseAccessor(getActivity().getApplication());
         BankAccount ba = new BankAccount();
-        ba.accountName = "Test Account";
+        ba.name = "Test Account";
         ba.notes = "";
-        DatabaseAccessor.insertBankAccounts(ba);
+       // ba.bank_id = parseDate.genID();
+       // DatabaseAccessor.insertBankAccounts(ba);
+
+        //DatabaseAccessor.getBankAccounts().observeOn(Schedulers.io())
+        //        .subscribeOn(AndroidSchedulers.mainThread())
+        //        .subscribe(
+        //                bankAccounts -> {
+        //                    System.out.println("BankAccounts found: " + bankAccounts.size());
+        //                },
+        //                throwable -> {
+        //                    System.out.println("RoomWithRx: "+throwable.getMessage());
+        //                }
+        //        );
 
         view.findViewById(R.id.btnMonthly).setOnClickListener(view1 -> {
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
@@ -87,16 +103,19 @@ public class HomeFragment extends Fragment {
 
         // TODO: Add 5th option
         view.findViewById(R.id.btnOther).setOnClickListener(view1 -> {
-            DatabaseAccessor.getBankAccounts().observeOn(Schedulers.io())
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            bankAccounts -> {
-                                Log.v("Room With Rx", String.valueOf(bankAccounts.size()));
-                            },
-                            throwable -> {
-                                Log.v("Room With Rx: ", throwable.getMessage());
-                            }
-                    );
+            DialogFragment bankAccountDialog = BankAccountDialog.newInstance(1); //ba.bank_id);
+            bankAccountDialog.show(getActivity().getSupportFragmentManager(), "bad_test");
+
+            // DatabaseAccessor.getBankAccounts().observeOn(Schedulers.io())
+            //         .subscribeOn(AndroidSchedulers.mainThread())
+            //         .subscribe(
+            //                 bankAccounts -> {
+            //                     System.out.println("Room With Rx: "+ "accounts found: " + bankAccounts.size());
+            //                 },
+            //                 throwable -> {
+            //                     System.out.println("Room With Rx: "+ throwable.getMessage());
+            //                 }
+            //         );
             // Toast.makeText(getContext(), "Account name: " + s, Toast.LENGTH_LONG).show();
             // RecurringPaymentDialog d = RecurringPaymentDialog.newInstance(null);
             // d.show(getParentFragmentManager(), null);

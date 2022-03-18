@@ -16,8 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.databaseClasses.BankStatement;
-import com.example.financefree.databaseClasses.DatabaseAccessor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,16 +109,16 @@ public class BankStatementDialog extends DialogFragment {
 
     // TODO: Change all this around
     @NonNull
-    public static BankStatementDialog newInstance(@NonNull BankStatement bankStatement, @NonNull Map<Long, String> banks){
+    public static BankStatementDialog newInstance() { //@NonNull BankStatement bankStatement, @NonNull Map<Long, String> banks){
         BankStatementDialog f = new BankStatementDialog();
 
         Bundle args = new Bundle();
        // args.putString(NAME_KEY, DatabaseAccessor.getBankName(bankStatement.bank_id));
-        args.putDouble(AMOUNT_KEY, bankStatement.amount);
-        args.putLong(DATE_KEY, bankStatement.date);
-        args.putLong(ID_KEY, bankStatement.s_id);
-        args.putStringArrayList(BANK_NAMES_KEY, new ArrayList<>(banks.values()));
-        args.putParcelable(BANK_IDS_KEY, (Parcelable) banks.keySet());
+       // args.putDouble(AMOUNT_KEY, bankStatement.amount);
+       // args.putLong(DATE_KEY, bankStatement.date);
+       // args.putLong(ID_KEY, bankStatement.s_id);
+        // args.putStringArrayList(BANK_NAMES_KEY, new ArrayList<>(banks.values()));
+        // args.putParcelable(BANK_IDS_KEY, (Parcelable) banks.keySet());
         f.setArguments(args);
 
         return f;

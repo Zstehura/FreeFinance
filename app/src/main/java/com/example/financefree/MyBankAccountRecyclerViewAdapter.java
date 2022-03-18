@@ -8,9 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.financefree.RecyclerContent.ListItem;
-import com.example.financefree.databaseClasses.BankAccount;
-import com.example.financefree.databaseClasses.DatabaseAccessor;
-import com.example.financefree.databaseClasses.RecurringPayment;
 import com.example.financefree.databinding.RecurringPaymentsBinding;
 
 import java.util.LinkedList;

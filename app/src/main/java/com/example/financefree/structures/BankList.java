@@ -1,7 +1,5 @@
 package com.example.financefree.structures;
 
-import com.example.financefree.databaseClasses.DatabaseAccessor;
-
 import java.util.LinkedList;
 import java.util.List;
 

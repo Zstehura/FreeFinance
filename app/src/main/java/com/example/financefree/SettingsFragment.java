@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 
-import com.example.financefree.databaseClasses.DatabaseAccessor;
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
 
@@ -29,7 +28,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                     .setCancelable(true)
                     .setPositiveButton("Delete", (dialogInterface, i) -> {
                         Toast.makeText(getContext(), "Clearing Data...", Toast.LENGTH_LONG).show();
-                        DatabaseAccessor.clearData(0);
+                        //DatabaseAccessor.clearData(0);
                         Toast.makeText(getContext(), "Data cleared",Toast.LENGTH_SHORT).show();
                     })
                     .setNegativeButton("Cancel",((dialogInterface, i) -> {
