@@ -15,7 +15,12 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.financefree.fileClasses.DataManager;
 import com.google.android.material.navigation.NavigationView;
+
+import org.json.JSONException;
+
+import java.io.IOException;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -34,6 +39,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // initialize Files
+        try {
+            DataManager.initData(this);
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Set navigation
         Toolbar tb = findViewById(R.id.toolbar);
         DrawerLayout dl = findViewById(R.id.drawer_layout);
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
