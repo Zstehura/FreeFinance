@@ -16,9 +16,13 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -63,9 +67,14 @@ public class DataManager {
     *
      */
 
+    //
+    //  TODO: Replace all Context references with FileInputStream/FileOutputStream
+    //      no more individual files unfortunately, all should be in the same JSON
+    //
+
     public static void initData(Context context) throws IOException, JSONException {
         if(!init) {
-            String idOut = readFile(context.getFilesDir(), ID_FILENAME);
+            String idOut = readFile(context, ID_FILENAME);
             if(!idOut.equals("")) {
                 JSONObject idJson = new JSONObject(idOut);
 
@@ -74,7 +83,7 @@ public class DataManager {
                 JSONArray bankIds = idJson.getJSONArray(BANK_ACCOUNT_KEY);
                 for (int i = 0; i < bankIds.length(); i++) {
                     long id = bankIds.getLong(i);
-                    JSONObject baJson = new JSONObject(readFile(context.getFilesDir(), BANK_ACCOUNT_PREFIX + id + FILE_SUFFIX));
+                    JSONObject baJson = new JSONObject(readFile(context, BANK_ACCOUNT_PREFIX + id + FILE_SUFFIX));
                     bankAccounts.put(id, new BankAccount(baJson));
                 }
 
@@ -82,7 +91,7 @@ public class DataManager {
                 JSONArray rpIds = idJson.getJSONArray(RECURRING_PAYMENT_KEY);
                 for (int i = 0; i < rpIds.length(); i++) {
                     long id = rpIds.getLong(i);
-                    JSONObject rpJson = new JSONObject(readFile(context.getFilesDir(), RECURRING_PAYMENT_PREFIX + id + FILE_SUFFIX));
+                    JSONObject rpJson = new JSONObject(readFile(context, RECURRING_PAYMENT_PREFIX + id + FILE_SUFFIX));
                     recurringPayments.put(id, new RecurringPayment(rpJson));
                 }
 
@@ -90,7 +99,7 @@ public class DataManager {
                 JSONArray spDates = idJson.getJSONArray(SINGLE_PAYMENT_KEY);
                 for (int i = 0; i < spDates.length(); i++) {
                     long date = spDates.getLong(i);
-                    JSONArray spJsonList = new JSONArray(readFile(context.getFilesDir(), SINGLE_PAYMENT_PREFIX + date + FILE_SUFFIX));
+                    JSONArray spJsonList = new JSONArray(readFile(context, SINGLE_PAYMENT_PREFIX + date + FILE_SUFFIX));
                     List<SinglePayment> l = new LinkedList<>();
                     for (int n = 0; n < spJsonList.length(); n++) {
                         JSONObject j = spJsonList.getJSONObject(n);
@@ -148,13 +157,13 @@ public class DataManager {
         for(long id: bankAccounts.keySet()){
             baIds.put(id);
             JSONObject j = bankAccounts.get(id).toJSON();
-            writeFile(context.getFilesDir(), BANK_ACCOUNT_PREFIX + id + FILE_SUFFIX, j.toString());
+            writeFile(context, BANK_ACCOUNT_PREFIX + id + FILE_SUFFIX, j.toString());
         }
 
         for(long id: recurringPayments.keySet()) {
             rpIds.put(id);
             JSONObject j = recurringPayments.get(id).toJSON();
-            writeFile(context.getFilesDir(), RECURRING_PAYMENT_PREFIX + id + FILE_SUFFIX, j.toString());
+            writeFile(context, RECURRING_PAYMENT_PREFIX + id + FILE_SUFFIX, j.toString());
         }
 
         for(long date: singlePayments.keySet()) {
@@ -163,30 +172,31 @@ public class DataManager {
             for (SinglePayment sp: singlePayments.get(date)){
                 j.put(sp.toJSON());
             }
-            writeFile(context.getFilesDir(), SINGLE_PAYMENT_PREFIX + date + FILE_SUFFIX, j.toString());
+            writeFile(context, SINGLE_PAYMENT_PREFIX + date + FILE_SUFFIX, j.toString());
         }
 
         ids.put(BANK_ACCOUNT_KEY, baIds);
         ids.put(SINGLE_PAYMENT_KEY, spDates);
         ids.put(RECURRING_PAYMENT_KEY, rpIds);
-        writeFile(context.getFilesDir(),ID_FILENAME, ids.toString());
+        writeFile(context,ID_FILENAME, ids.toString());
     }
 
-    private static void writeFile(File dir,String fn, String out) throws IOException {
-        File file = new File(dir, fn);
-        if(!file.exists()) file.createNewFile();
-        BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+    private static void writeFile(Context context,String fn, String out) throws IOException {
+        FileOutputStream fos = context.openFileOutput(fn, Context.MODE_PRIVATE);
+        //if(!file.exists()) file.createNewFile();
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
         bw.write(out);
         bw.close();
     }
 
-    private static String readFile(File dir, String fn) throws IOException {
-        File file = new File(dir, fn);
-        if(!file.exists()) {
-            file.createNewFile();
-            return "";
-        }
-        BufferedReader br = new BufferedReader(new FileReader(file));
+    private static String readFile(Context context, String fn) throws IOException {
+        FileInputStream fis = context.openFileInput(fn); //, Context.MODE_PRIVATE);
+        //File file = new File(dir, fn);
+        //if(!file.exists()) {
+        //    file.createNewFile();
+        //    return "";
+        //}
+        BufferedReader br = new BufferedReader(new InputStreamReader(fis));
         StringBuilder sb = new StringBuilder();
         String txt = br.readLine();
         while(txt != null) {
