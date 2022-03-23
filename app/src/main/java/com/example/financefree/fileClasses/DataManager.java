@@ -190,7 +190,8 @@ public class DataManager {
     }
 
     private static String readFile(Context context, String fn) throws IOException {
-        FileInputStream fis = context.openFileInput(fn); //, Context.MODE_PRIVATE);
+        File f = context.getDir(fn,Context.MODE_PRIVATE);
+        FileInputStream fis = new FileInputStream(f);
         //File file = new File(dir, fn);
         //if(!file.exists()) {
         //    file.createNewFile();
