@@ -44,7 +44,7 @@ public class RecurringPaymentsFragment extends Fragment {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            recyclerView.setAdapter(new MyRecurringPaymentsRecyclerViewAdapter());
+            // recyclerView.setAdapter(new MyRecurringPaymentsRecyclerViewAdapter());
         }
         return view;
     }

@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class BankAccount {
@@ -13,7 +14,7 @@ public class BankAccount {
     private static final String NAME_KEY = "name";
     private static final String NOTES_KEY = "notes";
 
-    public Map<Long, Double> statements;
+    public Map<Long, Double> statements = new HashMap<>();
     public String name;
     public String notes;
 

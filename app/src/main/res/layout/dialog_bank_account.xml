@@ -13,18 +13,41 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:labelFor="@id/txtNameSing"
+            android:labelFor="@id/txtNameBankAcc"
             android:text="@string/name"
             android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
         <EditText
-            android:id="@+id/txtNameSing"
+            android:id="@+id/txtNameBankAcc"
             android:layout_width="@dimen/dialog_width"
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:inputType="text"
             android:minHeight="48dp"
             android:padding="@dimen/text_margin"/>
+
+        <!-- Notes -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtNotesBankAcc"
+            android:text="@string/notes"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtNotesBankAcc"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:hint="@string/notes"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:maxLines="4"
+            android:minHeight="48dp"
+            android:minLines="2"
+            android:padding="@dimen/text_margin"
+            android:textColorHint="#A1887F"
+            android:verticalScrollbarPosition="right"/>
     </GridLayout>
 </ScrollView>

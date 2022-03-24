@@ -2,9 +2,11 @@ package com.example.financefree.fileClasses;
 
 import android.content.Context;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.financefree.structures.IdMgr;
 import com.example.financefree.structures.parseDate;
 import com.example.financefree.structures.payment;
 import com.example.financefree.structures.statement;
@@ -18,8 +20,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -72,6 +72,7 @@ public class DataManager {
     //      no more individual files unfortunately, all should be in the same JSON
     //
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void initData(Context context) throws IOException, JSONException {
         if(!init) {
             String idOut = readFile(context, ID_FILENAME);
@@ -83,6 +84,7 @@ public class DataManager {
                 JSONArray bankIds = idJson.getJSONArray(BANK_ACCOUNT_KEY);
                 for (int i = 0; i < bankIds.length(); i++) {
                     long id = bankIds.getLong(i);
+                    IdMgr.registerId(id);
                     JSONObject baJson = new JSONObject(readFile(context, BANK_ACCOUNT_PREFIX + id + FILE_SUFFIX));
                     bankAccounts.put(id, new BankAccount(baJson));
                 }
@@ -91,6 +93,7 @@ public class DataManager {
                 JSONArray rpIds = idJson.getJSONArray(RECURRING_PAYMENT_KEY);
                 for (int i = 0; i < rpIds.length(); i++) {
                     long id = rpIds.getLong(i);
+                    IdMgr.registerId(id);
                     JSONObject rpJson = new JSONObject(readFile(context, RECURRING_PAYMENT_PREFIX + id + FILE_SUFFIX));
                     recurringPayments.put(id, new RecurringPayment(rpJson));
                 }
@@ -141,6 +144,7 @@ public class DataManager {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void close(Context context) throws JSONException, IOException {
         JSONObject ids = new JSONObject();
         JSONArray baIds = new JSONArray();
@@ -179,32 +183,47 @@ public class DataManager {
         ids.put(SINGLE_PAYMENT_KEY, spDates);
         ids.put(RECURRING_PAYMENT_KEY, rpIds);
         writeFile(context,ID_FILENAME, ids.toString());
+
+        clearOldData();
+        deleteFiles.clear();
     }
 
     private static void writeFile(Context context,String fn, String out) throws IOException {
         FileOutputStream fos = context.openFileOutput(fn, Context.MODE_PRIVATE);
-        //if(!file.exists()) file.createNewFile();
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
         bw.write(out);
+        bw.flush();
         bw.close();
+        fos.flush();
+        fos.close();
     }
 
-    private static String readFile(Context context, String fn) throws IOException {
-        File f = context.getDir(fn,Context.MODE_PRIVATE);
-        FileInputStream fis = new FileInputStream(f);
-        //File file = new File(dir, fn);
-        //if(!file.exists()) {
-        //    file.createNewFile();
-        //    return "";
-        //}
-        BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+    private static String readFile(Context context, String fn) {
+        FileInputStream fis;
         StringBuilder sb = new StringBuilder();
-        String txt = br.readLine();
-        while(txt != null) {
-            sb.append(txt);
-            txt = br.readLine();
+        try {
+            fis = context.openFileInput(fn);
+            BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+            String txt = br.readLine();
+            while(txt != null) {
+                sb.append(txt);
+                txt = br.readLine();
+            }
+            br.close();
+            fis.close();
+        } catch (IOException e) {
+            Log.e("IO Error", e.getMessage());
+            try {
+                FileOutputStream fos = context.openFileOutput(fn, Context.MODE_PRIVATE);
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+                bw.write("");
+                fos.flush();
+                fos.close();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+
         }
-        br.close();
         return sb.toString();
     }
 
@@ -222,12 +241,12 @@ public class DataManager {
     public static List<Long> getRecurringIds() {return new LinkedList<>(recurringPayments.keySet());}
 
     public static long insertBankAccount(BankAccount ba) {
-        long id = parseDate.genID();
+        long id = IdMgr.genNewId();
         bankAccounts.put(id,ba);
         return id;
     }
     public static long insertRecurringPayment(RecurringPayment rp) {
-        long id = parseDate.genID();
+        long id = IdMgr.genNewId();
         recurringPayments.put(id, rp);
         return id;
     }
@@ -285,10 +304,12 @@ public class DataManager {
     public static List<SinglePayment> getSinglePayments(long date) {return singlePayments.get(date);}
 
     public static void removeBankAccount(long id) {
+        IdMgr.releaseId(id);
         bankAccounts.remove(id);
         deleteFiles.add(BANK_ACCOUNT_PREFIX + id + FILE_SUFFIX);
     }
     public static void removeRecurringPayment(long id) {
+        IdMgr.releaseId(id);
         recurringPayments.remove(id);
         deleteFiles.add(RECURRING_PAYMENT_PREFIX + id + FILE_SUFFIX);
     }
@@ -317,20 +338,22 @@ public class DataManager {
     public static List<payment> getPaymentsOnDate(long date) {
         List<payment> l = new LinkedList<>();
 
-        for(SinglePayment sp: getSinglePayments(date)){
-            payment p = new payment(sp.amount, sp.date, sp.name, sp.bankId, 's', 0);
-            l.add(p);
+        if(getSinglePayments(date) != null) {
+            for (SinglePayment sp : getSinglePayments(date)) {
+                payment p = new payment(sp.amount, sp.date, sp.name, sp.bankId, 's', 0);
+                l.add(p);
+            }
         }
 
         for(long id: recurringPayments.keySet()){
             RecurringPayment rp = getRecurringPayment(id);
             if(rp.startDate <= date && rp.endDate >= date) {
                 if(parseDate.dateIncludedInRp(rp, date)){
-                    payment p = new payment(rp.amount, date, rp.name, rp.bankId, 'r', rp.bankId);
+                    payment p = new payment(rp.amount, date, rp.name, rp.bankId, 'r', id);
                     for(PaymentEdit pe: rp.edits.values()) {
                         if(pe.editDate == date || pe.newDate == date) {
-                            p.bankId = pe.newBankId;
-                            p.amount = pe.newAmount;
+                            if(pe.newBankId != 0) p.bankId = pe.newBankId;
+                            if(pe.newAmount != 0)p.amount = pe.newAmount;
                         }
                     }
                     l.add(p);
@@ -340,6 +363,7 @@ public class DataManager {
 
         return l;
     }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<statement> getStatementsOnDate(long date){
         List<statement> l = new LinkedList<>();
 
@@ -360,7 +384,7 @@ public class DataManager {
                     }
                 }
                 // Calculate forward from there
-                while(lastDate < date) {
+                while(lastDate <= date) {
                     for(payment p: getPaymentsOnDate(lastDate)) {
                         if(p.bankId == id) lastVal += p.amount;
                     }
@@ -372,7 +396,7 @@ public class DataManager {
         return l;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void clearOldData() {
         // never clear bank accounts, just the statements
         // only clear recurring payments that have ended in the period
@@ -414,17 +438,31 @@ public class DataManager {
 
     }
     public static void clearAllData() {
-        for(long id: bankAccounts.keySet()){
-            removeBankAccount(id);
-        }
-        for(long id: recurringPayments.keySet()) {
-            removeRecurringPayment(id);
-        }
-        for(long date: singlePayments.keySet()) {
-            for (SinglePayment sp: getSinglePayments(date)){
-                removeSinglePayment(date, sp.name);
-            }
-        }
+        killBankAccounts();
+        killRecurringPayments();
+        killSinglePayments();
+    }
 
+    private static void killSinglePayments() {
+        if(singlePayments.size() > 0){
+            long date = (long) singlePayments.keySet().toArray()[0];
+            String name = singlePayments.get(date).get(0).name;
+            removeSinglePayment(date,name);
+            killSinglePayments();
+        }
+    }
+    private static void killRecurringPayments() {
+        if(recurringPayments.size() > 0){
+            long id = (long) recurringPayments.keySet().toArray()[0];
+            removeRecurringPayment(id);
+            killRecurringPayments();
+        }
+    }
+    private static void killBankAccounts() {
+        if(bankAccounts.size() > 0){
+            long id = (long) bankAccounts.keySet().toArray()[0];
+            removeBankAccount(id);
+            killBankAccounts();
+        }
     }
 }

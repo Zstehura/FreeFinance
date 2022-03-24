@@ -55,9 +55,9 @@ public class CalendarFragment extends Fragment {
 
         // TODO: Make this actually work
         cv.setOnDateChangeListener((calendarView, iYear, iMonth, iDay) -> {
-            currentDate = parseDate.getLong(iMonth, iDay, iYear);
+            // currentDate = parseDate.getLong(iMonth, iDay, iYear);
             tv.setText(parseDate.getString(currentDate));
-            rv.setAdapter(new MyDailyRecyclerViewAdapter(currentDate));
+            // rv.setAdapter(new MyDailyRecyclerViewAdapter(currentDate));
         });
 
         rv.setOnClickListener(v -> {

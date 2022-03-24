@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class RecurringPayment {
@@ -30,7 +31,7 @@ public class RecurringPayment {
     public long bankId;
     public int frequencyType;
     public int frequencyNum;
-    public Map<Long, PaymentEdit> edits;
+    public Map<Long, PaymentEdit> edits = new HashMap<>();
 
     public RecurringPayment() {}
 

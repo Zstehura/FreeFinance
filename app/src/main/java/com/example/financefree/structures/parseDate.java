@@ -1,5 +1,9 @@
 package com.example.financefree.structures;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.example.financefree.fileClasses.PaymentEdit;
 import com.example.financefree.fileClasses.RecurringPayment;
 
@@ -10,17 +14,19 @@ import java.util.GregorianCalendar;
 public final class parseDate {
     private parseDate(){}
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static long getLong(GregorianCalendar gc){
-        GregorianCalendar epoch = new GregorianCalendar(1970, 0,1);
-        return gc.compareTo(epoch);
+        return gc.toInstant().getEpochSecond() / 60 / 60 / 24;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static long dateNumDaysAgo(int num) {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DAY_OF_MONTH, -1 * num);
         return getLong(gc);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static long getLong(int month, int day, int year){
         GregorianCalendar gc = new GregorianCalendar(year, month, day);
         return getLong(gc);
@@ -41,15 +47,11 @@ public final class parseDate {
         return gc.get(Calendar.DAY_OF_MONTH);
     }
 
-    public static long genID() {
-        Date d = new Date();
-        return d.getTime();
-    }
-
     public static boolean dateIncludedInRp(RecurringPayment rp, long date) {
         // Check edits, if its in there, then no need to calculate anything
         for(PaymentEdit edit: rp.edits.values()) {
             if(edit.newDate == date) return true;
+            if(edit.editDate == date && edit.newDate != 0) return false;
             if(edit.editDate == date && edit.skip) return false;
         }
 

@@ -11,10 +11,10 @@ public class PaymentEdit {
     private static final String NEW_BANK_ID_KEY = "new_bank";
 
     public long editDate;
-    public boolean skip;
-    public double newAmount;
-    public long newDate;
-    public long newBankId;
+    public boolean skip = false;
+    public double newAmount = 0;
+    public long newDate = 0;
+    public long newBankId = 0;
 
     public PaymentEdit() {}
 

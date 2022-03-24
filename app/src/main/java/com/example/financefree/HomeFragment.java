@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.financefree.dialogs.BankAccountDialog;
 import com.example.financefree.dialogs.RecurringPaymentDialog;
 import com.example.financefree.fileClasses.BankAccount;
+import com.example.financefree.fileClasses.DataManager;
 import com.example.financefree.structures.parseDate;
 import com.google.android.material.navigation.NavigationView;
 
@@ -103,23 +104,8 @@ public class HomeFragment extends Fragment {
 
         // TODO: Add 5th option
         view.findViewById(R.id.btnOther).setOnClickListener(view1 -> {
-            DialogFragment bankAccountDialog = BankAccountDialog.newInstance(1); //ba.bank_id);
+            DialogFragment bankAccountDialog = BankAccountDialog.newInstance(null, 0);
             bankAccountDialog.show(getActivity().getSupportFragmentManager(), "bad_test");
-
-            // DatabaseAccessor.getBankAccounts().observeOn(Schedulers.io())
-            //         .subscribeOn(AndroidSchedulers.mainThread())
-            //         .subscribe(
-            //                 bankAccounts -> {
-            //                     System.out.println("Room With Rx: "+ "accounts found: " + bankAccounts.size());
-            //                 },
-            //                 throwable -> {
-            //                     System.out.println("Room With Rx: "+ throwable.getMessage());
-            //                 }
-            //         );
-            // Toast.makeText(getContext(), "Account name: " + s, Toast.LENGTH_LONG).show();
-            // RecurringPaymentDialog d = RecurringPaymentDialog.newInstance(null);
-            // d.show(getParentFragmentManager(), null);
-            // Toast.makeText(getContext(),"Name: " + d.name + " | Amount: " + String.valueOf(d.amount), Toast.LENGTH_LONG).show();
         });
 
 

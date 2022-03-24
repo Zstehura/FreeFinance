@@ -158,7 +158,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:labelFor="@id/txtStartDateRecur"
+            android:labelFor="@id/txtNotesRecur"
             android:text="@string/notes"
             android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
