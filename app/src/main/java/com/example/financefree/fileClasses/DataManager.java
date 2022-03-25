@@ -124,12 +124,14 @@ public class DataManager {
                 RecurringPayment rp = new RecurringPayment();
                 rp.name = "Rent";
                 rp.notes = "monthly rent. Notice the amount is a negative because it is a bill";
-                rp.frequencyType = RecurringPayment.FREQ_ON_DATE_MONTHLY;
-                rp.frequencyNum = 1;
-                rp.startDate = parseDate.getLong(0,1,2020);
-                rp.endDate = parseDate.getLong(11,31,2099);
+                Frequency f = new Frequency();
+                f.startDate = parseDate.getLong(0,1,2020);
+                f.endDate = parseDate.getLong(11,31,2099);
+                f.typeOpt = 1;
+                f.iNum = 15;
+                rp.frequency = f;
                 rp.bankId = bid;
-                rp.amount = 500d;
+                rp.amount = -500d;
                 insertRecurringPayment(rp);
 
                 SinglePayment sp = new SinglePayment();
@@ -335,6 +337,7 @@ public class DataManager {
      */
 
     // Todo: Need testing \/
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<payment> getPaymentsOnDate(long date) {
         List<payment> l = new LinkedList<>();
 
@@ -347,17 +350,15 @@ public class DataManager {
 
         for(long id: recurringPayments.keySet()){
             RecurringPayment rp = getRecurringPayment(id);
-            if(rp.startDate <= date && rp.endDate >= date) {
-                if(parseDate.dateIncludedInRp(rp, date)){
-                    payment p = new payment(rp.amount, date, rp.name, rp.bankId, 'r', id);
-                    for(PaymentEdit pe: rp.edits.values()) {
-                        if(pe.editDate == date || pe.newDate == date) {
-                            if(pe.newBankId != 0) p.bankId = pe.newBankId;
-                            if(pe.newAmount != 0)p.amount = pe.newAmount;
-                        }
+            if(parseDate.dateIncludedInRp(rp, date)){
+                payment p = new payment(rp.amount, date, rp.name, rp.bankId, 'r', id);
+                for(PaymentEdit pe: rp.edits.values()) {
+                    if(pe.editDate == date || pe.newDate == date) {
+                        if(pe.newBankId != 0) p.bankId = pe.newBankId;
+                        if(pe.newAmount != 0)p.amount = pe.newAmount;
                     }
-                    l.add(p);
                 }
+                l.add(p);
             }
         }
 
@@ -396,6 +397,24 @@ public class DataManager {
         return l;
     }
 
+    public static Map<Long, String> getBankMap() {
+        Map<Long, String> m = new HashMap<>();
+        for(long id: bankAccounts.keySet()){
+            m.put(id, bankAccounts.get(id).name);
+        }
+        return m;
+    }
+
+    public static String getBankName(long id) {
+        return getBankMap().get(id);
+    }
+
+    /**
+     *
+     * Data Clearing Methods
+     *
+     */
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void clearOldData() {
         // never clear bank accounts, just the statements
@@ -415,7 +434,7 @@ public class DataManager {
 
         for(long id: recurringPayments.keySet()) {
             RecurringPayment rp = getRecurringPayment(id);
-            if(rp.endDate <= date) {
+            if(rp.frequency.endDate <= date) {
                 removeRecurringPayment(id);
             }
             else {

@@ -9,21 +9,55 @@
         android:orientation="horizontal"
         android:columnCount="2">
 
-        <!-- Name -->
+        <!-- Bank Name -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:labelFor="@id/txtNameSing"
+            android:labelFor="@id/txtBankNameStat"
             android:text="@string/name"
             android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
-        <EditText
-            android:id="@+id/txtNameSing"
+        <TextView
+            android:id="@+id/txtBankNameStat"
             android:layout_width="@dimen/dialog_width"
             android:layout_height="wrap_content"
             android:autofillHints=""
-            android:inputType="text"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"/>
+
+        <!-- Date -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtDateStat"
+            android:text="@string/date"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"/>
+
+        <EditText
+            android:id="@+id/txtDateStat"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
+            android:inputType="date"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"/>
+
+        <!-- Amount -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:labelFor="@id/txtAmountStat"
+            android:text="@string/amount"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"/>
+
+        <TextView
+            android:id="@+id/txtAmountStat"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:autofillHints=""
             android:minHeight="48dp"
             android:padding="@dimen/text_margin"/>
     </GridLayout>

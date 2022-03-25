@@ -23,7 +23,7 @@ public final class IdMgr {
         boolean unique = false;
         long newId = rnd.nextLong();
         while(!unique) {
-            if(usedIds.contains(newId)){
+            if(usedIds.contains(newId) && newId != 0){
                 newId = rnd.nextLong();
             }
             else unique = true;

@@ -126,4 +126,6 @@
     <string name="clear_data_older_than">Clear Data Older Than...</string>
     <string name="bank_accounts">Bank Accounts</string>
     <string name="no_end">No end date</string>
+    <string name="bank_account">Bank Account</string>
+    <string name="date">Date</string>
 </resources>

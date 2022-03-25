@@ -1,10 +1,13 @@
 package com.example.financefree;
 
+import android.util.Log;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
 import com.example.financefree.fileClasses.BankAccount;
 import com.example.financefree.fileClasses.DataManager;
+import com.example.financefree.fileClasses.Frequency;
 import com.example.financefree.fileClasses.PaymentEdit;
 import com.example.financefree.fileClasses.RecurringPayment;
 import com.example.financefree.fileClasses.SinglePayment;
@@ -49,10 +52,11 @@ public class JSONTests {
         rp1 = new RecurringPayment();
         rp1.name = "Paycheck";
         rp1.notes = "Example of a positive cashflow";
-        rp1.frequencyType = RecurringPayment.FREQ_EVERY_NUM_DAYS;
-        rp1.frequencyNum = 14;
-        rp1.startDate = parseDate.getLong(1,28,2022);
-        rp1.endDate = parseDate.getLong(1,31,2100);
+        rp1.frequency = new Frequency();
+        rp1.frequency.typeOpt = 3;
+        rp1.frequency.iNum = 2;
+        rp1.frequency.startDate = parseDate.getLong(1,28,2022);
+        rp1.frequency.endDate = parseDate.getLong(1,31,2100);
         rp1.amount = 500d;
         rp1.bankId = baId;
         rp1Id = DataManager.insertRecurringPayment(rp1);
@@ -64,11 +68,12 @@ public class JSONTests {
         rp2 = new RecurringPayment();
         rp2.name = "Rent";
         rp2.notes = "Example of a negative cashflow";
-        rp2.frequencyType = RecurringPayment.FREQ_ON_DATE_MONTHLY;
-        rp2.frequencyNum = 20;
+        rp2.frequency = new Frequency();
+        rp2.frequency.typeOpt = 1;
+        rp2.frequency.iNum = 20;
         rp2.amount = -850d;
-        rp2.startDate = parseDate.getLong(1,1,2018);
-        rp2.endDate = parseDate.getLong(5,15,2022);
+        rp2.frequency.startDate = parseDate.getLong(1,1,2018);
+        rp2.frequency.endDate = parseDate.getLong(5,15,2022);
         rp2.bankId = baId;
         rp2Id = DataManager.insertRecurringPayment(rp2);
 
@@ -129,10 +134,10 @@ public class JSONTests {
         RecurringPayment rpActual1 = DataManager.getRecurringPayment(rp1Id);
         assert rpActual1.name.equals(rp1.name);
         assert rpActual1.notes.equals(rp1.notes);
-        assert rpActual1.frequencyType == rp1.frequencyType;
-        assert rpActual1.frequencyNum == rp1.frequencyNum;
-        assert rpActual1.startDate == rp1.startDate;
-        assert rpActual1.endDate == rp1.endDate;
+        assert rpActual1.frequency.typeOpt == rp1.frequency.typeOpt;
+        assert rpActual1.frequency.iNum == rp1.frequency.iNum;
+        assert rpActual1.frequency.startDate == rp1.frequency.startDate;
+        assert rpActual1.frequency.endDate == rp1.frequency.endDate;
         assert rpActual1.amount == rp1.amount;
         assert rpActual1.bankId == rp1.bankId;
         
@@ -140,10 +145,10 @@ public class JSONTests {
         RecurringPayment rpActual2 = DataManager.getRecurringPayment(rp2Id);
         assert rpActual2.name.equals(rp2.name);
         assert rpActual2.notes.equals(rp2.notes);
-        assert rpActual2.frequencyType == rp2.frequencyType;
-        assert rpActual2.frequencyNum == rp2.frequencyNum;
-        assert rpActual2.startDate == rp2.startDate;
-        assert rpActual2.endDate == rp2.endDate;
+        assert rpActual2.frequency.typeOpt == rp2.frequency.typeOpt;
+        assert rpActual2.frequency.iNum == rp2.frequency.iNum;
+        assert rpActual2.frequency.startDate == rp2.frequency.startDate;
+        assert rpActual2.frequency.endDate == rp2.frequency.endDate;
         assert rpActual2.amount == rp2.amount;
         assert rpActual2.bankId == rp2.bankId;
     }
@@ -227,7 +232,7 @@ public class JSONTests {
 
     @Test
     public void testStatementGetter() {
-        List<statement> s = null;
+        List<statement> s;
         long d = parseDate.getLong(2,1,2022);
         int n = 0;
 
@@ -237,7 +242,6 @@ public class JSONTests {
         assert s.get(n).bankName.equals(ba.name);
         assert s.get(n).bankId == baId;
         assert s.get(n).date == d;
-        // assert s.get(n).amount == 0;
 
         // 2/2   =250   = 250
         d++;

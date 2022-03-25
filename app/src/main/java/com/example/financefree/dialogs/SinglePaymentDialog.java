@@ -16,10 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.structures.BankList;
 import com.example.financefree.structures.payment;
-
-import java.util.List;
 
 public class SinglePaymentDialog extends DialogFragment {
 
@@ -37,7 +34,7 @@ public class SinglePaymentDialog extends DialogFragment {
 
     private SinglePaymentDialogListener listener;
 
-    BankList banks = new BankList();
+    //BankList banks = new BankList();
     String name;
     long date, bankId, spId;
     double amount;
@@ -81,8 +78,8 @@ public class SinglePaymentDialog extends DialogFragment {
 
         // populate BankPicker
         Spinner spnBank = (Spinner) dialog.findViewById(R.id.spnBankIdSing);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, banks.names);
-        spnBank.setAdapter(adapter);
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line, banks.names);
+        //spnBank.setAdapter(adapter);
         spnBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {

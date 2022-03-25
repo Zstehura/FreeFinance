@@ -71,19 +71,6 @@ public class HomeFragment extends Fragment {
         BankAccount ba = new BankAccount();
         ba.name = "Test Account";
         ba.notes = "";
-       // ba.bank_id = parseDate.genID();
-       // DatabaseAccessor.insertBankAccounts(ba);
-
-        //DatabaseAccessor.getBankAccounts().observeOn(Schedulers.io())
-        //        .subscribeOn(AndroidSchedulers.mainThread())
-        //        .subscribe(
-        //                bankAccounts -> {
-        //                    System.out.println("BankAccounts found: " + bankAccounts.size());
-        //                },
-        //                throwable -> {
-        //                    System.out.println("RoomWithRx: "+throwable.getMessage());
-        //                }
-        //        );
 
         view.findViewById(R.id.btnMonthly).setOnClickListener(view1 -> {
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);

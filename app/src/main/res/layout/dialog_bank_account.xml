@@ -7,7 +7,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:columnCount="2">
+        android:columnCount="2"
+        android:layout_gravity="start">
 
         <!-- Name -->
         <TextView
@@ -34,7 +35,8 @@
             android:labelFor="@id/txtNotesBankAcc"
             android:text="@string/notes"
             android:textSize="@dimen/dialog_text_size"
-            android:padding="@dimen/text_margin"/>
+            android:padding="@dimen/text_margin"
+            android:layout_gravity="top"/>
 
         <EditText
             android:id="@+id/txtNotesBankAcc"
@@ -48,6 +50,7 @@
             android:minLines="2"
             android:padding="@dimen/text_margin"
             android:textColorHint="#A1887F"
-            android:verticalScrollbarPosition="right"/>
+            android:verticalScrollbarPosition="right"
+            android:gravity="top"/>
     </GridLayout>
 </ScrollView>
