@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/bankAccountsFragment"
-        android:name="com.example.financefree.BankAccountsFragment"
+        android:name="com.example.financefree.BankAccountFragment"
         android:label="fragment_bank_accounts"
-        tools:layout="@layout/fragment_bank_accounts" />
+        tools:layout="@layout/fragment_bank_account" />
 </navigation>

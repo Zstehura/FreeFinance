@@ -67,11 +67,6 @@ public class DataManager {
     *
      */
 
-    //
-    //  TODO: Replace all Context references with FileInputStream/FileOutputStream
-    //      no more individual files unfortunately, all should be in the same JSON
-    //
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static void initData(Context context) throws IOException, JSONException {
         if(!init) {
@@ -336,7 +331,6 @@ public class DataManager {
     *
      */
 
-    // Todo: Need testing \/
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<payment> getPaymentsOnDate(long date) {
         List<payment> l = new LinkedList<>();
@@ -365,38 +359,42 @@ public class DataManager {
         return l;
     }
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public static statement getStatementOnDate(long date, long bankId){
+        BankAccount ba = getBankAccount(bankId);
+        statement s;
+        if(ba.statements.containsKey(date)){
+            s = new statement(bankId, ba.statements.get(date), date, ba.name);
+        }
+        else {
+            // Find last available statement
+            double lastVal = 0;
+            long lastDate = parseDate.dateNumDaysAgo(memLength);
+            for (long d : ba.statements.keySet()) {
+                if (d > lastDate && d < date) {
+                    lastDate = d;
+                    lastVal = ba.statements.get(d);
+                }
+            }
+            // Calculate forward from there
+            while (lastDate <= date) {
+                for (payment p : getPaymentsOnDate(lastDate)) {
+                    if (p.bankId == bankId) lastVal += p.amount;
+                }
+                lastDate++;
+            }
+            s = new statement(bankId, lastVal, date, ba.name);
+        }
+        return s;
+    }
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<statement> getStatementsOnDate(long date){
         List<statement> l = new LinkedList<>();
 
         for(long id: bankAccounts.keySet()) {
-            BankAccount ba = getBankAccount(id);
-            if(ba.statements.containsKey(date)){
-                statement s = new statement(id, ba.statements.get(date), date, ba.name);
-                l.add(s);
-            }
-            else {
-                // Find last available statement
-                double lastVal = 0;
-                long lastDate = parseDate.dateNumDaysAgo(memLength);
-                for(long d: ba.statements.keySet()) {
-                    if(d > lastDate && d < date) {
-                        lastDate = d;
-                        lastVal = ba.statements.get(d);
-                    }
-                }
-                // Calculate forward from there
-                while(lastDate <= date) {
-                    for(payment p: getPaymentsOnDate(lastDate)) {
-                        if(p.bankId == id) lastVal += p.amount;
-                    }
-                    lastDate++;
-                }
-                l.add(new statement(id, lastVal, date, ba.name));
-            }
+            l.add(getStatementOnDate(date, id));
         }
         return l;
     }
-
     public static Map<Long, String> getBankMap() {
         Map<Long, String> m = new HashMap<>();
         for(long id: bankAccounts.keySet()){
@@ -404,7 +402,6 @@ public class DataManager {
         }
         return m;
     }
-
     public static String getBankName(long id) {
         return getBankMap().get(id);
     }
