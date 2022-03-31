@@ -85,7 +85,6 @@
 
         <!-- Frequency Num -->
         <TextView
-            android:id="@+id/lblFreqNumRecur"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
@@ -93,7 +92,6 @@
             android:padding="@dimen/text_margin"
             android:visibility="gone"/>
         <EditText
-            android:id="@+id/txtFreqNumRecur"
             android:layout_width="@dimen/dialog_width"
             android:layout_height="wrap_content"
             android:autofillHints=""
@@ -149,7 +147,6 @@
             android:padding="@dimen/text_margin"/>
 
         <CheckBox
-            android:id="@+id/chkNoEndRecur"
             android:layout_width="@dimen/dialog_width"
             android:layout_height="wrap_content"
             android:text="@string/no_end"

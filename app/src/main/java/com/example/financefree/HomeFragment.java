@@ -1,6 +1,5 @@
 package com.example.financefree;
 
-import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -9,27 +8,13 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.Toast;
 
+import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.dialogs.BankAccountDialog;
-import com.example.financefree.dialogs.RecurringPaymentDialog;
-import com.example.financefree.fileClasses.BankAccount;
-import com.example.financefree.fileClasses.DataManager;
-import com.example.financefree.structures.parseDate;
-import com.google.android.material.navigation.NavigationView;
-
-import java.util.Objects;
-
-import io.reactivex.Completable;
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * A simple {@link Fragment} subclass.

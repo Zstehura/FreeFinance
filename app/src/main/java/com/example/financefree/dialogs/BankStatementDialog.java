@@ -4,13 +4,9 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,11 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.structures.parseDate;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.example.financefree.structures.DateParser;
 
 public class BankStatementDialog extends DialogFragment {
 
@@ -85,7 +77,7 @@ public class BankStatementDialog extends DialogFragment {
         Bundle args = new Bundle();
 
         args.putDouble(AMOUNT_KEY, amount);
-        args.putString(DATE_KEY, parseDate.getString(date));
+        args.putString(DATE_KEY, DateParser.getString(date));
         args.putString(NAME_KEY, name);
         f.setArguments(args);
 

@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.fileClasses.BankAccount;
+import com.example.financefree.database.entities.BankAccount;
 
 public class BankAccountDialog extends DialogFragment {
     private static final String NAME_KEY = "name";
@@ -27,6 +27,7 @@ public class BankAccountDialog extends DialogFragment {
 
     private BankAccountDialogListener listener;
 
+    public long bankId;
     public EditText bnkName;
     public EditText bnkNotes;
 
@@ -55,6 +56,7 @@ public class BankAccountDialog extends DialogFragment {
         bnkName = dialog.findViewById(R.id.txtNameBankAcc);
         bnkNotes = dialog.findViewById(R.id.txtNotesBankAcc);
         assert getArguments() != null;
+        bankId = getArguments().getLong(ID_KEY);
         bnkName.setText(getArguments().getString(NAME_KEY, ""));
         bnkNotes.setText(getArguments().getString(NOTES_KEY, ""));
 

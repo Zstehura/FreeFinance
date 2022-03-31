@@ -18,11 +18,9 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.fileClasses.DataManager;
-import com.example.financefree.fileClasses.RecurringPayment;
-import com.example.financefree.structures.parseDate;
+import com.example.financefree.database.entities.RecurringPayment;
+import com.example.financefree.structures.DateParser;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
@@ -79,7 +77,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         View dialog = inflater.inflate(R.layout.dialog_recurring_payment,null);
 
         // populate bank & Frequency choices
-        mBanks = DataManager.getBankMap();
+        // mBanks = DataManager.getBankMap();
         //mFreqs = RecurringPayment.getFrequencyTypes();
         spnBank = dialog.findViewById(R.id.spnBankIdRecur);
         spnFreqType = dialog.findViewById(R.id.spnFreqTypeRecur);
@@ -123,8 +121,8 @@ public class RecurringPaymentDialog extends DialogFragment {
         txtName.setText(getArguments().getString(NAME_KEY));
         txtAmount.setText(String.valueOf(getArguments().getDouble(AMOUNT_KEY)));
         txtFrequencyNum.setText(String.valueOf(getArguments().getInt(FREQUENCY_NUM_KEY)));
-        txtEnd.setText(parseDate.getString(getArguments().getLong(END_DATE_KEY)));
-        txtStart.setText(parseDate.getString(getArguments().getLong(START_DATE_KEY)));
+        txtEnd.setText(DateParser.getString(getArguments().getLong(END_DATE_KEY)));
+        txtStart.setText(DateParser.getString(getArguments().getLong(START_DATE_KEY)));
         txtNotes.setText(getArguments().getString(NOTES_KEY));
 
         return new AlertDialog.Builder(getActivity())
@@ -147,8 +145,8 @@ public class RecurringPaymentDialog extends DialogFragment {
             //args.putInt(FREQUENCY_TYPE_KEY, RecurringPayment.FREQ_ON_DATE_MONTHLY);
             args.putInt(FREQUENCY_NUM_KEY, 1);
             args.putDouble(AMOUNT_KEY, 0);
-            args.putLong(START_DATE_KEY, parseDate.getLong(1,1,2020));
-            args.putLong(END_DATE_KEY, parseDate.getLong(1,1,2099));
+            args.putLong(START_DATE_KEY, DateParser.getLong(1,1,2020));
+            args.putLong(END_DATE_KEY, DateParser.getLong(1,1,2099));
             args.putString(NOTES_KEY, "");
             args.putLong(BANK_ID_KEY, 0);
         }
@@ -160,7 +158,7 @@ public class RecurringPaymentDialog extends DialogFragment {
             //args.putLong(START_DATE_KEY, recurringPayment.startDate);
             //args.putLong(END_DATE_KEY, recurringPayment.endDate);
             args.putString(NOTES_KEY, recurringPayment.notes);
-            args.putLong(BANK_ID_KEY, recurringPayment.bankId);
+            args.putLong(BANK_ID_KEY, recurringPayment.bank_id);
         }
 
         f.setArguments(args);

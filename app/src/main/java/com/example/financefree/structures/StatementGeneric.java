@@ -1,13 +1,13 @@
 package com.example.financefree.structures;
 
-public class statement {
-    public statement(){
+public class StatementGeneric {
+    public StatementGeneric(){
         bankId = 0;
         amount = 0;
         date = 0;
         bankName = "";
     }
-    public statement(long bankId, double amount, long date, String bankName){
+    public StatementGeneric(long bankId, double amount, long date, String bankName){
         this.bankId = bankId;
         this.amount = amount;
         this.date = date;

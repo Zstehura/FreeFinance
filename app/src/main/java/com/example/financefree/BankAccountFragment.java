@@ -1,29 +1,27 @@
 package com.example.financefree;
 
-import android.content.Context;
 import android.os.Bundle;
 
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.financefree.recyclers.BankAccountRVContent;
+import com.example.financefree.database.entities.BankAccount;
+import com.example.financefree.dialogs.BankAccountDialog;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
  */
-public class BankAccountFragment extends Fragment {
+public class BankAccountFragment extends Fragment implements BankAccountDialog.BankAccountDialogListener {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private static final int COLUMN_COUNT = 3;
-    // TODO: Customize parameters
-    private int mColumnCount = 3;
+    List<BankAccount> rvItemList;
+    BankAccountRecyclerViewAdapter barva;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -32,23 +30,14 @@ public class BankAccountFragment extends Fragment {
     public BankAccountFragment() {
     }
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static BankAccountFragment newInstance(int columnCount) {
-        BankAccountFragment fragment = new BankAccountFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
+        return new BankAccountFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -56,17 +45,43 @@ public class BankAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_bank_account_list, container, false);
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new BankAccountRecyclerViewAdapter(BankAccountRVContent.ITEMS));
-        }
+        RecyclerView rv = view.findViewById(R.id.recBankAccts);
+        barva = new BankAccountRecyclerViewAdapter(rvItemList);
+        rv.setAdapter(barva);
+
+       // Disposable d = MainActivity.dm.daoBankAccount.getAll().subscribeOn(Schedulers.io())
+       //         .observeOn(AndroidSchedulers.mainThread())
+       //         .subscribe(list -> rvItemList = list,
+       //                 throwable -> Log.e("BankAccountFragment", "ERROR: " + throwable.getMessage()));
+       // d.dispose();
+
+        view.findViewById(R.id.btnAddBank).setOnClickListener(btn -> {
+            BankAccountDialog f = new BankAccountDialog();
+            f.show(this.getChildFragmentManager(), "add_bank");
+        });
+
         return view;
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        if(dialog instanceof BankAccountDialog) {
+            BankAccount eba = new BankAccount();
+            eba.notes = ((BankAccountDialog) dialog).bnkNotes.getText().toString();
+            eba.name = ((BankAccountDialog) dialog).bnkName.getText().toString();
+            eba.bank_id = ((BankAccountDialog) dialog).bankId;
+            // Disposable d = MainActivity.dm.daoBankAccount.insertAll(eba)
+            //         .subscribeOn(Schedulers.io())
+            //         .observeOn(AndroidSchedulers.mainThread())
+            //         .subscribe(() -> Log.d("MainActivity", "Complete: Added " + eba.bankName),
+            //                 throwable -> Log.e("MainAcivity", "Error: " + throwable.getMessage()));
+            // d.dispose();
+
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
     }
 }

@@ -2,7 +2,7 @@ package com.example.financefree.recyclers;
 
 import androidx.annotation.NonNull;
 
-import com.example.financefree.fileClasses.DataManager;
+import com.example.financefree.database.entities.BankAccount;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,31 +19,29 @@ public class BankAccountRVContent {
     /**
      * An array of sample (placeholder) items.
      */
-    public static final List<BankAccountRVItem> ITEMS = new ArrayList<>();
+    private static final List<BankAccountRVItem> ITEMS = new ArrayList<>();
 
     /**
      * A map of sample (placeholder) items, by ID.
      */
     public static final Map<Long, BankAccountRVItem> ITEM_MAP = new HashMap<>();
 
-/*
-    static {
-        // Add some sample items.
-        for (int i = 1; i <= 25; i++) {
-            addItem(createPlaceholderItem(i));
+    public static List<BankAccountRVItem> getItems(List<BankAccount> bankAccountList){
+        for(BankAccount ba: bankAccountList){
+            addItem(createRvItem(ba));
         }
+
+        return ITEMS;
     }
- */
 
     private static void addItem(BankAccountRVItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
     }
 
-    private static BankAccountRVItem createPlaceholderItem(long id) {
+    private static BankAccountRVItem createRvItem(BankAccount eba) {
         int charLim = 25;
-        String sName = DataManager.getBankName(id);
-        String desc = DataManager.getBankAccount(id).notes;
+        String desc = eba.notes;
         if(desc.length() > charLim) {
             StringBuilder str = new StringBuilder();
             for(int i = 0; i < charLim; i++){
@@ -52,7 +50,7 @@ public class BankAccountRVContent {
             desc = str.toString();
         }
 
-        return new BankAccountRVItem(id , sName, desc);
+        return new BankAccountRVItem(eba.bank_id , eba.name, desc);
     }
 
     public static class BankAccountRVItem {

@@ -6,10 +6,14 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.financefree.database.entities.BankAccount;
+import com.example.financefree.recyclers.BankAccountRVContent;
 import com.example.financefree.recyclers.BankAccountRVContent.BankAccountRVItem;
 import com.example.financefree.databinding.FragmentBankAccountBinding;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.annotations.NonNull;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link BankAccountRVItem}.
@@ -19,21 +23,20 @@ public class BankAccountRecyclerViewAdapter extends RecyclerView.Adapter<BankAcc
 
     private final List<BankAccountRVItem> mValues;
 
-    public BankAccountRecyclerViewAdapter(List<BankAccountRVItem> items) {
-        mValues = items;
+    public BankAccountRecyclerViewAdapter(@NonNull List<BankAccount> list) {
+        mValues = BankAccountRVContent.getItems(list);
     }
 
+    @androidx.annotation.NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
+    public ViewHolder onCreateViewHolder(@androidx.annotation.NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(FragmentBankAccountBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false));
-
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText((int) mValues.get(position).id);
+        holder.mIdView.setText(String.valueOf(mValues.get(position).id));
         holder.mContentView.setText(mValues.get(position).details);
     }
 
@@ -49,8 +52,8 @@ public class BankAccountRecyclerViewAdapter extends RecyclerView.Adapter<BankAcc
 
         public ViewHolder(FragmentBankAccountBinding binding) {
             super(binding.getRoot());
-            mIdView = binding.itemNumber;
-            mContentView = binding.content;
+            mIdView = binding.lblName;
+            mContentView = binding.lblDesc;
         }
 
         @Override

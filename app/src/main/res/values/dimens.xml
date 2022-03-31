@@ -6,4 +6,5 @@
     <dimen name="button_square_side">150dp</dimen>
     <dimen name="settings_button_height">100dp</dimen>
     <dimen name="settings_button_side">332dp</dimen>
+    <dimen name="fab_margin">25dp</dimen>
 </resources>

@@ -4,16 +4,14 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.financefree.fileClasses.Frequency;
-import com.example.financefree.fileClasses.PaymentEdit;
-import com.example.financefree.fileClasses.RecurringPayment;
+import com.example.financefree.database.entities.PaymentEdit;
+import com.example.financefree.database.entities.RecurringPayment;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
-public final class parseDate {
-    private parseDate(){}
+public final class DateParser {
+    private DateParser(){}
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static long getLong(GregorianCalendar gc){
@@ -57,16 +55,16 @@ public final class parseDate {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static boolean dateIncludedInRp(RecurringPayment rp, long date) {
         // Check edits, if its in there, then no need to calculate anything
-        for(PaymentEdit edit: rp.edits.values()) {
-            if(edit.newDate == date) return true;
-            if(edit.editDate == date && edit.newDate != 0) return false;
-            if(edit.editDate == date && edit.skip) return false;
-        }
+        // for(PaymentEdit edit: rp.edits.values()) {
+        //     if(edit.newDate == date) return true;
+        //     if(edit.editDate == date && edit.newDate != 0) return false;
+        //     if(edit.editDate == date && edit.skip) return false;
+        // }
         if(date == 19079) {
             int x = 10;
         }
         // no help with edits, do calculations
-        return rp.frequency.occursOn(date);
+        return false;// rp.frequency.occursOn(date);
     }
 
 }

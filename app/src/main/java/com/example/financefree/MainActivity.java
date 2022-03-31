@@ -9,18 +9,16 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.financefree.fileClasses.DataManager;
+import com.example.financefree.database.DatabaseManager;
+import com.example.financefree.dialogs.BankAccountDialog;
 import com.google.android.material.navigation.NavigationView;
-
-import org.json.JSONException;
-
-import java.io.IOException;
 
 /**
  *
@@ -28,12 +26,12 @@ import java.io.IOException;
  *
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BankAccountDialog.BankAccountDialogListener {
 
     public static final String DATABASE_NAME = "finance_data";
     AppBarConfiguration appBarConfiguration;
 
-   // public DatabaseAccessor dba;
+    public static DatabaseManager dm;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -42,11 +40,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // initialize Files
-        try {
-            DataManager.initData(this);
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
+        // try {
+        //     DataManager.initData(this);
+        // } catch (IOException | JSONException e) {
+        //     e.printStackTrace();
+        // }
+
+        // Get database
+        dm = new DatabaseManager(this.getApplication());
 
         // Set navigation
         Toolbar tb = findViewById(R.id.toolbar);
@@ -127,11 +128,7 @@ public class MainActivity extends AppCompatActivity {
             DatabaseAccessor.db.singlePaymentDao().insertAll(sp);
         }
 */
-
-
-
     }
-
 
     @Override
     protected void onStop() {
@@ -142,6 +139,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
         return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // Do nothing
     }
 
 }

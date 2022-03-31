@@ -1,19 +1,12 @@
 package com.example.financefree;
 
-import android.util.Log;
-
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.financefree.fileClasses.BankAccount;
-import com.example.financefree.fileClasses.DataManager;
-import com.example.financefree.fileClasses.Frequency;
-import com.example.financefree.fileClasses.PaymentEdit;
-import com.example.financefree.fileClasses.RecurringPayment;
-import com.example.financefree.fileClasses.SinglePayment;
-import com.example.financefree.structures.parseDate;
-import com.example.financefree.structures.payment;
-import com.example.financefree.structures.statement;
+import com.example.financefree.structures.Frequency;
+import com.example.financefree.structures.DateParser;
+import com.example.financefree.structures.PaymentGeneric;
+import com.example.financefree.structures.StatementGeneric;
 
 import org.json.JSONException;
 import org.junit.After;
@@ -27,6 +20,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class JSONTests {
     static long baId, rp1Id, rp2Id;
+    /*
     static BankAccount ba;
     static PaymentEdit pe1, pe2;
     static RecurringPayment rp1, rp2;
@@ -41,8 +35,8 @@ public class JSONTests {
         ba = new BankAccount();
         ba.name = "First Bank";
         ba.notes = "This is a new bank with a lot of interesting things!";
-        ba.statements.put(parseDate.getLong(2,2,2022), 250d);   // 2/2  = 250
-        ba.statements.put(parseDate.getLong(2,15, 2022), 900d); // 2/15 = 900
+        ba.statements.put(DateParser.getLong(2,2,2022), 250d);   // 2/2  = 250
+        ba.statements.put(DateParser.getLong(2,15, 2022), 900d); // 2/15 = 900
         baId = DataManager.insertBankAccount(ba);
 
         // Should come up on    2/14 & 2/28
@@ -55,8 +49,8 @@ public class JSONTests {
         rp1.frequency = new Frequency();
         rp1.frequency.typeOpt = 3;
         rp1.frequency.iNum = 2;
-        rp1.frequency.startDate = parseDate.getLong(1,28,2022);
-        rp1.frequency.endDate = parseDate.getLong(1,31,2100);
+        rp1.frequency.startDate = DateParser.getLong(1,28,2022);
+        rp1.frequency.endDate = DateParser.getLong(1,31,2100);
         rp1.amount = 500d;
         rp1.bankId = baId;
         rp1Id = DataManager.insertRecurringPayment(rp1);
@@ -72,27 +66,27 @@ public class JSONTests {
         rp2.frequency.typeOpt = 1;
         rp2.frequency.iNum = 20;
         rp2.amount = -850d;
-        rp2.frequency.startDate = parseDate.getLong(1,1,2018);
-        rp2.frequency.endDate = parseDate.getLong(5,15,2022);
+        rp2.frequency.startDate = DateParser.getLong(1,1,2018);
+        rp2.frequency.endDate = DateParser.getLong(5,15,2022);
         rp2.bankId = baId;
         rp2Id = DataManager.insertRecurringPayment(rp2);
 
         pe1 = new PaymentEdit();
-        pe1.editDate = parseDate.getLong(2,14,2022);
+        pe1.editDate = DateParser.getLong(2,14,2022);
         pe1.newAmount = 515d;
-        pe1.newDate = parseDate.getLong(2,18,2022);
+        pe1.newDate = DateParser.getLong(2,18,2022);
         rp1.edits.put(pe1.editDate, pe1);
         DataManager.updateRecurringPayment(rp1, rp1Id);
 
         pe2 = new PaymentEdit();
-        pe2.editDate = parseDate.getLong(2,20,2022);
-        pe2.newDate = parseDate.getLong(2,19,2022);
+        pe2.editDate = DateParser.getLong(2,20,2022);
+        pe2.newDate = DateParser.getLong(2,19,2022);
         rp2.edits.put(pe2.editDate, pe2);
         DataManager.updateRecurringPayment(rp2, rp2Id);
 
         // 2/10 = -30
         sp1 = new SinglePayment();
-        sp1.date = parseDate.getLong(2,10,2022);
+        sp1.date = DateParser.getLong(2,10,2022);
         sp1.amount = -30d;
         sp1.name = "Date night";
         sp1.notes = "Going to a restaurant";
@@ -105,7 +99,7 @@ public class JSONTests {
         sp2.notes = "My old one broke, oops";
         sp2.name = "New phone";
         sp2.amount = -120d;
-        sp2.date = parseDate.getLong(2,5,2022);
+        sp2.date = DateParser.getLong(2,5,2022);
         DataManager.insertSinglePayment(sp2);
     }
 
@@ -176,7 +170,7 @@ public class JSONTests {
     public void testPaymentGetter(){
         // 2/5  = -120
         // 's'  noId
-        List<payment> pActual205 = DataManager.getPaymentsOnDate(parseDate.getLong(2,5,2022));
+        List<PaymentGeneric> pActual205 = DataManager.getPaymentsOnDate(DateParser.getLong(2,5,2022));
         assert pActual205.size() == 1;
         assert pActual205.get(0).amount == -120d;
         assert pActual205.get(0).name.equals(sp2.name);
@@ -185,7 +179,7 @@ public class JSONTests {
 
         // 2/10 = -30
         // 's' noId
-        List<payment> pActual210 = DataManager.getPaymentsOnDate(parseDate.getLong(2,10,2022));
+        List<PaymentGeneric> pActual210 = DataManager.getPaymentsOnDate(DateParser.getLong(2,10,2022));
         assert pActual210.size() == 1;
         assert pActual210.get(0).amount == -30d;
         assert pActual210.get(0).name.equals(sp1.name);
@@ -193,12 +187,12 @@ public class JSONTests {
         assert pActual210.get(0).cType == 's';
 
         // 2/14 = 0
-        List<payment> pActual214 = DataManager.getPaymentsOnDate(parseDate.getLong(2,14,2022));
+        List<PaymentGeneric> pActual214 = DataManager.getPaymentsOnDate(DateParser.getLong(2,14,2022));
         assert pActual214.size() == 0;
 
         // 2/18 = 515
         // 'r'  rp1Id
-        List<payment> pActual218 = DataManager.getPaymentsOnDate(parseDate.getLong(2,18,2022));
+        List<PaymentGeneric> pActual218 = DataManager.getPaymentsOnDate(DateParser.getLong(2,18,2022));
         assert pActual218.size() == 1;
         assert pActual218.get(0).amount == 515d;
         assert pActual218.get(0).name.equals(rp1.name);
@@ -208,7 +202,7 @@ public class JSONTests {
 
         // 2/19 = -850
         // 'r'  rp2Id
-        List<payment> pActual219 = DataManager.getPaymentsOnDate(parseDate.getLong(2,19,2022));
+        List<PaymentGeneric> pActual219 = DataManager.getPaymentsOnDate(DateParser.getLong(2,19,2022));
         assert pActual219.size() == 1;
         assert pActual219.get(0).amount == -850d;
         assert pActual219.get(0).name.equals(rp2.name);
@@ -217,11 +211,11 @@ public class JSONTests {
         assert pActual219.get(0).id == rp2Id;
 
         // 2/20 = 0
-        List<payment> pActual220 = DataManager.getPaymentsOnDate(parseDate.getLong(2,20,2022));
+        List<PaymentGeneric> pActual220 = DataManager.getPaymentsOnDate(DateParser.getLong(2,20,2022));
         assert pActual220.size() == 0;
 
         // 2/28 = 500
-        List<payment> pActual228 = DataManager.getPaymentsOnDate(parseDate.getLong(2,28,2022));
+        List<PaymentGeneric> pActual228 = DataManager.getPaymentsOnDate(DateParser.getLong(2,28,2022));
         assert pActual228.size() == 1;
         assert pActual228.get(0).amount == 500d;
         assert pActual228.get(0).name.equals(rp1.name);
@@ -232,8 +226,8 @@ public class JSONTests {
 
     @Test
     public void testStatementGetter() {
-        List<statement> s;
-        long d = parseDate.getLong(2,1,2022);
+        List<StatementGeneric> s;
+        long d = DateParser.getLong(2,1,2022);
         int n = 0;
 
         // 2/1
@@ -488,5 +482,7 @@ public class JSONTests {
         testPaymentGetter();
         testBankAccount();
     }
+
+     */
 
 }

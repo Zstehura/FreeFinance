@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.CalendarView;
 import android.widget.TextView;
 
-import com.example.financefree.structures.parseDate;
+import com.example.financefree.structures.DateParser;
 
 
 /**
@@ -56,7 +56,7 @@ public class CalendarFragment extends Fragment {
         // TODO: Make this actually work
         cv.setOnDateChangeListener((calendarView, iYear, iMonth, iDay) -> {
             // currentDate = parseDate.getLong(iMonth, iDay, iYear);
-            tv.setText(parseDate.getString(currentDate));
+            tv.setText(DateParser.getString(currentDate));
             // rv.setAdapter(new MyDailyRecyclerViewAdapter(currentDate));
         });
 

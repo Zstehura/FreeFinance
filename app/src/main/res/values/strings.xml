@@ -1,16 +1,10 @@
 <resources>
-    <string name="preference_file_key">com.example.financefree.appdata</string>
     <string name="app_name">FinanceFree</string>
     <!-- Preference Titles -->
-    <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails</string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -106,7 +100,6 @@
     <string name="settings">Settings</string>
     <string name="recurring_payments">Recurring Payments</string>
     <string name="home">Home</string>
-    <string name="ok">Okay</string>
     <string name="cancel">Cancel</string>
     <string name="Calendar">Monthly</string>
     <string name="clear_all_data">Clear All Data</string>
@@ -118,7 +111,6 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="notes">Notes</string>
-    <string name="notes_hint">Notes: Remember NEVER save sensitive data (like account numbers and passwords) in this app!</string>
     <string name="monthly">Monthly\n View</string>
     <string name="payments">View Payments</string>
     <string name="BankLists">View Banks</string>
@@ -128,4 +120,5 @@
     <string name="no_end">No end date</string>
     <string name="bank_account">Bank Account</string>
     <string name="date">Date</string>
+    <string name="add_new_bank_account">Add new Bank account</string>
 </resources>

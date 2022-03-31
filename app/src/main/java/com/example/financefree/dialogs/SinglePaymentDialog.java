@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -16,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.structures.payment;
+import com.example.financefree.structures.PaymentGeneric;
 
 public class SinglePaymentDialog extends DialogFragment {
 
@@ -107,7 +106,7 @@ public class SinglePaymentDialog extends DialogFragment {
         return builder.create();
     }
 
-    public static SinglePaymentDialog newInstance(payment p){
+    public static SinglePaymentDialog newInstance(PaymentGeneric p){
         SinglePaymentDialog f = new SinglePaymentDialog();
         Bundle args = new Bundle();
 
