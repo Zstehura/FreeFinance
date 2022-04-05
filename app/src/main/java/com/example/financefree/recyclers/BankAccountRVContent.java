@@ -16,27 +16,29 @@ import java.util.Map;
  */
 public class BankAccountRVContent {
 
-    /**
-     * An array of sample (placeholder) items.
-     */
     private static final List<BankAccountRVItem> ITEMS = new ArrayList<>();
 
-    /**
-     * A map of sample (placeholder) items, by ID.
-     */
     public static final Map<Long, BankAccountRVItem> ITEM_MAP = new HashMap<>();
 
+    public static List<BankAccountRVItem> getItems(){return ITEMS;}
     public static List<BankAccountRVItem> getItems(List<BankAccount> bankAccountList){
+        ITEMS.clear();
         for(BankAccount ba: bankAccountList){
             addItem(createRvItem(ba));
         }
-
         return ITEMS;
     }
 
     private static void addItem(BankAccountRVItem item) {
         ITEMS.add(item);
         ITEM_MAP.put(item.id, item);
+    }
+    public static void addItem(BankAccount item) {
+        addItem(createRvItem(item));
+    }
+    public static void updateItem(BankAccount item) {
+        ITEMS.remove(ITEM_MAP.get(item.bank_id));
+        addItem(item);
     }
 
     private static BankAccountRVItem createRvItem(BankAccount eba) {

@@ -12,18 +12,23 @@ import java.util.List;
 
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Maybe;
+import io.reactivex.rxjava3.core.Observable;
 
 @Dao
 public interface DaoBankAccount {
     @Insert
-    Completable insertAll(BankAccount...ba);
+    void insertAll(BankAccount...ba);
     @Delete
-    Completable delete(BankAccount ba);
+    void delete(BankAccount ba);
     @Update
-    Completable update(BankAccount ba);
+    void update(BankAccount ba);
 
+    @Query("DELETE FROM BankAccount WHERE bank_id == :id")
+    void deleteById(long id);
+    @Query("DELETE FROM BankAccount WHERE 1 == 1")
+    void deleteAll();
     @Query("SELECT * FROM BankAccount WHERE bank_id == :id")
-    Maybe<BankAccount> getBankAccount(long id);
+    BankAccount getBankAccount(long id);
     @Query("SELECT * FROM BankAccount")
-    Maybe<List<BankAccount>> getAll();
+    List<BankAccount> getAll();
 }

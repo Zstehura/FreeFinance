@@ -76,8 +76,7 @@ public class HomeFragment extends Fragment {
 
         // TODO: Add 5th option
         view.findViewById(R.id.btnOther).setOnClickListener(view1 -> {
-            DialogFragment bankAccountDialog = BankAccountDialog.newInstance(null, 0);
-            bankAccountDialog.show(getActivity().getSupportFragmentManager(), "bad_test");
+
         });
 
 

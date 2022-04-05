@@ -36,7 +36,7 @@ public class DBTest {
         // databaseManager.daoBankAccount.insertAll(ba);
 
         TestObserver<List<BankAccount>> sub = new TestObserver<>();
-        databaseManager.allBanksObs().subscribe(sub);
+        //databaseManager.allBanksObs().subscribe(sub);
         sub.assertComplete().assertValueCount(1);
     }
 

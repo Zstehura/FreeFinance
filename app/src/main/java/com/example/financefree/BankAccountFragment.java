@@ -6,13 +6,18 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.dialogs.BankAccountDialog;
+import com.example.financefree.recyclers.BankAccountRVContent;
+import com.example.financefree.recyclers.BankAccountRecyclerViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +26,7 @@ import java.util.List;
 public class BankAccountFragment extends Fragment implements BankAccountDialog.BankAccountDialogListener {
 
     List<BankAccount> rvItemList;
+    RecyclerView rv;
     BankAccountRecyclerViewAdapter barva;
 
     /**
@@ -43,20 +49,23 @@ public class BankAccountFragment extends Fragment implements BankAccountDialog.B
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        final List<BankAccount> list = new ArrayList<>();
+        Thread t = new Thread(() -> list.addAll(DatabaseManager.getBankAccountDao().getAll()));
+        t.start();
         View view = inflater.inflate(R.layout.fragment_bank_account_list, container, false);
 
-        RecyclerView rv = view.findViewById(R.id.recBankAccts);
-        barva = new BankAccountRecyclerViewAdapter(rvItemList);
+        rv = view.findViewById(R.id.recBankAccts);
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        barva = new BankAccountRecyclerViewAdapter(list);
         rv.setAdapter(barva);
 
-       // Disposable d = MainActivity.dm.daoBankAccount.getAll().subscribeOn(Schedulers.io())
-       //         .observeOn(AndroidSchedulers.mainThread())
-       //         .subscribe(list -> rvItemList = list,
-       //                 throwable -> Log.e("BankAccountFragment", "ERROR: " + throwable.getMessage()));
-       // d.dispose();
-
         view.findViewById(R.id.btnAddBank).setOnClickListener(btn -> {
-            BankAccountDialog f = new BankAccountDialog();
+            BankAccountDialog f = BankAccountDialog.newInstance(null, 0, barva.getItemCount());
+            Log.d("BAFrag", "Dialog created");
             f.show(this.getChildFragmentManager(), "add_bank");
         });
 
@@ -64,24 +73,30 @@ public class BankAccountFragment extends Fragment implements BankAccountDialog.B
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-        if(dialog instanceof BankAccountDialog) {
-            BankAccount eba = new BankAccount();
-            eba.notes = ((BankAccountDialog) dialog).bnkNotes.getText().toString();
-            eba.name = ((BankAccountDialog) dialog).bnkName.getText().toString();
-            eba.bank_id = ((BankAccountDialog) dialog).bankId;
-            // Disposable d = MainActivity.dm.daoBankAccount.insertAll(eba)
-            //         .subscribeOn(Schedulers.io())
-            //         .observeOn(AndroidSchedulers.mainThread())
-            //         .subscribe(() -> Log.d("MainActivity", "Complete: Added " + eba.bankName),
-            //                 throwable -> Log.e("MainAcivity", "Error: " + throwable.getMessage()));
-            // d.dispose();
+    public void onBADialogPositiveClick(BankAccountDialog dialog) {
+        Log.d("BAFrag", "Dialog Positive Click");
+        if(dialog != null) {
+            BankAccount ba = new BankAccount();
+            Thread t;
+            if(dialog.isNew) t = new Thread(() -> DatabaseManager.getBankAccountDao().insertAll(ba));
+            else t = new Thread(() -> DatabaseManager.getBankAccountDao().update(ba));
+            ba.notes = ((BankAccountDialog) dialog).bnkNotes.getText().toString();
+            ba.name = ((BankAccountDialog) dialog).bnkName.getText().toString();
+            ba.bank_id = ((BankAccountDialog) dialog).bankId;
+            t.start();
 
+            if(dialog.isNew) barva.notifyItemRangeInserted(dialog.position, 1);
+            else barva.notifyItemChanged(dialog.position);
+            BankAccountRVContent.addItem(ba);
+
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-
-    }
+    public void onBADialogNegativeClick(BankAccountDialog dialog) {}
 }

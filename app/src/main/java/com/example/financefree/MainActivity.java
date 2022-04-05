@@ -2,6 +2,7 @@ package com.example.financefree;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -17,7 +18,9 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.financefree.database.DatabaseManager;
+import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.dialogs.BankAccountDialog;
+import com.example.financefree.recyclers.BankAccountRVContent;
 import com.google.android.material.navigation.NavigationView;
 
 /**
@@ -141,15 +144,32 @@ public class MainActivity extends AppCompatActivity implements BankAccountDialog
         return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
+    public void onBADialogPositiveClick(BankAccountDialog dialog) {
+        if(dialog != null) {
+            BankAccount ba = new BankAccount();
+            Thread t;
+            if(dialog.isNew) t = new Thread(() -> DatabaseManager.getBankAccountDao().insertAll(ba));
+            else t = new Thread(() -> DatabaseManager.getBankAccountDao().update(ba));
+            ba.notes = ((BankAccountDialog) dialog).bnkNotes.getText().toString();
+            ba.name = ((BankAccountDialog) dialog).bnkName.getText().toString();
+            ba.bank_id = ((BankAccountDialog) dialog).bankId;
+            t.start();
 
+            //if(dialog.isNew) barva.notifyItemRangeInserted(dialog.position, 1);
+            //else barva.notifyItemChanged(dialog.position);
+            BankAccountRVContent.addItem(ba);
+
+            try {
+                t.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
-        // Do nothing
-    }
+    public void onBADialogNegativeClick(BankAccountDialog dialog) {
 
+    }
 }
