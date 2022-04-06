@@ -1,8 +1,5 @@
 package com.example.financefree.recyclers;
 
-import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,25 +8,30 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.BankAccount;
+import com.example.financefree.databinding.FragmentBankAccountBinding;
 import com.example.financefree.dialogs.BankAccountDialog;
 import com.example.financefree.recyclers.BankAccountRVContent.BankAccountRVItem;
-import com.example.financefree.databinding.FragmentBankAccountBinding;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 
+// >>>>> TODO: Refactor for Recurring Payment
+
 /**
  * {@link RecyclerView.Adapter} that can display a {@link BankAccountRVItem}.
  */
-public class BankAccountRecyclerViewAdapter extends RecyclerView.Adapter<BankAccountRecyclerViewAdapter.ViewHolder> {
+public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<RecurringPaymentRecyclerViewAdapter.ViewHolder> {
     public List<BankAccountRVItem> mValues;
     private final ViewHolder.BARClickListener listener;
 
-    public BankAccountRecyclerViewAdapter(List<BankAccount> list, ViewHolder.BARClickListener listener) {
+    public RecurringPaymentRecyclerViewAdapter(List<BankAccount> list, ViewHolder.BARClickListener listener) {
         Log.d("BADialog", "Initializing");
         this.listener = listener;
         mValues = BankAccountRVContent.getItems(list);

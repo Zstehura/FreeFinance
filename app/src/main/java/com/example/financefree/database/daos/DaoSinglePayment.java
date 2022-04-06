@@ -11,26 +11,23 @@ import com.example.financefree.database.entities.SinglePayment;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Maybe;
-
 @Dao
 public interface DaoSinglePayment {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertAll(SinglePayment...sp);
+    long insert(SinglePayment sp);
     @Delete
-    Completable delete(SinglePayment sp);
+    void delete(SinglePayment sp);
     @Update
-    Completable update(SinglePayment sp);
+    void update(SinglePayment sp);
 
     @Query("SELECT * FROM SinglePayment")
-    Maybe<List<SinglePayment>> getAll();
+    List<SinglePayment> getAll();
     @Query("SELECT * FROM SinglePayment WHERE sp_id == :id")
-    Maybe<SinglePayment> getPayment(long id);
+    SinglePayment getPayment(long id);
     @Query("SELECT * FROM SinglePayment WHERE bank_id == :id")
-    Maybe<List<SinglePayment>> getAllForBank(long id);
+    List<SinglePayment> getAllForBank(long id);
     @Query("SELECT * FROM SinglePayment WHERE date == :date")
-    Maybe<List<SinglePayment>> getAllOnDate(long date);
+    List<SinglePayment> getAllOnDate(long date);
     @Query("SELECT * FROM SinglePayment WHERE date == :date AND bank_id == :id")
-    Maybe<List<SinglePayment>> getAllOnDateForBank(long id, long date);
+    List<SinglePayment> getAllOnDateForBank(long id, long date);
 }

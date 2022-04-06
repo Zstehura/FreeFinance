@@ -7,6 +7,10 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.example.financefree.database.daos.DaoBankAccount;
+import com.example.financefree.database.daos.DaoBankStatement;
+import com.example.financefree.database.daos.DaoPaymentEdit;
+import com.example.financefree.database.daos.DaoRecurringPayment;
+import com.example.financefree.database.daos.DaoSinglePayment;
 import com.example.financefree.database.entities.BankAccount;
 
 import java.io.IOException;
@@ -31,42 +35,10 @@ public class DatabaseManager extends AndroidViewModel {
     public static DaoBankAccount getBankAccountDao(){
         return db.daoBankAccount();
     }
-
-    /*
-    public void clearDatabase() {
-        db.daoBankAccount().deleteAll().blockingAwait(1, TimeUnit.SECONDS);
-    }
-
-    public void insert(BankAccount ba) {
-        db.daoBankAccount().insertAll(ba)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .blockingAwait(1, TimeUnit.SECONDS);
-    }
-
-    public Observable<List<BankAccount>> getBankListObs() {
-        return db.daoBankAccount().getAll()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .toObservable();
-    }
-
-    public BankAccount getBankAccount(long id) {
-        return db.daoBankAccount().getBankAccount(id)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .blockingGet(new BankAccount());
-    }
-
-    public List<BankAccount> getAllBanks() {
-        return db.daoBankAccount().getAll()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
-                .blockingGet(new ArrayList<>());
-    }
-
-     */
+    public static DaoBankStatement getBankStatementDao() {return db.daoBankStatement();}
+    public static DaoRecurringPayment getRecurringPaymentDao() {return db.daoRecurringPayment();}
+    public static DaoSinglePayment getSinglePaymentDao() {return db.daoSinglePayment();}
+    public static DaoPaymentEdit getPaymentEdit() {return db.daoPaymentEdit();}
 
     public void close() {db.close();}
-
 }

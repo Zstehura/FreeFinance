@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/lblName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="@dimen/dialog_text_size"/>
+
+        <TextView
+            android:id="@+id/txtNameBADet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:textSize="@dimen/dialog_subtext_size"/>
+
+        <TextView
+            android:id="@+id/lblDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notes"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="@dimen/dialog_text_size"/>
+
+        <TextView
+            android:id="@+id/txtNotesBADet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:textSize="@dimen/dialog_subtext_size"/>
+
+    </LinearLayout>
+</ScrollView>

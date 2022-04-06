@@ -12,12 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+// >>>>>> TODO: Refactor for Recurring Payment
+
 /**
  * Helper class for providing sample content for user interfaces created by
  * Android template wizards.
  * <p>
  */
-public class BankAccountRVContent {
+public class RecurringPaymentRVContent {
 
     private static final List<BankAccountRVItem> ITEMS = new ArrayList<>();
 

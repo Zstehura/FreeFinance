@@ -45,6 +45,10 @@ public class BankAccountDialog extends DialogFragment {
         }
     }
 
+    public void setListener(BankAccountDialogListener listener) {
+        this.listener = listener;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -17,7 +17,7 @@ import io.reactivex.rxjava3.core.Observable;
 @Dao
 public interface DaoBankAccount {
     @Insert
-    void insertAll(BankAccount...ba);
+    long insert(BankAccount ba);
     @Delete
     void delete(BankAccount ba);
     @Update
@@ -31,4 +31,6 @@ public interface DaoBankAccount {
     BankAccount getBankAccount(long id);
     @Query("SELECT * FROM BankAccount")
     List<BankAccount> getAll();
+    @Query("SELECT * FROM BankAccount ORDER BY bank_id DESC LIMIT 1")
+    BankAccount getLast();
 }

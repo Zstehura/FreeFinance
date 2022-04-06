@@ -1,8 +1,10 @@
 package com.example.financefree;
 
+import android.app.AlertDialog;
+import android.os.Build;
 import android.os.Bundle;
 
-import androidx.fragment.app.DialogFragment;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,8 +15,8 @@ import android.view.ViewGroup;
 
 import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.BankAccount;
+import com.example.financefree.dialogs.BADetailsDialog;
 import com.example.financefree.dialogs.BankAccountDialog;
-import com.example.financefree.recyclers.BankAccountRVContent;
 import com.example.financefree.recyclers.BankAccountRecyclerViewAdapter;
 
 import java.util.ArrayList;
@@ -25,7 +27,6 @@ import java.util.List;
  */
 public class BankAccountFragment extends Fragment implements BankAccountDialog.BankAccountDialogListener {
 
-    List<BankAccount> rvItemList;
     RecyclerView rv;
     BankAccountRecyclerViewAdapter barva;
 
@@ -33,11 +34,9 @@ public class BankAccountFragment extends Fragment implements BankAccountDialog.B
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public BankAccountFragment() {
-    }
+    public BankAccountFragment() {}
 
-    @SuppressWarnings("unused")
-    public static BankAccountFragment newInstance(int columnCount) {
+    public static BankAccountFragment newInstance() {
         return new BankAccountFragment();
     }
 
@@ -60,40 +59,66 @@ public class BankAccountFragment extends Fragment implements BankAccountDialog.B
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        barva = new BankAccountRecyclerViewAdapter(list);
+        barva = new BankAccountRecyclerViewAdapter(list, new BankAccountRecyclerViewAdapter.ViewHolder.BARClickListener() {
+            @Override
+            public void OnBARowClick(int position) {
+                long id = barva.getItemId(position);
+                final BankAccount[] ba = new BankAccount[1];
+                Thread t = new Thread(() -> ba[0] = DatabaseManager.getBankAccountDao().getBankAccount(barva.getItemId(position)));
+                t.start();
+                try {t.join();}
+                catch (InterruptedException e) {e.printStackTrace();}
+                BADetailsDialog baDetailsDialog = BADetailsDialog.newInstance(ba[0]);
+                baDetailsDialog.show(getChildFragmentManager(), "BankAccountDetails");
+            }
+
+            @Override
+            public void OnBADeleteClick(int position) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext())
+                        .setTitle("Are you sure you'd like to delete " + barva.getItemName(position) + "?")
+                        .setPositiveButton("Delete", (dialogInterface, i) -> {
+                            Thread t = new Thread(() -> DatabaseManager.getBankAccountDao().deleteById(barva.getItemId(position)));
+                            t.start();
+                            try {t.join();}
+                            catch (InterruptedException e) {e.printStackTrace();}
+                            barva.remove(position);
+                        })
+                        .setNegativeButton("Cancel", (dialogInterface, i) -> {})
+                        .create();
+                alertDialog.show();
+            }
+
+            @Override
+            public void OnBAEditClick(int position) {
+                long id = barva.getItemId(position);
+                final BankAccount[] ba = new BankAccount[1];
+                Thread t = new Thread(() -> ba[0] = DatabaseManager.getBankAccountDao().getBankAccount(id));
+                t.start();
+                try {t.join();}
+                catch (InterruptedException e) {e.printStackTrace();}
+                BankAccountDialog bankAccountDialog = BankAccountDialog.newInstance(ba[0],id, position);
+                bankAccountDialog.setListener(BankAccountFragment.this);
+                bankAccountDialog.show(getParentFragmentManager(),"BankAccountEdit");
+            }
+        });
         rv.setAdapter(barva);
 
         view.findViewById(R.id.btnAddBank).setOnClickListener(btn -> {
             BankAccountDialog f = BankAccountDialog.newInstance(null, 0, barva.getItemCount());
             Log.d("BAFrag", "Dialog created");
-            f.show(this.getChildFragmentManager(), "add_bank");
+            f.setListener(this);
+            f.show(getParentFragmentManager(), "add_bank");
         });
 
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBADialogPositiveClick(BankAccountDialog dialog) {
         Log.d("BAFrag", "Dialog Positive Click");
         if(dialog != null) {
-            BankAccount ba = new BankAccount();
-            Thread t;
-            if(dialog.isNew) t = new Thread(() -> DatabaseManager.getBankAccountDao().insertAll(ba));
-            else t = new Thread(() -> DatabaseManager.getBankAccountDao().update(ba));
-            ba.notes = ((BankAccountDialog) dialog).bnkNotes.getText().toString();
-            ba.name = ((BankAccountDialog) dialog).bnkName.getText().toString();
-            ba.bank_id = ((BankAccountDialog) dialog).bankId;
-            t.start();
-
-            if(dialog.isNew) barva.notifyItemRangeInserted(dialog.position, 1);
-            else barva.notifyItemChanged(dialog.position);
-            BankAccountRVContent.addItem(ba);
-
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            barva.setItem(dialog);
         }
     }
 

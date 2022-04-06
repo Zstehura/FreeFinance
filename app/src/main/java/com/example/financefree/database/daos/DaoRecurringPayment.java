@@ -11,24 +11,21 @@ import com.example.financefree.database.entities.RecurringPayment;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Maybe;
-
 @Dao
 public interface DaoRecurringPayment {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertAll(RecurringPayment...rp);
+    long insert(RecurringPayment rp);
     @Delete
-    Completable delete(RecurringPayment rp);
+    void delete(RecurringPayment rp);
     @Update
-    Completable update(RecurringPayment rp);
+    void update(RecurringPayment rp);
 
     @Query("SELECT * FROM RecurringPayment")
-    Maybe<List<RecurringPayment>> getAll();
+    List<RecurringPayment> getAll();
     @Query("SELECT * FROM RecurringPayment WHERE rp_id == :id")
-    Maybe<RecurringPayment> getRecurringPayment(long id);
+    RecurringPayment getRecurringPayment(long id);
     @Query("SELECT * FROM RecurringPayment WHERE bank_id == :id")
-    Maybe<List<RecurringPayment>> getBanksRps(long id);
+    List<RecurringPayment> getBanksRps(long id);
     @Query("SELECT * FROM RecurringPayment WHERE start_date <= :date AND end_date >= :date")
-    Maybe<List<RecurringPayment>> getRpsOnDate(long date);
+    List<RecurringPayment> getRpsOnDate(long date);
 }

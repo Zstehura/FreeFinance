@@ -2,7 +2,6 @@ package com.example.financefree;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -10,7 +9,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.DialogFragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
@@ -29,7 +27,7 @@ import com.google.android.material.navigation.NavigationView;
  *
  */
 
-public class MainActivity extends AppCompatActivity implements BankAccountDialog.BankAccountDialogListener {
+public class MainActivity extends AppCompatActivity {
 
     public static final String DATABASE_NAME = "finance_data";
     AppBarConfiguration appBarConfiguration;
@@ -142,34 +140,5 @@ public class MainActivity extends AppCompatActivity implements BankAccountDialog
     public boolean onOptionsItemSelected(MenuItem item) {
         NavController navController = Navigation.findNavController(this,R.id.nav_host_fragment);
         return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onBADialogPositiveClick(BankAccountDialog dialog) {
-        if(dialog != null) {
-            BankAccount ba = new BankAccount();
-            Thread t;
-            if(dialog.isNew) t = new Thread(() -> DatabaseManager.getBankAccountDao().insertAll(ba));
-            else t = new Thread(() -> DatabaseManager.getBankAccountDao().update(ba));
-            ba.notes = ((BankAccountDialog) dialog).bnkNotes.getText().toString();
-            ba.name = ((BankAccountDialog) dialog).bnkName.getText().toString();
-            ba.bank_id = ((BankAccountDialog) dialog).bankId;
-            t.start();
-
-            //if(dialog.isNew) barva.notifyItemRangeInserted(dialog.position, 1);
-            //else barva.notifyItemChanged(dialog.position);
-            BankAccountRVContent.addItem(ba);
-
-            try {
-                t.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
-    public void onBADialogNegativeClick(BankAccountDialog dialog) {
-
     }
 }

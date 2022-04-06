@@ -17,18 +17,18 @@ import io.reactivex.rxjava3.core.Maybe;
 @Dao
 public interface DaoBankStatement {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertAll(BankStatement...bs);
+    long insert(BankStatement bs);
     @Delete
-    Completable delete(BankStatement bs);
+    void delete(BankStatement bs);
     @Update
-    Completable update(BankStatement bs);
+    void update(BankStatement bs);
 
     @Query("SELECT * FROM BankStatement")
-    Maybe<List<BankStatement>> getAll();
+    List<BankStatement> getAll();
     @Query("SELECT * FROM BankStatement WHERE statement_id == :id")
-    Maybe<BankStatement> getStatement(long id);
+    BankStatement getStatement(long id);
     @Query("SELECT * FROM BankStatement WHERE bank_id == :id")
-    Maybe<List<BankStatement>> getBanksStatements(long id);
+    List<BankStatement> getBanksStatements(long id);
     @Query("SELECT * FROM BankStatement WHERE bank_id == :id AND date == :date")
-    Maybe<List<BankStatement>> getBanksStatementsForDate(long id, long date);
+    List<BankStatement> getBanksStatementsForDate(long id, long date);
 }
