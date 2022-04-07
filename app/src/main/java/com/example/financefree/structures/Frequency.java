@@ -4,6 +4,8 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.financefree.database.entities.RecurringPayment;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -18,22 +20,32 @@ public class Frequency {
     private static final String TYPE_KEY = "type";
     private static final String NUM_KEY = "num";
 
-    public static final Map<Integer, String> TYPE_OPTIONS = new HashMap<>();
+    private static final Map<Integer, String> TYPE_OPTIONS = new HashMap<>();
 
     public long startDate;
     public long endDate;
     public int typeOpt;
     public int iNum;
 
-    public Frequency(){
-        TYPE_OPTIONS.clear();
-        TYPE_OPTIONS.put(1, "On specific date every month");
-        TYPE_OPTIONS.put(2, "Every number of Days");
-        TYPE_OPTIONS.put(3, "Every number of Weeks");
-        TYPE_OPTIONS.put(4, "Every number of Months");
-        TYPE_OPTIONS.put(5, "Every month on the 1st and 3rd");
-        TYPE_OPTIONS.put(6, "Every month on the 2nd and 4th");
-        TYPE_OPTIONS.put(7, "On the last day of every month");
+    public static Map<Integer, String> typeOptions(){
+        if(TYPE_OPTIONS.size() < 5){
+            TYPE_OPTIONS.clear();
+            TYPE_OPTIONS.put(1, "On specific date every month");
+            TYPE_OPTIONS.put(2, "Every number of Days");
+            TYPE_OPTIONS.put(3, "Every number of Weeks");
+            TYPE_OPTIONS.put(4, "Every number of Months");
+            TYPE_OPTIONS.put(5, "Every month on the 1st and 3rd");
+            TYPE_OPTIONS.put(6, "Every month on the 2nd and 4th");
+            TYPE_OPTIONS.put(7, "On the last day of every month");
+        }
+        return TYPE_OPTIONS;
+    }
+
+    public Frequency(RecurringPayment rp){
+        startDate = rp.start_date;
+        endDate = rp.end_date;
+        typeOpt = rp.type_option;
+        iNum = rp.frequency_number;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)

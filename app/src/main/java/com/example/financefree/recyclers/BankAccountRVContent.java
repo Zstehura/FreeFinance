@@ -20,7 +20,6 @@ import java.util.Map;
 public class BankAccountRVContent {
 
     private static final List<BankAccountRVItem> ITEMS = new ArrayList<>();
-
     public static final Map<Long, BankAccountRVItem> ITEM_MAP = new HashMap<>();
 
     public static List<BankAccountRVItem> getItems(){return ITEMS;}

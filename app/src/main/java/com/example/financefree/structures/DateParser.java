@@ -60,9 +60,7 @@ public final class DateParser {
         //     if(edit.editDate == date && edit.newDate != 0) return false;
         //     if(edit.editDate == date && edit.skip) return false;
         // }
-        if(date == 19079) {
-            int x = 10;
-        }
+
         // no help with edits, do calculations
         return false;// rp.frequency.occursOn(date);
     }

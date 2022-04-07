@@ -12,7 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.financefree.placeholder.PlaceholderContent;
+import com.example.financefree.recyclers.RecurringPaymentRVContent;
+import com.example.financefree.recyclers.RecurringPaymentRecyclerViewAdapter;
 
 /**
  * A fragment representing a list of Items.
@@ -64,7 +65,8 @@ public class RecurringPaymentFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new RecurringPaymentRecyclerViewAdapter(PlaceholderContent.ITEMS));
+            // TODO this
+            //recyclerView.setAdapter(new RecurringPaymentRecyclerViewAdapter(RecurringPaymentRVContent.ITEMS));
         }
         return view;
     }

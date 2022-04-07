@@ -132,7 +132,6 @@ public class BankAccountRecyclerViewAdapter extends RecyclerView.Adapter<BankAcc
             }
         }
 
-        // TODO: Implement interface
         public interface BARClickListener {
             void OnBARowClick(int position);
             void OnBADeleteClick(int position);

@@ -11,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,9 +19,13 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
+import com.example.financefree.database.DatabaseManager;
+import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.database.entities.RecurringPayment;
 import com.example.financefree.structures.DateParser;
+import com.example.financefree.structures.Frequency;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -44,6 +49,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         void onDialogNegativeClick(DialogFragment dialog);
     }
 
+    public TextView lblFreq;
     public EditText txtName, txtFrequencyNum, txtAmount, txtStart,
             txtEnd, txtNotes;
     public Spinner spnBank, spnFreqType;
@@ -71,16 +77,23 @@ public class RecurringPaymentDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Thread t = new Thread(() -> {
+            List<BankAccount> l = DatabaseManager.getBankAccountDao().getAll();
+            for(BankAccount ba: l){
+                mBanks.put(ba.bank_id, ba.name);
+            }
+        });
+        t.start();
 
-        // Initialize dialog settings
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialog = inflater.inflate(R.layout.dialog_recurring_payment,null);
+        mFreqs = Frequency.typeOptions();
 
-        // populate bank & Frequency choices
-        // mBanks = DataManager.getBankMap();
-        //mFreqs = RecurringPayment.getFrequencyTypes();
+        lblFreq = dialog.findViewById(R.id.lblFreqNumRecur);
         spnBank = dialog.findViewById(R.id.spnBankIdRecur);
         spnFreqType = dialog.findViewById(R.id.spnFreqTypeRecur);
+        try {t.join();}
+        catch (InterruptedException e) {e.printStackTrace();}
         ArrayAdapter<String> bankAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
                 (String[]) mBanks.values().toArray());
         ArrayAdapter<String> freqAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
@@ -99,12 +112,39 @@ public class RecurringPaymentDialog extends DialogFragment {
                 }
             }
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {bankId = 0;}
+            public void onNothingSelected(AdapterView<?> adapterView) {bankId = -1;}
         });
         spnFreqType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                if(position == 0) {
+                    // Specific date every month
 
+                }
+                else if(position == 1){
+                    // Every X days
+
+                }
+                else if(position == 2){
+                    // Every X weeks
+
+                }
+                else if(position == 3){
+                    // Every X months
+
+                }
+                else if(position == 4){
+                    // Every month, 1st & 3rd
+
+                }
+                else if(position == 5){
+                    // Every month, 2nd & 4th
+
+                }
+                else if(position == 6){
+                    // last day of the month
+
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {bankId = 0;}
