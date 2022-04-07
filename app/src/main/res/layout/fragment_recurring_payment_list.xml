@@ -2,11 +2,12 @@
 <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:name="com.example.financefree.RecurringPaymentsFragment"
+    android:id="@+id/list"
+    android:name="com.example.financefree.RecurringPaymentFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".RecurringPaymentsFragment"
-    tools:listitem="@layout/recurring_payments" />
+    tools:context=".RecurringPaymentFragment"
+    tools:listitem="@layout/fragment_recurring_payment" />

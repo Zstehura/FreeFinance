@@ -10,9 +10,9 @@
         android:label="@string/settings"/>
     <fragment
         android:id="@+id/recurringPaymentsFragment"
-        android:name="com.example.financefree.RecurringPaymentsFragment"
+        android:name="com.example.financefree.RecurringPaymentFragment"
         android:label="@string/recurring_payments"
-        tools:layout="@layout/recurring_payments_list" >
+        tools:layout="@layout/fragment_recurring_payment_list" >
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

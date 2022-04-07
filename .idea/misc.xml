@@ -13,10 +13,11 @@
         <entry key="..\:/Users/Zack/Desktop/TEMP/FinanceFree/app/src/main/res/menu/nav_menu.xml" value="0.28177083333333336" />
         <entry key="..\:/Users/Zack/Desktop/TEMP/FinanceFree/app/src/main/res/xml/root_preferences.xml" value="0.2726449275362319" />
         <entry key="app/src/main/res/drawable/customborder.xml" value="0.2835" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.153125" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
         <entry key="app/src/main/res/layout/add_edit_paymentedit_dialog.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/add_edit_recurringpayment_dialog.xml" value="0.1" />
         <entry key="app/src/main/res/layout/add_edit_singlepayment_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/app_bar_main.xml" value="0.1259259259259259" />
         <entry key="app/src/main/res/layout/bank_account_dialog.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/bank_statement_dialog.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/calendar_fragment.xml" value="0.33" />
@@ -33,9 +34,11 @@
         <entry key="app/src/main/res/layout/fragment_month_picker.xml" value="0.3319746376811594" />
         <entry key="app/src/main/res/layout/fragment_month_year_picker_dialog.xml" value="0.317481884057971" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.30978260869565216" />
-        <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.2776268115942029" />
-        <entry key="app/src/main/res/layout/recurring_payments.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_recurring_payment_list.xml" value="0.302536231884058" />
+        <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/recurring_payments.xml" value="0.25" />
         <entry key="app/src/main/res/layout/recurring_payments_list.xml" value="0.29846014492753625" />
+        <entry key="app/src/main/res/layout/test_calc.xml" value="0.302536231884058" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/xml/clear_data.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/xml/root_preferences.xml" value="0.1" />

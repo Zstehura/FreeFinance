@@ -1,9 +1,7 @@
 package com.example.financefree.database;
 
 import android.app.Application;
-import android.util.Log;
 
-import androidx.annotation.Nullable;
 import androidx.lifecycle.AndroidViewModel;
 
 import com.example.financefree.database.daos.DaoBankAccount;
@@ -11,17 +9,8 @@ import com.example.financefree.database.daos.DaoBankStatement;
 import com.example.financefree.database.daos.DaoPaymentEdit;
 import com.example.financefree.database.daos.DaoRecurringPayment;
 import com.example.financefree.database.daos.DaoSinglePayment;
-import com.example.financefree.database.entities.BankAccount;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Maybe;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class DatabaseManager extends AndroidViewModel {

@@ -3,9 +3,13 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="dialog_width">250dp</dimen>
     <dimen name="dialog_text_size">18sp</dimen>
+    <dimen name="calc_btn_size">26dp</dimen>
     <dimen name="dialog_subtext_size">14sp</dimen>
     <dimen name="button_square_side">150dp</dimen>
     <dimen name="settings_button_height">100dp</dimen>
     <dimen name="settings_button_side">332dp</dimen>
     <dimen name="fab_margin">25dp</dimen>
+    <dimen name="calc_btn_txt">10sp</dimen>
+    <dimen name="calc_btn_margin">3dp</dimen>
+    <dimen name="calc_btn_margin_xtra">5dp</dimen>
 </resources>

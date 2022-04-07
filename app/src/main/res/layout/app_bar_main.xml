@@ -7,6 +7,7 @@
     android:theme="@style/Theme.FinanceFree"
     tools:context=".MainActivity">
 
+    <!--
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,5 +29,387 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
+-->
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/dark_green"
+                android:padding="7dp"
+                android:text="@string/calculator"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/calculator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/text_margin"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/txtCalcHistory1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark_gray"
+                    android:fontFamily="monospace"
+                    android:lines="1"
+                    android:text="@string/amount"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/calcBtnsLayout"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/txtCalcHistory2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark_gray"
+                    android:fontFamily="monospace"
+                    android:lines="1"
+                    android:text="@string/amount"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/calcBtnsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/txtCalcHistory1" />
+
+                <TextView
+                    android:id="@+id/txtCalcHistory3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark_gray"
+                    android:fontFamily="monospace"
+                    android:lines="1"
+                    android:text="@string/amount"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/calcBtnsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/txtCalcHistory2" />
+
+                <TextView
+                    android:id="@+id/txtCalcHistory4"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark_gray"
+                    android:fontFamily="monospace"
+                    android:lines="1"
+                    android:text="@string/amount"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/calcBtnsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/txtCalcHistory3" />
+
+                <TextView
+                    android:id="@+id/txtCalcHistory5"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark_gray"
+                    android:fontFamily="monospace"
+                    android:lines="1"
+                    android:text="@string/amount"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/calcBtnsLayout"
+                    app:layout_constraintTop_toBottomOf="@id/txtCalcHistory4" />
+
+                <TextView
+                    android:id="@+id/txtCalcDisplay"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/dark_gray"
+                    android:fontFamily="monospace"
+                    android:text="@string/amount"
+                    android:textColor="@color/green"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@id/calcBtnsLayout" />
+
+                <GridLayout
+                    android:id="@+id/calcBtnsLayout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:columnCount="5"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <Button
+                        android:id="@+id/btnCalc1"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="1"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalc2"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="2"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalc3"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="3"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcDec"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="."
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcMult"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="x"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalc4"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="4"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalc5"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="5"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalc6"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="6"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalc0"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="0"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcPlus"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="+"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalc7"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="7"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalc8"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="8"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalc9"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:backgroundTint="@color/light_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="9"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcMinus"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="-"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcDiv"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="/"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcInv"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:layout_marginTop="@dimen/calc_btn_margin_xtra"
+                        android:backgroundTint="@color/dark_green"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="1/x"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcExp"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:layout_marginTop="@dimen/calc_btn_margin_xtra"
+                        android:backgroundTint="@color/dark_green"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="^"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcSqrt"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:layout_marginTop="@dimen/calc_btn_margin_xtra"
+                        android:backgroundTint="@color/dark_green"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="sqrt"
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcEq"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:layout_marginTop="@dimen/calc_btn_margin_xtra"
+                        android:backgroundTint="@color/dark_gray"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="="
+                        android:textAllCaps="false"
+                        android:textSize="@dimen/calc_btn_txt" />
+
+                    <Button
+                        android:id="@+id/btnCalcCE"
+                        android:layout_width="@dimen/calc_btn_size"
+                        android:layout_height="@dimen/calc_btn_size"
+                        android:layout_margin="@dimen/calc_btn_margin"
+                        android:layout_marginTop="@dimen/calc_btn_margin_xtra"
+                        android:backgroundTint="@color/dark_red"
+                        android:insetTop="0dp"
+                        android:insetBottom="0dp"
+                        android:padding="0dp"
+                        android:text="CE"
+                        android:textSize="@dimen/calc_btn_txt" />
+                </GridLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageButton
+                android:id="@+id/btnCalcExpand"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/calc_btn_size"
+                android:src="@drawable/ic_down" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
