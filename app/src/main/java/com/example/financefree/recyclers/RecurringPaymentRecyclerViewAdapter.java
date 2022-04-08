@@ -1,24 +1,27 @@
 package com.example.financefree.recyclers;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.RecurringPayment;
 import com.example.financefree.dialogs.RecurringPaymentDialog;
 import com.example.financefree.recyclers.RecurringPaymentRVContent.RecurringPaymentRVItem;
 import com.example.financefree.databinding.FragmentRecurringPaymentBinding;
+import com.example.financefree.structures.DateParser;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link RecurringPaymentRVItem}.
- * TODO: Replace the implementation with code for your data type.
  */
 public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<RecurringPaymentRecyclerViewAdapter.ViewHolder> {
     public List<RecurringPaymentRVItem> mValues;
@@ -31,9 +34,7 @@ public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<Re
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         return new ViewHolder(FragmentRecurringPaymentBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false), listener);
-
     }
 
     @Override
@@ -48,8 +49,48 @@ public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<Re
         return mValues.size();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public void setItem(RecurringPaymentDialog dialog) {
+        RecurringPayment rp = new RecurringPayment();
+        rp.name = dialog.txtName.getText().toString();
+        rp.notes = dialog.txtNotes.getText().toString();
+        rp.amount = Double.parseDouble(dialog.txtAmount.getText().toString());
+        rp.end_date = DateParser.getLong(dialog.txtEnd.getText().toString());
+        rp.start_date = DateParser.getLong(dialog.txtStart.getText().toString());
+        rp.bank_id = dialog.bankId;
+        rp.type_option = dialog.freqType;
+        rp.frequency_number = dialog.freqNum;
 
+        if(dialog.isNew) {
+            long[] id = new long[1];
+
+            Thread t = new Thread(() -> {
+                id[0] = DatabaseManager.getRecurringPaymentDao().insert(rp);
+            });
+            t.start();
+            try {t.join();}
+            catch (InterruptedException e) {e.printStackTrace();}
+            rp.rp_id = id[0];
+            RecurringPaymentRVContent.addItem(rp);
+            mValues = RecurringPaymentRVContent.getItems();
+            this.notifyItemInserted(dialog.position);
+        }
+        else {
+            rp.rp_id = dialog.rpId;
+            Thread t = new Thread(() -> DatabaseManager.getRecurringPaymentDao().update(rp));
+            t.start();
+            RecurringPaymentRVContent.updateItem(rp);
+            this.notifyItemChanged(dialog.position);
+            try {t.join();}
+            catch (InterruptedException e) {e.printStackTrace();}
+        }
+    }
+
+    public String getItemName(int position) {
+        return mValues.get(position).name;
+    }
+
+    public void remove(int position) {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

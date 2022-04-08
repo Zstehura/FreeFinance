@@ -93,10 +93,28 @@
             android:padding="@dimen/text_margin"
             android:visibility="gone"/>
         <EditText
+            android:id="@+id/txtFreqNumRecur"
             android:layout_width="@dimen/dialog_width"
             android:layout_height="wrap_content"
             android:autofillHints=""
             android:inputType="number"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"
+            tools:ignore="SpeakableTextPresentCheck"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/lblFreqNumRecur2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/day_of_week"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"
+            android:visibility="gone"/>
+        <Spinner
+            android:id="@+id/spnDowRecur"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
             android:minHeight="48dp"
             android:padding="@dimen/text_margin"
             tools:ignore="SpeakableTextPresentCheck"

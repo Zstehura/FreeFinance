@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.BankAccount;
-import com.example.financefree.dialogs.BADetailsDialog;
+import com.example.financefree.dialogs.DetailsDialogBA;
 import com.example.financefree.dialogs.BankAccountDialog;
 import com.example.financefree.recyclers.BankAccountRecyclerViewAdapter;
 
@@ -36,14 +36,10 @@ public class BankAccountFragment extends Fragment implements BankAccountDialog.B
      */
     public BankAccountFragment() {}
 
-    public static BankAccountFragment newInstance() {
-        return new BankAccountFragment();
-    }
+    public static BankAccountFragment newInstance() {return new BankAccountFragment();}
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    public void onCreate(Bundle savedInstanceState) {super.onCreate(savedInstanceState);}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,8 +64,8 @@ public class BankAccountFragment extends Fragment implements BankAccountDialog.B
                 t.start();
                 try {t.join();}
                 catch (InterruptedException e) {e.printStackTrace();}
-                BADetailsDialog baDetailsDialog = BADetailsDialog.newInstance(ba[0]);
-                baDetailsDialog.show(getChildFragmentManager(), "BankAccountDetails");
+                DetailsDialogBA detailsDialogBA = DetailsDialogBA.newInstance(ba[0]);
+                detailsDialogBA.show(getChildFragmentManager(), "BankAccountDetails");
             }
 
             @Override

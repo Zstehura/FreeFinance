@@ -24,6 +24,8 @@ public interface DaoRecurringPayment {
     List<RecurringPayment> getAll();
     @Query("SELECT * FROM RecurringPayment WHERE rp_id == :id")
     RecurringPayment getRecurringPayment(long id);
+    @Query("DELETE FROM RecurringPayment WHERE rp_id == :id")
+    void deleteById(long id);
     @Query("SELECT * FROM RecurringPayment WHERE bank_id == :id")
     List<RecurringPayment> getBanksRps(long id);
     @Query("SELECT * FROM RecurringPayment WHERE start_date <= :date AND end_date >= :date")

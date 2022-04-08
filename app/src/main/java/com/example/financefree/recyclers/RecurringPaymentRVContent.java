@@ -6,6 +6,7 @@ import androidx.annotation.RequiresApi;
 
 import com.example.financefree.database.entities.RecurringPayment;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,10 +48,8 @@ public class RecurringPaymentRVContent {
         }
     }
     private static RecurringPaymentRVItem createRVItem(RecurringPayment rp) {
-        String amnt = "$";
-        if(rp.amount < 0) amnt = "-" + amnt;
-        amnt += String.valueOf(Math.abs(rp.amount));
-        return new RecurringPaymentRVItem(rp.rp_id, rp.name, amnt);
+        NumberFormat f = NumberFormat.getCurrencyInstance();
+        return new RecurringPaymentRVItem(rp.rp_id, rp.name, f.format(rp.amount));
     }
 
     public static class RecurringPaymentRVItem {

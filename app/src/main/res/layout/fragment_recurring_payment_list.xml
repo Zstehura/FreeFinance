@@ -1,13 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/list"
-    android:name="com.example.financefree.RecurringPaymentFragment"
-    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".RecurringPaymentFragment"
-    tools:listitem="@layout/fragment_recurring_payment" />
+    android:layout_width="match_parent"
+    android:layout_gravity="end">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recRecurPaymnts"
+        android:name="com.example.financefree.RecurringPaymentFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".RecurringPaymentFragment"
+        tools:listitem="@layout/fragment_recurring_payment" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnAddRecur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:contentDescription="@string/add_new_recur_payment"
+        app:tint="@color/white"
+        android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/dark_green" />
+
+</RelativeLayout>

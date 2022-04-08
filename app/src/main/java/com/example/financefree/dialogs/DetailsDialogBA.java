@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.financefree.R;
 import com.example.financefree.database.entities.BankAccount;
 
-public class BADetailsDialog extends DialogFragment {
+public class DetailsDialogBA extends DialogFragment {
     private static final String NAME_KEY = "name";
     private static final String NOTES_KEY = "notes";
 
@@ -34,9 +34,6 @@ public class BADetailsDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        // TODO: Create layout
-        //      Change Layout
-        //      Set values
         View dialog = inflater.inflate(R.layout.dialog_bank_account_details, null);
 
         assert getArguments() != null;
@@ -53,8 +50,8 @@ public class BADetailsDialog extends DialogFragment {
     }
 
     @NonNull
-    public static BADetailsDialog newInstance(@NonNull BankAccount ba){
-        BADetailsDialog f = new BADetailsDialog();
+    public static DetailsDialogBA newInstance(@NonNull BankAccount ba){
+        DetailsDialogBA f = new DetailsDialogBA();
         Bundle args = new Bundle();
         args.putString(NAME_KEY, ba.name);
         args.putString(NOTES_KEY, ba.notes);

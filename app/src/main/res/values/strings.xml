@@ -122,4 +122,7 @@
     <string name="date">Date</string>
     <string name="add_new_bank_account">Add new Bank account</string>
     <string name="calculator">Calculator</string>
+    <string name="every">Every</string>
+    <string name="day_of_week">Day of Week</string>
+    <string name="add_new_recur_payment">Add New Recurring Payment</string>
 </resources>
