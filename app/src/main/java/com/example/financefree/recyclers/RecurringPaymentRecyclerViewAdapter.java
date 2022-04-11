@@ -49,6 +49,9 @@ public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<Re
         return mValues.size();
     }
 
+    @Override
+    public long getItemId(int position) {return mValues.get(position).id;}
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setItem(RecurringPaymentDialog dialog) {
         RecurringPayment rp = new RecurringPayment();
@@ -91,6 +94,8 @@ public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<Re
     }
 
     public void remove(int position) {
+        mValues.remove(position);
+        this.notifyItemRemoved(position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

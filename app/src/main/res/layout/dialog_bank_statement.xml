@@ -7,40 +7,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:columnCount="2">
+        android:columnCount="2"
+        android:layout_gravity="start">
 
-        <!-- Bank Name -->
+        <!-- Name -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:labelFor="@id/txtBankNameStat"
-            android:text="@string/name"
+            android:text="@string/bank"
             android:textSize="@dimen/dialog_text_size"
             android:padding="@dimen/text_margin"/>
 
-        <TextView
-            android:id="@+id/txtBankNameStat"
+        <Spinner
+            android:id="@+id/spnBankNameStat"
             android:layout_width="@dimen/dialog_width"
             android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:minHeight="48dp"
-            android:padding="@dimen/text_margin"/>
-
-        <!-- Date -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:labelFor="@id/txtDateStat"
-            android:text="@string/date"
-            android:textSize="@dimen/dialog_text_size"
-            android:padding="@dimen/text_margin"/>
-
-        <EditText
-            android:id="@+id/txtDateStat"
-            android:layout_width="@dimen/dialog_width"
-            android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:inputType="date"
             android:minHeight="48dp"
             android:padding="@dimen/text_margin"/>
 
@@ -48,17 +29,41 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:labelFor="@id/txtAmountStat"
             android:text="@string/amount"
+            android:labelFor="@id/txtAmountStat"
             android:textSize="@dimen/dialog_text_size"
-            android:padding="@dimen/text_margin"/>
+            android:padding="@dimen/text_margin"
+            android:layout_gravity="top"/>
 
-        <TextView
+        <EditText
             android:id="@+id/txtAmountStat"
             android:layout_width="@dimen/dialog_width"
             android:layout_height="wrap_content"
-            android:autofillHints=""
+            android:inputType="numberDecimal"
             android:minHeight="48dp"
-            android:padding="@dimen/text_margin"/>
+            android:padding="@dimen/text_margin"
+            android:textColorHint="#A1887F"
+            android:verticalScrollbarPosition="right"
+            android:gravity="top"
+            android:autofillHints="" />
+
+        <!-- Notes -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"
+            android:layout_gravity="top"
+            android:labelFor="@id/txtDateStat"/>
+
+        <EditText
+            android:id="@+id/txtDateStat"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:inputType="date"
+            android:minHeight="48dp"
+            android:padding="@dimen/text_margin"
+            android:autofillHints="" />
     </GridLayout>
 </ScrollView>

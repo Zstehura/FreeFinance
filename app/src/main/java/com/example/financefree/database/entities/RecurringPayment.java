@@ -16,7 +16,7 @@ public class RecurringPayment {
 
     public String name;
     public String notes;
-    public long bank_id;
+    public Long bank_id;
     public double amount;
     public long start_date;
     public long end_date;

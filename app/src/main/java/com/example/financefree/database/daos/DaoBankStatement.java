@@ -30,5 +30,5 @@ public interface DaoBankStatement {
     @Query("SELECT * FROM BankStatement WHERE bank_id == :id")
     List<BankStatement> getBanksStatements(long id);
     @Query("SELECT * FROM BankStatement WHERE bank_id == :id AND date == :date")
-    List<BankStatement> getBanksStatementsForDate(long id, long date);
+    BankStatement getBanksStatementForDate(long id, long date);
 }

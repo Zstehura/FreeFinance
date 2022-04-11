@@ -18,7 +18,7 @@ import com.example.financefree.database.entities.RecurringPayment;
 import com.example.financefree.database.entities.SinglePayment;
 
 @Database(entities = {BankAccount.class, BankStatement.class, PaymentEdit.class, RecurringPayment.class, SinglePayment.class},
-        version = 1, exportSchema = false)
+        version = 3, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract DaoBankAccount daoBankAccount();
     public abstract DaoBankStatement daoBankStatement();

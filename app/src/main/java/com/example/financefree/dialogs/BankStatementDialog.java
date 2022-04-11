@@ -3,31 +3,53 @@ package com.example.financefree.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
+import com.example.financefree.database.DatabaseManager;
+import com.example.financefree.database.entities.BankAccount;
+import com.example.financefree.database.entities.BankStatement;
 import com.example.financefree.structures.DateParser;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BankStatementDialog extends DialogFragment {
 
-    // TODO: Change const
-    public static final String NAME_KEY = "name";
+    public static final String BANK_ID_KEY = "bank_id";
     public static final String AMOUNT_KEY = "amount";
     public static final String DATE_KEY = "date";
+    public static final String IS_NEW_KEY = "new";
+
+
 
     public interface BankStatementDialogListener {
-        void onDialogPositiveClick(DialogFragment dialog);
-        void onDialogNegativeClick(DialogFragment dialog);
+        void onDialogPositiveClick(BankStatementDialog dialog);
+        void onDialogNegativeClick(BankStatementDialog dialog);
     }
 
+    public EditText etAmount, etDate;
+    public Spinner spnBank;
+    public long bankId;
+    public boolean isNew;
+
+    private final Map<Long, String> mBanks = new HashMap<>();
     private BankStatementDialogListener listener;
 
     @Override
@@ -54,13 +76,48 @@ public class BankStatementDialog extends DialogFragment {
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         View dialog = inflater.inflate(R.layout.dialog_bank_statement,null);
 
-        TextView txtName = dialog.findViewById(R.id.txtBankNameStat);
-        EditText txtDate = dialog.findViewById(R.id.txtDateStat);
-        EditText txtAmount = dialog.findViewById(R.id.txtAmountStat);
+        Thread t = new Thread(() -> {
+            List<BankAccount> l = DatabaseManager.getBankAccountDao().getAll();
+            for(BankAccount ba: l){
+                mBanks.put(ba.bank_id, ba.name);
+            }
+        });
+        t.start();
+
+        spnBank = dialog.findViewById(R.id.spnBankIdRecur);
+        etDate = dialog.findViewById(R.id.txtDateStat);
+        etAmount = dialog.findViewById(R.id.txtAmountStat);
+
         assert getArguments() != null;
-        txtName.setText(getArguments().getString(NAME_KEY));
-        txtDate.setText(getArguments().getString(DATE_KEY));
-        txtAmount.setText(String.valueOf(getArguments().getDouble(AMOUNT_KEY)));
+        isNew = getArguments().getBoolean(IS_NEW_KEY);
+        bankId = getArguments().getLong(BANK_ID_KEY);
+        etDate.setText(getArguments().getString(DATE_KEY));
+        etAmount.setText(String.valueOf(getArguments().getDouble(AMOUNT_KEY)));
+
+        try{t.join();}
+        catch (InterruptedException e){ Log.e("BankStatementDialog", e.getMessage());}
+
+        ArrayAdapter<String> bankAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
+                new ArrayList<>(mBanks.values()));
+        spnBank.setAdapter(bankAdapter);
+        spnBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+                int i=0;
+                for(long l: mBanks.keySet()) {
+                    if(i == position) bankId = l;
+                    i++;
+                }
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {bankId = -1;}
+        });
+
+        int n = 0;
+        for(long id: mBanks.keySet()) {
+            if(id == bankId) spnBank.setSelection(n);
+            n++;
+        }
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.bank_account)
@@ -71,14 +128,25 @@ public class BankStatementDialog extends DialogFragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
-    public static BankStatementDialog newInstance(String name, double amount, long date) {
+    public static BankStatementDialog newInstance(BankStatement bs) {
         BankStatementDialog f = new BankStatementDialog();
         Bundle args = new Bundle();
 
-        args.putDouble(AMOUNT_KEY, amount);
-        args.putString(DATE_KEY, DateParser.getString(date));
-        args.putString(NAME_KEY, name);
+        if(bs == null){
+            args.putLong(BANK_ID_KEY, 0);
+            args.putDouble(AMOUNT_KEY, 0);
+            args.putString(DATE_KEY, DateParser.getToday());
+            args.putBoolean(IS_NEW_KEY, true);
+        }
+        else {
+            args.putLong(BANK_ID_KEY, bs.bank_id);
+            args.putDouble(AMOUNT_KEY, bs.amount);
+            args.putString(DATE_KEY, DateParser.getString(bs.date));
+            args.putBoolean(IS_NEW_KEY, false);
+        }
+
         f.setArguments(args);
 
         return f;

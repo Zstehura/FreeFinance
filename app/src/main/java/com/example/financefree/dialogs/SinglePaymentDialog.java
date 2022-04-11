@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.structures.PaymentGeneric;
+import com.example.financefree.structures.Payment;
 
 public class SinglePaymentDialog extends DialogFragment {
 
@@ -106,7 +106,7 @@ public class SinglePaymentDialog extends DialogFragment {
         return builder.create();
     }
 
-    public static SinglePaymentDialog newInstance(PaymentGeneric p){
+    public static SinglePaymentDialog newInstance(Payment p){
         SinglePaymentDialog f = new SinglePaymentDialog();
         Bundle args = new Bundle();
 

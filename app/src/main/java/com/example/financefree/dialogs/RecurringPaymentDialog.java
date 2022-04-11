@@ -1,14 +1,17 @@
 package com.example.financefree.dialogs;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -61,7 +64,8 @@ public class RecurringPaymentDialog extends DialogFragment {
         void onDialogNegativeClick(RecurringPaymentDialog dialog);
     }
 
-    public TextView lblFreq, lblFreq2;
+    public TextView lblFreq, lblFreq2, lblEndDate;
+    public CheckBox chkNoEnd;
     public EditText txtName, txtFrequencyNum, txtAmount, txtStart,
             txtEnd, txtNotes;
     public Spinner spnBank, spnFreqType, spnDow;
@@ -86,6 +90,8 @@ public class RecurringPaymentDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -111,6 +117,8 @@ public class RecurringPaymentDialog extends DialogFragment {
         txtNotes = dialog.findViewById(R.id.txtNotesRecur);
         lblFreq = dialog.findViewById(R.id.lblFreqNumRecur);
         lblFreq2 = dialog.findViewById(R.id.lblFreqNumRecur2);
+        lblEndDate = dialog.findViewById(R.id.lblEndDateRecur);
+        chkNoEnd = dialog.findViewById(R.id.chkNoEnd);
         spnBank = dialog.findViewById(R.id.spnBankIdRecur);
         spnFreqType = dialog.findViewById(R.id.spnFreqTypeRecur);
         spnDow = dialog.findViewById(R.id.spnDowRecur);
@@ -121,6 +129,13 @@ public class RecurringPaymentDialog extends DialogFragment {
         List<String> lBanks, lFreqs;
         lBanks = new ArrayList<>(mBanks.values());
         lFreqs = new ArrayList<>(mFreqs.values());
+
+        if(lBanks.size() < 1) {
+            return new AlertDialog.Builder(getContext())
+                    .setTitle("A Bank Account is REQUIRED to add payments")
+                    .setPositiveButton("Ok", (dialogInterface, i) -> {})
+                    .create();
+        }
 
         ArrayAdapter<String> bankAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
                 lBanks);
@@ -205,7 +220,6 @@ public class RecurringPaymentDialog extends DialogFragment {
                 lblFreq2.setVisibility(View.VISIBLE);
             }
         });
-
         spnDow.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -217,6 +231,18 @@ public class RecurringPaymentDialog extends DialogFragment {
                 freqNum = -1;
             }
         });
+        chkNoEnd.setOnClickListener(view -> {
+            if(((CheckBox) view).isChecked()){
+                txtEnd.setText("12/31/2099");
+                txtEnd.setVisibility(View.GONE);
+                lblEndDate.setVisibility(View.GONE);
+            }
+            else {
+                txtEnd.setText(DateParser.getToday());
+                txtEnd.setVisibility(View.VISIBLE);
+                lblEndDate.setVisibility(View.VISIBLE);
+            }
+        });
 
         assert getArguments() != null;
         freqType = getArguments().getInt(FREQUENCY_TYPE_KEY);
@@ -226,12 +252,35 @@ public class RecurringPaymentDialog extends DialogFragment {
         spnFreqType.setSelection(freqType);
         txtName.setText(getArguments().getString(NAME_KEY));
         txtAmount.setText(String.valueOf(getArguments().getDouble(AMOUNT_KEY)));
-        txtEnd.setText(DateParser.getString(getArguments().getLong(END_DATE_KEY)));
+
+        long d = getArguments().getLong(END_DATE_KEY);
+        if(DateParser.getLong(1,1,2099) < d){
+            chkNoEnd.setChecked(true);
+            txtEnd.setVisibility(View.GONE);
+            lblEndDate.setVisibility(View.GONE);
+        }
+        else{
+            chkNoEnd.setChecked(false);
+            txtEnd.setVisibility(View.VISIBLE);
+            lblEndDate.setVisibility(View.VISIBLE);
+        }
+        txtEnd.setText(DateParser.getString(d));
         txtStart.setText(DateParser.getString(getArguments().getLong(START_DATE_KEY)));
         txtNotes.setText(getArguments().getString(NOTES_KEY));
         position = getArguments().getInt(POSITION_KEY);
         rpId = getArguments().getLong(RP_ID_KEY);
         isNew = getArguments().getBoolean(IS_NEW_KEY);
+        bankId = getArguments().getLong(BANK_ID_KEY);
+
+        int n = 0;
+        for(long id: mBanks.keySet()) {
+            if(id == bankId) spnBank.setSelection(n);
+            n++;
+        }
+        if(freqNum < 7) {
+            spnDow.setSelection(freqNum);
+        }
+        txtFrequencyNum.setText(String.valueOf(freqNum));
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.bank_account)
@@ -254,7 +303,7 @@ public class RecurringPaymentDialog extends DialogFragment {
             args.putInt(FREQUENCY_NUM_KEY, 1);
             args.putDouble(AMOUNT_KEY, 0);
             args.putLong(START_DATE_KEY, DateParser.getLong(0,1,2020));
-            args.putLong(END_DATE_KEY, DateParser.getLong(0,1,2099));
+            args.putLong(END_DATE_KEY, DateParser.getLong(11,31,2099));
             args.putString(NOTES_KEY, "");
             args.putLong(BANK_ID_KEY, 0);
             args.putLong(RP_ID_KEY, -1);

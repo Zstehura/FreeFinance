@@ -22,6 +22,12 @@ public final class DateParser {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String getToday(){
+        long n = getLong(new GregorianCalendar());
+        return getString(n);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static long dateNumDaysAgo(int num) {
         GregorianCalendar gc = new GregorianCalendar();
         gc.add(Calendar.DAY_OF_MONTH, -1 * num);

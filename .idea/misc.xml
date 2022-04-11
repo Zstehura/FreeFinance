@@ -23,8 +23,8 @@
         <entry key="app/src/main/res/layout/calendar_fragment.xml" value="0.33" />
         <entry key="app/src/main/res/layout/dialog_bank_account.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/dialog_bank_account_details.xml" value="0.1656441717791411" />
-        <entry key="app/src/main/res/layout/dialog_bank_statement.xml" value="0.2776268115942029" />
-        <entry key="app/src/main/res/layout/dialog_recurring_payment.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/dialog_bank_statement.xml" value="0.22784810126582278" />
+        <entry key="app/src/main/res/layout/dialog_recurring_payment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_recurring_payment_details.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/dialog_single_payment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_bank_account.xml" value="0.2776268115942029" />

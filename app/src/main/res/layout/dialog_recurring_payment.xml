@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="@dimen/dialog_text_size"
-            android:padding="@dimen/text_margin"
+            android:paddingHorizontal="@dimen/text_margin"
             android:visibility="gone"/>
         <EditText
             android:id="@+id/txtFreqNumRecur"
@@ -99,7 +99,7 @@
             android:autofillHints=""
             android:inputType="number"
             android:minHeight="48dp"
-            android:padding="@dimen/text_margin"
+            android:paddingHorizontal="@dimen/text_margin"
             tools:ignore="SpeakableTextPresentCheck"
             android:visibility="gone"/>
 
@@ -109,14 +109,14 @@
             android:layout_height="wrap_content"
             android:text="@string/day_of_week"
             android:textSize="@dimen/dialog_text_size"
-            android:padding="@dimen/text_margin"
+            android:paddingHorizontal="@dimen/text_margin"
             android:visibility="gone"/>
         <Spinner
             android:id="@+id/spnDowRecur"
             android:layout_width="@dimen/dialog_width"
             android:layout_height="wrap_content"
             android:minHeight="48dp"
-            android:padding="@dimen/text_margin"
+            android:paddingHorizontal="@dimen/text_margin"
             tools:ignore="SpeakableTextPresentCheck"
             android:visibility="gone"/>
 
@@ -139,8 +139,24 @@
             android:padding="@dimen/text_margin"
             tools:ignore="DuplicateSpeakableTextCheck" />
 
+        <!-- No End Date -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/dialog_text_size"
+            android:padding="@dimen/text_margin"/>
+
+        <CheckBox
+            android:id="@+id/chkNoEnd"
+            android:layout_width="@dimen/dialog_width"
+            android:layout_height="wrap_content"
+            android:text="@string/no_end"
+            android:padding="@dimen/text_margin"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
         <!-- End Date -->
         <TextView
+            android:id="@+id/lblEndDateRecur"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:labelFor="@id/txtEndDateRecur"
@@ -155,20 +171,6 @@
             android:autofillHints=""
             android:inputType="date"
             android:minHeight="48dp"
-            android:padding="@dimen/text_margin"
-            tools:ignore="DuplicateSpeakableTextCheck" />
-
-        <!-- No End Date -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/dialog_text_size"
-            android:padding="@dimen/text_margin"/>
-
-        <CheckBox
-            android:layout_width="@dimen/dialog_width"
-            android:layout_height="wrap_content"
-            android:text="@string/no_end"
             android:padding="@dimen/text_margin"
             tools:ignore="DuplicateSpeakableTextCheck" />
 

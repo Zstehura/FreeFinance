@@ -1,21 +1,8 @@
 package com.example.financefree;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
-import androidx.test.platform.app.InstrumentationRegistry;
 
-import com.example.financefree.structures.Frequency;
-import com.example.financefree.structures.DateParser;
-import com.example.financefree.structures.PaymentGeneric;
-import com.example.financefree.structures.StatementGeneric;
-
-import org.json.JSONException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.io.IOException;
-import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
 public class JSONTests {

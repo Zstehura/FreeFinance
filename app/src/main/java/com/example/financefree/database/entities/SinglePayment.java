@@ -8,8 +8,9 @@ public class SinglePayment {
     @PrimaryKey(autoGenerate = true)
     public long sp_id;
 
+    public String name;
     public long bank_id;
     public double amount;
     public long date;
-    public long notes;
+    public String notes;
 }
