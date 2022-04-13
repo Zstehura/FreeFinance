@@ -20,14 +20,13 @@ public interface DaoSinglePayment {
     @Update
     void update(SinglePayment sp);
 
+    @Query("DELETE FROM SinglePayment WHERE 1 == 1")
+    void deleteAll();
     @Query("SELECT * FROM SinglePayment")
     List<SinglePayment> getAll();
-    @Query("SELECT * FROM SinglePayment WHERE sp_id == :id")
-    SinglePayment getPayment(long id);
-    @Query("SELECT * FROM SinglePayment WHERE bank_id == :id")
-    List<SinglePayment> getAllForBank(long id);
     @Query("SELECT * FROM SinglePayment WHERE date == :date")
     List<SinglePayment> getAllOnDate(long date);
-    @Query("SELECT * FROM SinglePayment WHERE date == :date AND bank_id == :id")
-    List<SinglePayment> getAllOnDateForBank(long id, long date);
+    @Query("SELECT * FROM SinglePayment WHERE bank_id == :bankId AND date >= :date1" +
+            " AND date <= :date2")
+    List<SinglePayment> getAllForBankBetween(long date1, long date2, long bankId);
 }

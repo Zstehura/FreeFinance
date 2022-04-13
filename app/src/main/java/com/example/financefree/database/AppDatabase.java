@@ -28,7 +28,7 @@ public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;
     public static AppDatabase getDatabase(final Context context){
-        if(INSTANCE == null) {
+        if(INSTANCE == null || !INSTANCE.isOpen()) {
             synchronized (AppDatabase.class) {
                 INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                         AppDatabase.class, "freefinance_data")

@@ -11,7 +11,6 @@ import com.example.financefree.database.entities.RecurringPayment;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.TimeZone;
 
 public final class DateParser {
     private DateParser(){}
@@ -73,7 +72,7 @@ public final class DateParser {
         // Check edits, if its in there, then no need to calculate anything
         boolean[] boolEdit = new boolean[2];
         Thread t = new Thread(() -> {
-            for(PaymentEdit pe: DatabaseManager.getPaymentEdit().getAllForRp(rp.rp_id)){
+            for(PaymentEdit pe: DatabaseManager.getPaymentEditDao().getAllForRp(rp.rp_id)){
                 if(pe.new_date == date) {
                     boolEdit[0] = true;
                     boolEdit[1] = true;
@@ -90,8 +89,7 @@ public final class DateParser {
         });
         t.start();
 
-        Frequency f = new Frequency(rp);
-        boolean freq = f.occursOn(date);
+        boolean freq = Frequency.occursOn(rp,date);
         try{t.join();}
         catch (InterruptedException e) {Log.e("DateParser", e.getMessage());}
         if(boolEdit[0]){

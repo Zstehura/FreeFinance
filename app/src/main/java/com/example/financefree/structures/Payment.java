@@ -18,6 +18,7 @@ public class Payment {
     public Payment(SinglePayment sp){
         amount = sp.amount;
         date = sp.date;
+        name = sp.name;
         bankId = sp.bank_id;
         cType = 's';
         id = sp.sp_id;

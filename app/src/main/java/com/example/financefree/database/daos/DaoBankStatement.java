@@ -23,12 +23,15 @@ public interface DaoBankStatement {
     @Update
     void update(BankStatement bs);
 
+    @Query("DELETE FROM BankStatement WHERE 1 == 1")
+    void deleteAll();
     @Query("SELECT * FROM BankStatement")
     List<BankStatement> getAll();
     @Query("SELECT * FROM BankStatement WHERE statement_id == :id")
     BankStatement getStatement(long id);
     @Query("SELECT * FROM BankStatement WHERE bank_id == :id")
     List<BankStatement> getBanksStatements(long id);
-    @Query("SELECT * FROM BankStatement WHERE bank_id == :id AND date == :date")
-    BankStatement getBanksStatementForDate(long id, long date);
+    @Query("SELECT * FROM BankStatement WHERE bank_id == :id AND date <= :date" +
+            " ORDER BY date DESC LIMIT 1")
+    BankStatement getBanksLastStatementForDate(long id, long date);
 }
