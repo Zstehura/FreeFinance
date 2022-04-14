@@ -33,11 +33,11 @@ import java.util.Map;
 public class BankStatementDialog extends DialogFragment {
 
     public static final String BANK_ID_KEY = "bank_id";
+    public static final String STATEMENT_ID_KEY = "s_id";
     public static final String AMOUNT_KEY = "amount";
     public static final String DATE_KEY = "date";
     public static final String IS_NEW_KEY = "new";
-
-
+    public static final String POSITION_KEY = "pos";
 
     public interface BankStatementDialogListener {
         void onDialogPositiveClick(BankStatementDialog dialog);
@@ -46,20 +46,18 @@ public class BankStatementDialog extends DialogFragment {
 
     public EditText etAmount, etDate;
     public Spinner spnBank;
-    public long bankId;
+    public long bankId, sId;
+    public int position;
     public boolean isNew;
 
     private final Map<Long, String> mBanks = new HashMap<>();
     private BankStatementDialogListener listener;
 
+    public void setListener(BankStatementDialogListener listener) {this.listener = listener;}
+
     @Override
     public void onAttach(@NonNull Context context){
         super.onAttach(context);
-        try {
-            listener = (BankStatementDialogListener) context;
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
 
@@ -84,21 +82,24 @@ public class BankStatementDialog extends DialogFragment {
         });
         t.start();
 
-        spnBank = dialog.findViewById(R.id.spnBankIdRecur);
+        spnBank = dialog.findViewById(R.id.spnBankNameStat);
         etDate = dialog.findViewById(R.id.txtDateStat);
         etAmount = dialog.findViewById(R.id.txtAmountStat);
 
         assert getArguments() != null;
         isNew = getArguments().getBoolean(IS_NEW_KEY);
         bankId = getArguments().getLong(BANK_ID_KEY);
+        position = getArguments().getInt(POSITION_KEY);
+        sId = getArguments().getLong(STATEMENT_ID_KEY);
         etDate.setText(getArguments().getString(DATE_KEY));
         etAmount.setText(String.valueOf(getArguments().getDouble(AMOUNT_KEY)));
 
         try{t.join();}
         catch (InterruptedException e){ Log.e("BankStatementDialog", e.getMessage());}
 
+        List<String> lBanks = new ArrayList<>(mBanks.values());
         ArrayAdapter<String> bankAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
-                new ArrayList<>(mBanks.values()));
+                lBanks);
         spnBank.setAdapter(bankAdapter);
         spnBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -130,7 +131,7 @@ public class BankStatementDialog extends DialogFragment {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @NonNull
-    public static BankStatementDialog newInstance(BankStatement bs) {
+    public static BankStatementDialog newInstance(BankStatement bs, int position, boolean isNew) {
         BankStatementDialog f = new BankStatementDialog();
         Bundle args = new Bundle();
 
@@ -138,14 +139,16 @@ public class BankStatementDialog extends DialogFragment {
             args.putLong(BANK_ID_KEY, 0);
             args.putDouble(AMOUNT_KEY, 0);
             args.putString(DATE_KEY, DateParser.getToday());
-            args.putBoolean(IS_NEW_KEY, true);
+            args.putLong(STATEMENT_ID_KEY, 0);
         }
         else {
             args.putLong(BANK_ID_KEY, bs.bank_id);
             args.putDouble(AMOUNT_KEY, bs.amount);
             args.putString(DATE_KEY, DateParser.getString(bs.date));
-            args.putBoolean(IS_NEW_KEY, false);
+            args.putLong(STATEMENT_ID_KEY, bs.statement_id);
         }
+        args.putBoolean(IS_NEW_KEY, isNew);
+        args.putInt(POSITION_KEY, position);
 
         f.setArguments(args);
 

@@ -19,6 +19,7 @@ import com.example.financefree.databinding.FragmentBankAccountBinding;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 
@@ -57,18 +58,17 @@ public class BankAccountRecyclerViewAdapter extends RecyclerView.Adapter<BankAcc
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setItem(BankAccountDialog dialog) {
         if(dialog.isNew) {
-            long[] id = new long[1];
+            AtomicReference<Long> id = new AtomicReference<>();
             BankAccount ba = new BankAccount();
             ba.name = dialog.bnkName.getText().toString();
             ba.notes = dialog.bnkNotes.getText().toString();
             Thread t = new Thread(() -> {
-                DatabaseManager.getBankAccountDao().insert(ba);
-                id[0] = DatabaseManager.getBankAccountDao().getLast().bank_id;
+                id.set(DatabaseManager.getBankAccountDao().insert(ba));
             });
             t.start();
             try {t.join();}
             catch (InterruptedException e) {e.printStackTrace();}
-            ba.bank_id = id[0];
+            ba.bank_id = id.get();
             BankAccountRVContent.addItem(ba);
             mValues = BankAccountRVContent.getItems();
             this.notifyItemInserted(dialog.position);

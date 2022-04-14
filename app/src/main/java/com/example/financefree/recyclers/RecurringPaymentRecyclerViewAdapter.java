@@ -19,6 +19,7 @@ import com.example.financefree.structures.DateParser;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link RecurringPaymentRVItem}.
@@ -65,15 +66,15 @@ public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<Re
         rp.frequency_number = dialog.freqNum;
 
         if(dialog.isNew) {
-            long[] id = new long[1];
+            AtomicReference<Long> id = new AtomicReference<>();
 
             Thread t = new Thread(() -> {
-                id[0] = DatabaseManager.getRecurringPaymentDao().insert(rp);
+                id.set(DatabaseManager.getRecurringPaymentDao().insert(rp));
             });
             t.start();
             try {t.join();}
             catch (InterruptedException e) {e.printStackTrace();}
-            rp.rp_id = id[0];
+            rp.rp_id = id.get();
             RecurringPaymentRVContent.addItem(rp);
             mValues = RecurringPaymentRVContent.getItems();
             this.notifyItemInserted(dialog.position);
