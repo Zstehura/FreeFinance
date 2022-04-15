@@ -2,7 +2,6 @@ package com.example.financefree;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -10,6 +9,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +22,9 @@ import com.example.financefree.database.entities.BankStatement;
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.SinglePayment;
 import com.example.financefree.dialogs.BankStatementDialog;
+import com.example.financefree.dialogs.DetailsDialogPa;
+import com.example.financefree.dialogs.DetailsDialogSt;
+import com.example.financefree.dialogs.SinglePaymentDialog;
 import com.example.financefree.recyclers.DailyRVContent;
 import com.example.financefree.recyclers.DailyRecyclerViewAdapter;
 import com.example.financefree.structures.Construction;
@@ -29,8 +32,6 @@ import com.example.financefree.structures.DateParser;
 import com.example.financefree.structures.Payment;
 import com.example.financefree.structures.Statement;
 
-import java.text.NumberFormat;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -41,8 +42,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class CalendarFragment extends Fragment
-        implements DailyRecyclerViewAdapter.ViewHolder.DRClickListener, BankStatementDialog.BankStatementDialogListener {
+public class CalendarFragment extends Fragment implements
+        DailyRecyclerViewAdapter.ViewHolder.DRClickListener,
+        BankStatementDialog.BankStatementDialogListener,
+        SinglePaymentDialog.SinglePaymentDialogListener {
 
 
     public long currentDate;
@@ -51,8 +54,6 @@ public class CalendarFragment extends Fragment
     private CalendarView cv;
     private TextView tv;
     private ImageButton btnAdd;
-
-    //TODO: switch this all around
 
     public CalendarFragment() {
         // Required empty public constructor
@@ -88,6 +89,9 @@ public class CalendarFragment extends Fragment
 
         btnAdd.setOnClickListener(btn -> {
             // clicked add button
+            SinglePaymentDialog f = SinglePaymentDialog.newInstance(null, -1, -1, true, drva.getItemCount());
+            f.setListener(this);
+            f.show(getParentFragmentManager(), "AddSinglePayment");
         });
 
         cv.setOnDateChangeListener((calendarView, iYear, iMonth, iDay) -> updateDay(DateParser.getLong(iMonth, iDay, iYear)));
@@ -111,6 +115,7 @@ public class CalendarFragment extends Fragment
 
         try{t.join();}
         catch (InterruptedException e){e.printStackTrace();}
+        Log.d("MonthFrag", "Statements:\n" + statementList.toString() + "\n\nPayments:\n" + paymentList.toString());
         drva = new DailyRecyclerViewAdapter(paymentList.get(), statementList.get(), this);
         rv.setAdapter(drva);
         drva.currentDate = currentDate;
@@ -119,6 +124,20 @@ public class CalendarFragment extends Fragment
 
     @Override
     public void OnDailyRowClick(int position) {
+        DailyRVContent.DailyRVItem dvi = drva.mValues.get(position);
+
+        if(dvi.isPayment) {
+            char c = 's';
+            if(dvi.isRecurring) c = 'r';
+            Payment p = new Payment(dvi.amount, currentDate, dvi.name, dvi.bankId, c,dvi.getItemId());
+            DetailsDialogPa f = DetailsDialogPa.newInstance(p);
+            f.show(getParentFragmentManager(), "PaymentDetails");
+        }
+        else {
+            Statement s = new Statement(dvi.bankId, dvi.amount, currentDate, dvi.name, dvi.getItemId());
+            DetailsDialogSt f = DetailsDialogSt.newInstance(s);
+            f.show(getParentFragmentManager(), "BankStatementDetails");
+        }
 
     }
 
@@ -137,7 +156,7 @@ public class CalendarFragment extends Fragment
                             t = new Thread(() -> {
                                 List<PaymentEdit> pel = DatabaseManager.getPaymentEditDao().getEditsForRpOnDate(currentDate, drva.getItemId(position));
                                 if(pel.size() == 0){
-                                    PaymentEdit pe = Construction.getEdit(DatabaseManager.getRecurringPaymentDao()
+                                    PaymentEdit pe = Construction.makeEdit(DatabaseManager.getRecurringPaymentDao()
                                             .getRecurringPayment(drva.getItemId(position)), currentDate);
                                     pe.skip = true;
                                     DatabaseManager.getPaymentEditDao().insert(pe);
@@ -160,13 +179,13 @@ public class CalendarFragment extends Fragment
                     else {
                         // delete statement
                         t = new Thread(() -> {
-                            BankStatement bs = DatabaseManager.getBankStatementDao().getStatement(drva.getItemId(position));
+                            BankStatement bs = DatabaseManager.getBankStatementDao().getBanksLastStatementForDate(drva.getItemId(position), currentDate);
                             if(bs != null) DatabaseManager.getBankStatementDao().delete(bs);
                         });
                     }
                     t.start();
 
-                    drva.remove(position);
+                    updateDay(currentDate);
 
                     try {t.join(); }
                     catch (InterruptedException e) {e.printStackTrace();}
@@ -179,7 +198,6 @@ public class CalendarFragment extends Fragment
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void OnDailyEditClick(int position) {
-        Thread t = null;
         DailyRVContent.DailyRVItem dvi = drva.mValues.get(position);
 
         if(dvi.isPayment) {
@@ -190,11 +208,19 @@ public class CalendarFragment extends Fragment
             }
             else {
                 // Single Payment
-
+                AtomicReference<SinglePayment> sp = new AtomicReference<>();
+                // TODO: Keeps throwing null exception for This /\ AtomicReference
+                Thread t = new Thread(() -> {
+                    sp.set(DatabaseManager.getSinglePaymentDao().getPayment(dvi.getItemId()));
+                });
+                try{t.join();}
+                catch (InterruptedException e) {e.printStackTrace();}
+                SinglePaymentDialog spd = SinglePaymentDialog.newInstance(new Payment(sp.get()),-1, sp.get().sp_id, false, position);
+                spd.setListener(this);
+                spd.show(getParentFragmentManager(),"EditSinglePayment");
             }
         }
         else{
-            // TODO: Statement name keeps coming up Null after update. Works fine for days that aren't today (4/14/22)
             // Bank Statement
             BankStatement bs = Construction.makeStatement(drva.getItemId(position), currentDate, dvi.amount);
 
@@ -208,9 +234,24 @@ public class CalendarFragment extends Fragment
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onDialogPositiveClick(BankStatementDialog dialog) {
-        if(dialog != null) drva.setItem(dialog);
+        if(dialog != null) {
+            drva.setItem(dialog);
+            updateDay(currentDate);
+        }
     }
 
     @Override
-    public void onDialogNegativeClick(BankStatementDialog dialog) { }
+    public void onDialogNegativeClick(BankStatementDialog dialog) { /* Do nothing */ }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @Override
+    public void onDialogPositiveClick(SinglePaymentDialog dialog) {
+        if(dialog != null){
+            drva.setItem(dialog);
+            updateDay(currentDate);
+        }
+    }
+
+    @Override
+    public void onDialogNegativeClick(SinglePaymentDialog dialog) {/* Do nothing */ }
 }

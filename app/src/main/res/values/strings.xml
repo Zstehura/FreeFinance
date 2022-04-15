@@ -125,4 +125,7 @@
     <string name="every">Every</string>
     <string name="day_of_week">Day of Week</string>
     <string name="add_new_recur_payment">Add New Recurring Payment</string>
+    <string name="statement">Bank Statement</string>
+    <string name="payment">Payment</string>
+    <string name="placeholder">Placeholder</string>
 </resources>

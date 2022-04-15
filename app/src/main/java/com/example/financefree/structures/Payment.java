@@ -2,10 +2,14 @@ package com.example.financefree.structures;
 
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
 import com.example.financefree.database.entities.SinglePayment;
+
+import java.text.NumberFormat;
 
 public class Payment {
     public double amount;
@@ -14,6 +18,7 @@ public class Payment {
     public long bankId;
     public char cType;
     public long id;
+    public String notes;
 
     public Payment(SinglePayment sp){
         amount = sp.amount;
@@ -22,6 +27,7 @@ public class Payment {
         bankId = sp.bank_id;
         cType = 's';
         id = sp.sp_id;
+        notes = sp.notes;
     }
 
     public Payment(RecurringPayment rp, long date) {
@@ -31,6 +37,17 @@ public class Payment {
         bankId = rp.bank_id;
         cType = 'r';
         id = rp.rp_id;
+        notes = rp.notes;
+    }
+
+    public Payment(PaymentEdit pe, String name, String notes){
+        amount = pe.new_amount;
+        date = pe.new_date;
+        this.name = name;
+        bankId = pe.new_bank_id;
+        cType = 'r';
+        id = pe.rp_id;
+        this.notes = notes;
     }
 
     public Payment(double amount, long date, String name, long bankId, char cType, long id){
@@ -44,5 +61,18 @@ public class Payment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Payment() {
         this(0, DateParser.getLong(1,1,2000), "new payment", 0, 's', 0);
+    }
+
+    @Override
+    public String toString() {
+        NumberFormat f = NumberFormat.getCurrencyInstance();
+        StringBuilder s = new StringBuilder();
+        s.append("[ '").append(name).append("' | ")
+                .append("id:").append(id).append(" | ")
+                .append("bankId:").append(bankId).append(" | ")
+                .append("type:").append(cType).append(" | ")
+                .append(DateParser.getString(date)).append(" | ")
+                .append(f.format(amount)).append(" ]");
+        return s.toString();
     }
 }

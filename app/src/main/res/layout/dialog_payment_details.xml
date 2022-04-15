@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <!-- Name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="@dimen/dialog_text_size"/>
+
+        <TextView
+            android:id="@+id/txtNamePaDet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:textSize="@dimen/dialog_subtext_size"/>
+
+        <!-- Bank Name -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/bank_account"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="@dimen/dialog_text_size"/>
+
+        <TextView
+            android:id="@+id/txtBankNamePaDet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:textSize="@dimen/dialog_subtext_size"/>
+
+        <!-- Amount -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="@dimen/dialog_text_size"/>
+
+        <TextView
+            android:id="@+id/txtAmountPaDet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:textSize="@dimen/dialog_subtext_size"/>
+
+        <!-- Date -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/date"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="@dimen/dialog_text_size"/>
+
+        <TextView
+            android:id="@+id/txtDatePaDet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:textSize="@dimen/dialog_subtext_size"/>
+
+        <!-- Notes -->
+        <TextView
+            android:id="@+id/lblDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/notes"
+            android:layout_margin="@dimen/text_margin"
+            android:textSize="@dimen/dialog_text_size"/>
+
+        <TextView
+            android:id="@+id/txtNotesPaDet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/amount"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:textSize="@dimen/dialog_subtext_size"/>
+
+    </LinearLayout>
+</ScrollView>

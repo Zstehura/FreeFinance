@@ -247,7 +247,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         assert getArguments() != null;
         freqType = getArguments().getInt(FREQUENCY_TYPE_KEY);
         freqNum = getArguments().getInt(FREQUENCY_NUM_KEY);
-        if(freqType >= 0 && freqType <= 3) txtFrequencyNum.setText(freqNum);
+        if(freqType >= 0 && freqType <= 3) txtFrequencyNum.setText(String.valueOf(freqNum));
         else if(freqType <= 5) spnDow.setSelection(freqNum);
         spnFreqType.setSelection(freqType);
         txtName.setText(getArguments().getString(NAME_KEY));

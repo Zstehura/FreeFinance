@@ -68,10 +68,10 @@ public class DailyRVContent {
     }
 
     private static DailyRVItem createRVItem(Statement statement){
-        return new DailyRVItem(statement.bankId, statement.bankName, statement.amount, false,false, statement.isCalculated);
+        return new DailyRVItem(statement.id, statement.bankName, statement.amount, false, statement.bankId, false, statement.isCalculated);
     }
     private static DailyRVItem createRVItem(Payment payment) {
-        return new DailyRVItem((-1 * payment.id), payment.name, payment.amount, true, (payment.cType == 'r'), false);
+        return new DailyRVItem((-1 * payment.id), payment.name, payment.amount, true, payment.bankId, (payment.cType == 'r'), false);
     }
 
     public static class DailyRVItem {
@@ -80,12 +80,14 @@ public class DailyRVContent {
         public final boolean isRecurring;
         public final String name;
         public final String details;
+        public final long bankId;
         public final double amount;
         public final boolean isCalculated;
 
-        public DailyRVItem(long itemId, String name, double details, boolean isPayment, boolean isRecurring, boolean isCalculated) {
+        public DailyRVItem(long itemId, String name, double details, boolean isPayment, long bankId, boolean isRecurring, boolean isCalculated) {
             this.itemId = itemId;
             this.name = name;
+            this.bankId = bankId;
             this.amount = details;
             NumberFormat f = NumberFormat.getCurrencyInstance();
             this.details = f.format(details);

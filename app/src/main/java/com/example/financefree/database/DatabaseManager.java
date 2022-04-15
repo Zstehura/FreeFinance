@@ -90,11 +90,13 @@ public class DatabaseManager extends AndroidViewModel {
                         if(p != null) cAmount += p.amount;
                     }
                 }
-                s = new Statement(ba.bank_id, cAmount, date, ba.name );
+                s = new Statement(ba.bank_id, cAmount, date, ba.name,-1 );
+                s.isCalculated = true;
             }
             else{
                 assert bs != null;
                 s = new Statement(bs, ba.name);
+                s.isCalculated = false;
             }
             list.add(s);
         }

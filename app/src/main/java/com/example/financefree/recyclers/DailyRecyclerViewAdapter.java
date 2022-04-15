@@ -13,9 +13,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.database.entities.BankStatement;
+import com.example.financefree.database.entities.PaymentEdit;
+import com.example.financefree.database.entities.RecurringPayment;
+import com.example.financefree.database.entities.SinglePayment;
 import com.example.financefree.databinding.FragmentCalendarItemBinding;
 import com.example.financefree.dialogs.BankAccountDialog;
 import com.example.financefree.dialogs.BankStatementDialog;
+import com.example.financefree.dialogs.SinglePaymentDialog;
 import com.example.financefree.structures.Construction;
 import com.example.financefree.structures.DateParser;
 import com.example.financefree.structures.Payment;
@@ -61,12 +65,11 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void setItem(BankStatementDialog dialog) {
         if(dialog.isNew) {
-            BankStatement bs = new BankStatement();
             AtomicReference<Long> sId = new AtomicReference<>();
             AtomicReference<String> name = new AtomicReference<>();
-            bs.bank_id = dialog.bankId;
-            bs.amount = Double.parseDouble(dialog.etAmount.getText().toString());
-            bs.date = DateParser.getLong(dialog.etDate.getText().toString());
+            BankStatement bs = Construction.makeStatement(dialog.bankId,
+                    DateParser.getLong(dialog.etDate.getText().toString()),
+                    Double.parseDouble(dialog.etAmount.getText().toString()));
             Thread t = new Thread(() -> {
                 sId.set(DatabaseManager.getBankStatementDao().insert(bs));
                 name.set(DatabaseManager.getBankAccountDao().getBankAccount(bs.bank_id).name);
@@ -79,12 +82,11 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
             this.notifyItemChanged(dialog.position);
         }
         else {
-            BankStatement bs = new BankStatement();
             AtomicReference<String> name = new AtomicReference<>();
-            bs.statement_id = dialog.sId;
-            bs.date = DateParser.getLong(dialog.etDate.getText().toString());
-            bs.amount = Double.parseDouble(dialog.etAmount.getText().toString());
-            bs.bank_id = dialog.bankId;
+            BankStatement bs = Construction.makeStatement(dialog.bankId,
+                    DateParser.getLong(dialog.etDate.getText().toString()),
+                    Double.parseDouble(dialog.etAmount.getText().toString()),
+                    dialog.sId);
             Thread t = new Thread(() -> {
                 DatabaseManager.getBankStatementDao().update(bs);
                 name.set(DatabaseManager.getBankAccountDao().getBankAccount(dialog.bankId).name);
@@ -96,9 +98,86 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
             catch (InterruptedException e) {e.printStackTrace();}
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void setItem(SinglePaymentDialog dialog) {
+        if(dialog.isNew) {
+            if(!dialog.isEdit){
+                AtomicReference<Long> spId = new AtomicReference<>();
+                AtomicReference<String> name = new AtomicReference<>();
+                SinglePayment sp = Construction.makeSp(dialog.bankId, dialog.getAmount(),
+                        DateParser.getLong(dialog.txtDate.getText().toString()));
+                Thread t = new Thread(() -> {
+                    spId.set(DatabaseManager.getSinglePaymentDao().insert(sp));
+                    name.set(DatabaseManager.getBankAccountDao().getBankAccount(sp.bank_id).name);
+                });
+                t.start();
+                try {t.join();}
+                catch (InterruptedException e) {e.printStackTrace();}
+                sp.sp_id = spId.get();
+                DailyRVContent.addItem(new Payment(sp));
+                this.notifyItemInserted(dialog.position);
+            }
+            else {
+                PaymentEdit pe = Construction.makeEdit(currentDate, dialog.bankId,
+                        dialog.getAmount(), DateParser.getLong(dialog.txtDate.getText().toString()),
+                        dialog.pId);
+                AtomicReference<Long> peId = new AtomicReference<>();
+                AtomicReference<String> bName = new AtomicReference<>();
+                AtomicReference<RecurringPayment> rp = new AtomicReference<>();
+                Thread t = new Thread(() -> {
+                    peId.set(DatabaseManager.getPaymentEditDao().insert(pe));
+                    bName.set(DatabaseManager.getBankAccountDao().getBankAccount(pe.new_bank_id).name);
+                    rp.set(DatabaseManager.getRecurringPaymentDao().getRecurringPayment(pe.rp_id));
+                });
+                t.start();
+                try {t.join();}
+                catch (InterruptedException e) {e.printStackTrace();}
+                pe.edit_id = peId.get();
+                DailyRVContent.updateItem(new Payment(pe, rp.get().name, rp.get().notes));
+                this.notifyItemChanged(dialog.position);
+            }
+        }
+        else {
+            if(!dialog.isEdit) {
+                AtomicReference<String> name = new AtomicReference<>();
+                SinglePayment sp = Construction.makeSp(dialog.bankId, dialog.getAmount(),
+                        DateParser.getLong(dialog.txtDate.getText().toString()),
+                        dialog.pId);
+                Thread t = new Thread(() -> {
+                    DatabaseManager.getSinglePaymentDao().update(sp);
+                    name.set(DatabaseManager.getBankAccountDao().getBankAccount(sp.bank_id).name);
+                });
+                t.start();
+                try {t.join();}
+                catch (InterruptedException e) {e.printStackTrace();}
+                DailyRVContent.addItem(new Payment(sp));
+                this.notifyItemInserted(dialog.position);
+            }
+            else {
+                PaymentEdit pe = Construction.makeEdit(currentDate, dialog.bankId,
+                        dialog.getAmount(), DateParser.getLong(dialog.txtDate.getText().toString()),
+                        dialog.pId, dialog.editId);
+                AtomicReference<String> bName = new AtomicReference<>();
+                AtomicReference<RecurringPayment> rp = new AtomicReference<>();
+                Thread t = new Thread(() -> {
+                    DatabaseManager.getPaymentEditDao().update(pe);
+                    bName.set(DatabaseManager.getBankAccountDao().getBankAccount(pe.new_bank_id).name);
+                    rp.set(DatabaseManager.getRecurringPaymentDao().getRecurringPayment(pe.rp_id));
+                });
+                t.start();
+                try {t.join();}
+                catch (InterruptedException e) {e.printStackTrace();}
+                DailyRVContent.updateItem(new Payment(pe, rp.get().name, rp.get().notes));
+                this.notifyItemChanged(dialog.position);
+            }
+        }
+    }
+
     @Override
     public long getItemId(int position) {
-        return mValues.get(position).getItemId();
+        if(mValues.get(position).isPayment) return mValues.get(position).getItemId();
+        return mValues.get(position).bankId;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
