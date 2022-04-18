@@ -1,10 +1,12 @@
 package com.example.financefree.recyclers;
 
+import android.graphics.Color;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+import com.example.financefree.R;
 import com.example.financefree.structures.Payment;
 import com.example.financefree.structures.Statement;
 
@@ -20,6 +22,9 @@ import java.util.Map;
  * <p>
  */
 public class DailyRVContent {
+    public static final int SINGLE_PAYMENT_CLR = R.color.blue;
+    public static final int RECURRING_PAYMENT_CLR = R.color.dark_red;
+    public static final int BANK_STATEMENT_CLR = R.color.dark_green;
 
     private static final List<DailyRVItem> ITEMS = new ArrayList<>();
     public static final Map<Long, DailyRVItem> ITEM_MAP = new HashMap<>();
@@ -31,6 +36,7 @@ public class DailyRVContent {
             addItem(createRVItem(s));
         }
         for (Payment p: paymentList){
+
             addItem(createRVItem(p));
         }
         return ITEMS;
@@ -68,10 +74,12 @@ public class DailyRVContent {
     }
 
     private static DailyRVItem createRVItem(Statement statement){
-        return new DailyRVItem(statement.id, statement.bankName, statement.amount, false, statement.bankId, false, statement.isCalculated);
+        return new DailyRVItem(statement.id, statement.bankName, statement.amount, false, statement.bankId, false, statement.isCalculated, BANK_STATEMENT_CLR);
     }
     private static DailyRVItem createRVItem(Payment payment) {
-        return new DailyRVItem((-1 * payment.id), payment.name, payment.amount, true, payment.bankId, (payment.cType == 'r'), false);
+        int color = SINGLE_PAYMENT_CLR;
+        if(payment.cType == 'r') color = RECURRING_PAYMENT_CLR;
+        return new DailyRVItem((-1 * payment.id), payment.name, payment.amount, true, payment.bankId, (payment.cType == 'r'), false, color);
     }
 
     public static class DailyRVItem {
@@ -83,8 +91,9 @@ public class DailyRVContent {
         public final long bankId;
         public final double amount;
         public final boolean isCalculated;
+        public final int color;
 
-        public DailyRVItem(long itemId, String name, double details, boolean isPayment, long bankId, boolean isRecurring, boolean isCalculated) {
+        public DailyRVItem(long itemId, String name, double details, boolean isPayment, long bankId, boolean isRecurring, boolean isCalculated, int color) {
             this.itemId = itemId;
             this.name = name;
             this.bankId = bankId;
@@ -94,6 +103,7 @@ public class DailyRVContent {
             this.isPayment = isPayment;
             this.isRecurring = isRecurring;
             this.isCalculated = isCalculated;
+            this.color = color;
         }
 
         public long getItemId() {

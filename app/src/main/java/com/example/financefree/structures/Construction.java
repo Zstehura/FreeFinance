@@ -46,16 +46,18 @@ public final class Construction {
         return bs;
     }
 
-    public static SinglePayment makeSp(long bankId, double amuont, long date) {
+    public static SinglePayment makeSp(long bankId, double amount, long date, String name, String notes) {
         SinglePayment sp = new SinglePayment();
         sp.bank_id = bankId;
-        sp.amount = amuont;
+        sp.amount = amount;
         sp.date = date;
+        sp.name = name;
+        sp.notes = notes;
         return sp;
     }
 
-    public static SinglePayment makeSp(long bankId, double amuont, long date, long spId) {
-        SinglePayment sp = makeSp( bankId, amuont, date);
+    public static SinglePayment makeSp(long bankId, double amuont, long date, String name, String notes, long spId) {
+        SinglePayment sp = makeSp( bankId, amuont, date, name, notes);
         sp.sp_id = spId;
         return sp;
     }

@@ -27,11 +27,10 @@ public interface DaoBankStatement {
     void deleteAll();
     @Query("SELECT * FROM BankStatement")
     List<BankStatement> getAll();
-    @Query("SELECT * FROM BankStatement WHERE statement_id == :id")
-    BankStatement getStatement(long id);
-    @Query("SELECT * FROM BankStatement WHERE bank_id == :id")
-    List<BankStatement> getBanksStatements(long id);
     @Query("SELECT * FROM BankStatement WHERE bank_id == :id AND date <= :date" +
             " ORDER BY date DESC LIMIT 1")
     BankStatement getBanksLastStatementForDate(long id, long date);
+
+    @Query("DELETE FROM BankStatement WHERE date < :date")
+    void deleteOlderThan(long date);
 }

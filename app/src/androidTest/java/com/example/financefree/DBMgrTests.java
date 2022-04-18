@@ -135,6 +135,50 @@ public class DBMgrTests {
     }
 
     @Test
+    public void testRecurringPayments() {
+        // rp1
+        RecurringPayment rpActual1 = DatabaseManager.getRecurringPaymentDao().getRecurringPayment(rp1Id);
+        assert rpActual1.name.equals(rp1.name);
+        assert rpActual1.notes.equals(rp1.notes);
+        assert rpActual1.type_option == rp1.type_option;
+        assert rpActual1.frequency_number == rp1.frequency_number;
+        assert rpActual1.start_date == rp1.start_date;
+        assert rpActual1.end_date == rp1.end_date;
+        assert rpActual1.amount == rp1.amount;
+        assert rpActual1.bank_id.equals(rp1.bank_id);
+
+        // rp2
+        RecurringPayment rpActual2 = DatabaseManager.getRecurringPaymentDao().getRecurringPayment(rp2Id);
+        assert rpActual2.name.equals(rp2.name);
+        assert rpActual2.notes.equals(rp2.notes);
+        assert rpActual2.type_option == rp2.type_option;
+        assert rpActual2.frequency_number == rp2.frequency_number;
+        assert rpActual2.start_date == rp2.start_date;
+        assert rpActual2.end_date == rp2.end_date;
+        assert rpActual2.amount == rp2.amount;
+        assert rpActual2.bank_id.equals(rp2.bank_id);
+    }
+
+    @Test
+    public void testSinglePayment() {
+        // sp1
+        SinglePayment spActual1 = DatabaseManager.getSinglePaymentDao().getAllOnDate(sp1.date).get(0);
+        assert spActual1.name.equals(sp1.name);
+        assert spActual1.notes.equals(sp1.notes);
+        assert spActual1.date == sp1.date;
+        assert spActual1.amount == sp1.amount;
+        assert spActual1.bank_id == sp1.bank_id;
+
+        // sp2
+        SinglePayment spActual2 = DatabaseManager.getSinglePaymentDao().getAllOnDate(sp2.date).get(0);
+        assert spActual2.name.equals(sp2.name);
+        assert spActual2.notes.equals(sp2.notes);
+        assert spActual2.date == sp2.date;
+        assert spActual2.amount == sp2.amount;
+        assert spActual2.bank_id == sp2.bank_id;
+    }
+
+    @Test
     public void testPaymentGetter() {
         List<Payment> pActual205 = DatabaseManager.getPaymentsForDay(DateParser.getLong(2,5,2022));
         assert pActual205.size() == 1;
@@ -189,7 +233,6 @@ public class DBMgrTests {
         assert pActual228.get(0).cType == 'r';
         assert pActual228.get(0).id == rp1Id;
     }
-
 
     @Test
     public void testStatementGetter() {

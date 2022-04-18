@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.BankStatement;
 import com.example.financefree.database.entities.PaymentEdit;
+import com.example.financefree.database.entities.RecurringPayment;
 import com.example.financefree.database.entities.SinglePayment;
 import com.example.financefree.dialogs.BankStatementDialog;
 import com.example.financefree.dialogs.DetailsDialogPa;
@@ -185,10 +186,9 @@ public class CalendarFragment extends Fragment implements
                     }
                     t.start();
 
-                    updateDay(currentDate);
-
                     try {t.join(); }
                     catch (InterruptedException e) {e.printStackTrace();}
+                    updateDay(currentDate);
                 })
                 .setNegativeButton("Cancel", (dialogInterface, i) -> {/* Do nothing */})
                 .create();
@@ -203,16 +203,37 @@ public class CalendarFragment extends Fragment implements
         if(dvi.isPayment) {
             if(dvi.isRecurring){
                 // Recurring Payment
-                // Create payment edit
+                // Check to see if edit already exists
+                AtomicReference<List<PaymentEdit>> pe = new AtomicReference<>();
+                AtomicReference<RecurringPayment> rp = new AtomicReference<>();
+                Thread t = new Thread(() -> {
+                    pe.set(DatabaseManager.getPaymentEditDao().getEditsForRpOnDate(currentDate, dvi.getItemId()));
+                    rp.set(DatabaseManager.getRecurringPaymentDao().getRecurringPayment(dvi.getItemId()));
+                });
+                t.start();
+                try{t.join();}
+                catch (InterruptedException e){e.printStackTrace();}
 
+                if(pe.get().size() == 0) {
+                    // edit doesn't exist, make one
+                    Payment p = new Payment(rp.get(), currentDate);
+                    SinglePaymentDialog spd = SinglePaymentDialog.newInstance(p,-1, rp.get().rp_id, true, position);
+                    spd.setListener(this);
+                    spd.show(getParentFragmentManager(),"NewEditPayment");
+                }
+                else {
+                    // Create payment edit
+                    Payment p = new Payment(pe.get().get(0), rp.get().name, rp.get().notes);
+                    SinglePaymentDialog spd = SinglePaymentDialog.newInstance(p, pe.get().get(0).edit_id, rp.get().rp_id, false, position);
+                    spd.setListener(this);
+                    spd.show(getParentFragmentManager(), "EditPaymentEdit");
+                }
             }
             else {
                 // Single Payment
                 AtomicReference<SinglePayment> sp = new AtomicReference<>();
-                // TODO: Keeps throwing null exception for This /\ AtomicReference
-                Thread t = new Thread(() -> {
-                    sp.set(DatabaseManager.getSinglePaymentDao().getPayment(dvi.getItemId()));
-                });
+                Thread t = new Thread(() -> sp.set(DatabaseManager.getSinglePaymentDao().getPayment(dvi.getItemId())));
+                t.start();
                 try{t.join();}
                 catch (InterruptedException e) {e.printStackTrace();}
                 SinglePaymentDialog spd = SinglePaymentDialog.newInstance(new Payment(sp.get()),-1, sp.get().sp_id, false, position);

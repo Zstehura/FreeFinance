@@ -60,8 +60,6 @@ public class BankStatementDialog extends DialogFragment {
         super.onAttach(context);
     }
 
-
-    // TODO: Change create
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

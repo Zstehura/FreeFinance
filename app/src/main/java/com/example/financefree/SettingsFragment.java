@@ -1,13 +1,14 @@
 package com.example.financefree;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
+
+import com.example.financefree.database.DatabaseManager;
 
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceClickListener {
@@ -28,7 +29,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                     .setCancelable(true)
                     .setPositiveButton("Delete", (dialogInterface, i) -> {
                         Toast.makeText(getContext(), "Clearing Data...", Toast.LENGTH_LONG).show();
-                        //DatabaseAccessor.clearData(0);
+                        Thread t = new Thread(DatabaseManager::clearDatabase);
+                        t.start();
+                        try {t.join();}
+                        catch (InterruptedException e){e.printStackTrace();}
                         Toast.makeText(getContext(), "Data cleared",Toast.LENGTH_SHORT).show();
                     })
                     .setNegativeButton("Cancel",((dialogInterface, i) -> {

@@ -8,6 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.preference.Preference;
 
 import com.example.financefree.database.daos.DaoBankAccount;
 import com.example.financefree.database.daos.DaoBankStatement;
@@ -30,18 +31,11 @@ import java.util.List;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class DatabaseManager extends AndroidViewModel {
-    private static final String PREF_KEY = "settings";
-    private static final String MEM_LEN_KEY = "mem_length";
     private static AppDatabase db;
-    private static SharedPreferences sharedPreferences;
-    private static int memLength;
 
     public DatabaseManager(Application application) {
         super(application);
         db = AppDatabase.getDatabase(application.getApplicationContext());
-        sharedPreferences = application.getSharedPreferences(PREF_KEY, Context.MODE_PRIVATE);
-        if(sharedPreferences.contains(MEM_LEN_KEY)) memLength = sharedPreferences.getInt(MEM_LEN_KEY, 365);
-        else setMemLength(365);
     }
 
 
@@ -53,14 +47,6 @@ public class DatabaseManager extends AndroidViewModel {
     public static DaoSinglePayment getSinglePaymentDao() {return db.daoSinglePayment();}
     public static DaoPaymentEdit getPaymentEditDao() {return db.daoPaymentEdit();}
 
-    public static int getMemLength() {return memLength;}
-    public static void setMemLength(int length) {
-        memLength = length;
-        SharedPreferences.Editor e = sharedPreferences.edit();
-        e.putInt(MEM_LEN_KEY, length);
-        e.apply();
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<Statement> getStatementsForDay(long date) {
         List<Statement> list = new ArrayList<>();
@@ -69,14 +55,8 @@ public class DatabaseManager extends AndroidViewModel {
             BankStatement bs = db.daoBankStatement().getBanksLastStatementForDate(ba.bank_id, date);
             long mostRecent;
             double cAmount;
-            if(bs == null) {
-                mostRecent = DateParser.dateNumDaysAgo(memLength);
-                cAmount = 0;
-            }
-            else {
-                mostRecent = bs.date;
-                cAmount = bs.amount;
-            }
+            mostRecent = bs.date;
+            cAmount = bs.amount;
 
             if(mostRecent != date) {
                 for (SinglePayment sp: db.daoSinglePayment().getAllForBankBetween(mostRecent, date, ba.bank_id)){
@@ -94,7 +74,6 @@ public class DatabaseManager extends AndroidViewModel {
                 s.isCalculated = true;
             }
             else{
-                assert bs != null;
                 s = new Statement(bs, ba.name);
                 s.isCalculated = false;
             }
@@ -136,7 +115,16 @@ public class DatabaseManager extends AndroidViewModel {
         return list;
     }
 
-    public void clearDatabase(){
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static void cleanUpDatabase(int memLength) {
+        long d = DateParser.dateNumDaysAgo(memLength);
+        db.daoRecurringPayment().deleteOlderThan(d);
+        db.daoSinglePayment().deleteOlderThan(d);
+        db.daoPaymentEdit().deleteOlderThan(d);
+        db.daoBankStatement().deleteOlderThan(d);
+    }
+
+    public static void clearDatabase(){
         db.daoBankStatement().deleteAll();
         db.daoPaymentEdit().deleteAll();
         db.daoRecurringPayment().deleteAll();

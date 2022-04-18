@@ -4,18 +4,27 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
+    <LinearLayout
+        android:id="@+id/recColorLabel"
+        android:layout_margin="@dimen/text_margin"
+        android:layout_width="@dimen/text_margin"
+        android:layout_height="@dimen/calc_btn_size"
+        android:orientation="horizontal"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/dark_gray"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="left"
         android:orientation="vertical"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/recColorLabel"
         android:layout_margin="@dimen/text_margin">
 
         <TextView
             android:id="@+id/lblName"
+            android:text="@string/notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="textStart"
@@ -26,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAlignment="textStart"
+            android:text="@string/notes"
             android:textAppearance="?attr/textAppearanceListItem"
             android:textSize="12sp" />
     </LinearLayout>

@@ -2,11 +2,6 @@
 
     <PreferenceCategory app:title="@string/profile_header">
 
-        <EditTextPreference
-            app:key="your_name"
-            app:title="@string/name_title"
-            app:useSimpleSummaryProvider="true" />
-
         <ListPreference
             app:defaultValue="single"
             app:entries="@array/fileas_entries"

@@ -36,11 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-//
-//  TODO:   TEST THIS DIALOG
-//
-
 public class RecurringPaymentDialog extends DialogFragment {
 
     public static final String NAME_KEY = "name";

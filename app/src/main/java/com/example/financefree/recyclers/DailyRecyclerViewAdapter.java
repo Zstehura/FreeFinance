@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
@@ -55,6 +56,7 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
         holder.mItem = mValues.get(position);
         holder.mName.setText(String.valueOf(mValues.get(position).name));
         holder.mDetails.setText(mValues.get(position).details);
+        holder.lColor.setBackgroundColor(holder.itemView.getResources().getColor(mValues.get(position).color));
     }
 
     @Override
@@ -106,7 +108,8 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
                 AtomicReference<Long> spId = new AtomicReference<>();
                 AtomicReference<String> name = new AtomicReference<>();
                 SinglePayment sp = Construction.makeSp(dialog.bankId, dialog.getAmount(),
-                        DateParser.getLong(dialog.txtDate.getText().toString()));
+                        DateParser.getLong(dialog.txtDate.getText().toString()),
+                        dialog.txtName.getText().toString(), dialog.txtNotes.getText().toString());
                 Thread t = new Thread(() -> {
                     spId.set(DatabaseManager.getSinglePaymentDao().insert(sp));
                     name.set(DatabaseManager.getBankAccountDao().getBankAccount(sp.bank_id).name);
@@ -143,6 +146,7 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
                 AtomicReference<String> name = new AtomicReference<>();
                 SinglePayment sp = Construction.makeSp(dialog.bankId, dialog.getAmount(),
                         DateParser.getLong(dialog.txtDate.getText().toString()),
+                        dialog.txtName.getText().toString(), dialog.txtNotes.getText().toString(),
                         dialog.pId);
                 Thread t = new Thread(() -> {
                     DatabaseManager.getSinglePaymentDao().update(sp);
@@ -209,6 +213,7 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private final WeakReference<DRClickListener> listenerRef;
         public final TextView mName, mDetails;
+        public LinearLayout lColor;
         public final ImageButton btnDel, btnEdit;
         public DailyRVContent.DailyRVItem mItem;
 
@@ -217,6 +222,8 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
             mName = binding.lblName;
             mDetails = binding.lblDesc;
             btnDel = binding.btnDelBank;
+            lColor = binding.recColorLabel;
+
             //if(!mItem.isPayment && mItem.isCalculated) btnDel.setVisibility(View.GONE);
             btnEdit = binding.btnEditBank;
 
