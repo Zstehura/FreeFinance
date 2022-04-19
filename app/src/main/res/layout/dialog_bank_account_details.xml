@@ -7,6 +7,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
+            android:textColor="@color/dialog_title"
             android:id="@+id/lblName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,6 +24,7 @@
             android:textSize="@dimen/dialog_subtext_size"/>
 
         <TextView
+            android:textColor="@color/dialog_title"
             android:id="@+id/lblDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

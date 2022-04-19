@@ -26,7 +26,8 @@
         <entry key="app/src/main/res/layout/dialog_bank_account_details.xml" value="0.1656441717791411" />
         <entry key="app/src/main/res/layout/dialog_bank_payment_details.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/dialog_bank_statement.xml" value="0.22784810126582278" />
-        <entry key="app/src/main/res/layout/dialog_bank_statement_details.xml" value="0.32472826086956524" />
+        <entry key="app/src/main/res/layout/dialog_bank_statement_details.xml" value="0.29721362229102166" />
+        <entry key="app/src/main/res/layout/dialog_payment_details.xml" value="0.1752786220871327" />
         <entry key="app/src/main/res/layout/dialog_recurring_payment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/dialog_recurring_payment_details.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/dialog_single_payment.xml" value="0.25" />
@@ -47,7 +48,7 @@
         <entry key="app/src/main/res/layout/test_calc.xml" value="0.302536231884058" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/xml/clear_data.xml" value="0.29846014492753625" />
-        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.1" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.335" />
       </map>
     </option>
   </component>

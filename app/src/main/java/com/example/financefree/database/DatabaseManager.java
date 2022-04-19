@@ -55,8 +55,15 @@ public class DatabaseManager extends AndroidViewModel {
             BankStatement bs = db.daoBankStatement().getBanksLastStatementForDate(ba.bank_id, date);
             long mostRecent;
             double cAmount;
-            mostRecent = bs.date;
-            cAmount = bs.amount;
+
+            if (bs != null){
+                mostRecent = bs.date;
+                cAmount = bs.amount;
+            }
+            else {
+                mostRecent = DateParser.dateNumDaysAgo(365);
+                cAmount =0;
+            }
 
             if(mostRecent != date) {
                 for (SinglePayment sp: db.daoSinglePayment().getAllForBankBetween(mostRecent, date, ba.bank_id)){
@@ -85,12 +92,14 @@ public class DatabaseManager extends AndroidViewModel {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<Payment> getPaymentsForDay(long date) {
+        final String TAG = "PaymentGetter";
+
         List<Payment> list = new ArrayList<>();
         for(SinglePayment sp: db.daoSinglePayment().getAllOnDate(date)){
             list.add(new Payment(sp));
         }
-
-        for(RecurringPayment rp: db.daoRecurringPayment().getRpsOnDate(date)){
+        List<RecurringPayment> recurringPaymentList = db.daoRecurringPayment().getRpsOnDate(date);
+        for(RecurringPayment rp: recurringPaymentList){
             List<PaymentEdit> pel = db.daoPaymentEdit().getEditsForRpOnDate(date, rp.rp_id);
             Payment p = new Payment(rp, date);
             boolean skip = false, addOn = false;
@@ -104,6 +113,8 @@ public class DatabaseManager extends AndroidViewModel {
                     }
                 }
             }
+
+
             if(addOn && !skip) {
                 list.add(p);
             }

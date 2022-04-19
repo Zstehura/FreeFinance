@@ -13,4 +13,6 @@
     <color name="light_gray">#5A5A5A</color>
     <color name="dark_red">#650000</color>
     <color name="dark_gray">#383838</color>
+
+    <color name="dialog_title">@color/dark_gray</color>
 </resources>

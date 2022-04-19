@@ -14,11 +14,11 @@
         android:label="@string/recurring_payments"
         tools:layout="@layout/fragment_recurring_payment_list" >
     </fragment>
-    <fragment
-        android:id="@+id/profileFragment"
-        android:name="com.example.financefree.ProfileFragment"
-        android:label="@string/profile_header"
-        tools:layout="@layout/fragment_profile" />
+<!--    <fragment-->
+<!--        android:id="@+id/profileFragment"-->
+<!--        android:name="com.example.financefree.ProfileFragment"-->
+<!--        android:label="@string/profile_header"-->
+<!--        tools:layout="@layout/fragment_profile" />-->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.financefree.HomeFragment"

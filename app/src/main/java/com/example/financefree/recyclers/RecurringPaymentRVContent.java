@@ -2,6 +2,7 @@ package com.example.financefree.recyclers;
 
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.example.financefree.database.entities.RecurringPayment;
@@ -19,8 +20,8 @@ import java.util.Map;
  */
 public class RecurringPaymentRVContent {
 
-    public static final List<RecurringPaymentRVItem> ITEMS = new ArrayList<RecurringPaymentRVItem>();
-    public static final Map<Long, RecurringPaymentRVItem> ITEM_MAP = new HashMap<Long, RecurringPaymentRVItem>();
+    public static final List<RecurringPaymentRVItem> ITEMS = new ArrayList<>();
+    public static final Map<Long, RecurringPaymentRVItem> ITEM_MAP = new HashMap<>();
 
     public static List<RecurringPaymentRVItem> getItems(){return ITEMS;}
     public static List<RecurringPaymentRVItem> getItems(List<RecurringPayment> recurringPaymentList){
@@ -63,6 +64,7 @@ public class RecurringPaymentRVContent {
             this.details = details;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return name;

@@ -10,6 +10,7 @@
         <!-- Name -->
         <TextView
             android:id="@+id/lblName"
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/bank_account"
@@ -26,6 +27,7 @@
 
         <!-- Amount -->
         <TextView
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/amount"
@@ -42,6 +44,7 @@
 
         <!-- Date -->
         <TextView
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/date"
@@ -58,6 +61,7 @@
 
         <!-- Notes -->
         <TextView
+            android:textColor="@color/dialog_title"
             android:id="@+id/lblDesc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

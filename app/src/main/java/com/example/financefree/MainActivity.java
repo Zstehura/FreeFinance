@@ -20,22 +20,21 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.preference.PreferenceManager;
 
 import com.example.financefree.database.DatabaseManager;
-import com.example.financefree.structures.DateParser;
-
-import java.util.ArrayList;
-import java.util.Objects;
 
 /**
- *  TODO:
- *      Add memory cleanup functions
- *      Add Tax estimation machine
- *      Add what if section?
- *      Add loan calculator
- *      *Set up Settings
- *      *Add tools menu
+ *  TODO:   Implement ads
+ *          Data validation needed for dialogs
+ *          Add warning message about security
+ *          Add memory cleanup functions
+ *          Add Tax estimation machine
+ *          Add what if section?
+ *          Add loan calculator
+ *          *Set up Settings
+ *          *Add tools menu
 */
 
 
+@SuppressWarnings("SpellCheckingInspection")
 public class MainActivity extends AppCompatActivity {
     private static final String CALC_HISTORY_KEY = "calc_hist";
 
@@ -63,11 +62,11 @@ public class MainActivity extends AppCompatActivity {
         dm = new DatabaseManager(this.getApplication());
 
         // Clear out old data
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        int days = preferences.getInt("clear_data_older_than", 365);
-        if(days > 0){
-            DatabaseManager.cleanUpDatabase(days);
-        }
+        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        //int days = preferences.getInt("clear_data_older_than", 365);
+        //if(days > 0){
+            //DatabaseManager.cleanUpDatabase(days);
+        //}
 
         // Set navigation
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);

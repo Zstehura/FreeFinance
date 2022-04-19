@@ -7,6 +7,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <TextView
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/name"
@@ -22,6 +23,7 @@
             android:textSize="@dimen/dialog_subtext_size"/>
 
         <TextView
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/notes"
@@ -37,6 +39,7 @@
             android:textSize="@dimen/dialog_subtext_size"/>
 
         <TextView
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/bank_account"
@@ -52,6 +55,7 @@
             android:textSize="@dimen/dialog_subtext_size"/>
 
         <TextView
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/amount"
@@ -67,6 +71,7 @@
             android:textSize="@dimen/dialog_subtext_size"/>
 
         <TextView
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/start_date"
@@ -82,6 +87,7 @@
             android:textSize="@dimen/dialog_subtext_size"/>
 
         <TextView
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/end_date"
@@ -97,6 +103,7 @@
             android:textSize="@dimen/dialog_subtext_size"/>
 
         <TextView
+            android:textColor="@color/dialog_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/frequency"

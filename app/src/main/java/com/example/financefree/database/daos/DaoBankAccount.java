@@ -10,10 +10,6 @@ import com.example.financefree.database.entities.BankAccount;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Maybe;
-import io.reactivex.rxjava3.core.Observable;
-
 @Dao
 public interface DaoBankAccount {
     @Insert

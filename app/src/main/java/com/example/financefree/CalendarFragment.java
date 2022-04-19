@@ -43,6 +43,7 @@ import java.util.concurrent.atomic.AtomicReference;
  * Use the {@link CalendarFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class CalendarFragment extends Fragment implements
         DailyRecyclerViewAdapter.ViewHolder.DRClickListener,
         BankStatementDialog.BankStatementDialogListener,
@@ -50,15 +51,14 @@ public class CalendarFragment extends Fragment implements
 
 
     public long currentDate;
+    @SuppressWarnings("SpellCheckingInspection")
     public DailyRecyclerViewAdapter drva;
     private RecyclerView rv;
     private CalendarView cv;
     private TextView tv;
     private ImageButton btnAdd;
 
-    public CalendarFragment() {
-        // Required empty public constructor
-    }
+    public CalendarFragment() {}
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -116,7 +116,7 @@ public class CalendarFragment extends Fragment implements
 
         try{t.join();}
         catch (InterruptedException e){e.printStackTrace();}
-        Log.d("MonthFrag", "Statements:\n" + statementList.toString() + "\n\nPayments:\n" + paymentList.toString());
+        Log.d("MonthFrag", "Statements:\n" + statementList + "\n\nPayments:\n" + paymentList);
         drva = new DailyRecyclerViewAdapter(paymentList.get(), statementList.get(), this);
         rv.setAdapter(drva);
         drva.currentDate = currentDate;
@@ -149,7 +149,7 @@ public class CalendarFragment extends Fragment implements
         AlertDialog alertDialog = new AlertDialog.Builder(getContext())
                 .setTitle("Delete")
                 .setPositiveButton("Delete", (dialogInterface, i) -> {
-                    Thread t = null;
+                    Thread t;
 
                     if(dvi.isPayment){
                         if(dvi.isRecurring){

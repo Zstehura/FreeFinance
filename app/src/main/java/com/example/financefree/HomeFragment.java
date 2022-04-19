@@ -4,7 +4,6 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -14,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.financefree.database.entities.BankAccount;
-import com.example.financefree.dialogs.BankAccountDialog;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -25,9 +23,7 @@ public class HomeFragment extends Fragment {
 
 
 
-    public HomeFragment() {
-        // Required empty public constructor
-    }
+    public HomeFragment() {}
 
     /**
      * Use this factory method to create a new instance of
@@ -36,8 +32,7 @@ public class HomeFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        return fragment;
+        return new HomeFragment();
     }
 
     @Override

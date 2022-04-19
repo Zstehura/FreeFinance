@@ -218,7 +218,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         spnDow.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                freqNum = i;
+                freqNum = (i+1);
             }
 
             @Override
@@ -243,7 +243,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         freqType = getArguments().getInt(FREQUENCY_TYPE_KEY);
         freqNum = getArguments().getInt(FREQUENCY_NUM_KEY);
         if(freqType >= 0 && freqType <= 3) txtFrequencyNum.setText(String.valueOf(freqNum));
-        else if(freqType <= 5) spnDow.setSelection(freqNum);
+        else if(freqType <= 5) spnDow.setSelection((freqNum-1));
         spnFreqType.setSelection(freqType);
         txtName.setText(getArguments().getString(NAME_KEY));
         txtAmount.setText(String.valueOf(getArguments().getDouble(AMOUNT_KEY)));
@@ -271,9 +271,6 @@ public class RecurringPaymentDialog extends DialogFragment {
         for(long id: mBanks.keySet()) {
             if(id == bankId) spnBank.setSelection(n);
             n++;
-        }
-        if(freqNum < 7) {
-            spnDow.setSelection(freqNum);
         }
         txtFrequencyNum.setText(String.valueOf(freqNum));
 
