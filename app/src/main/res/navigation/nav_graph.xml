@@ -14,11 +14,6 @@
         android:label="@string/recurring_payments"
         tools:layout="@layout/fragment_recurring_payment_list" >
     </fragment>
-<!--    <fragment-->
-<!--        android:id="@+id/profileFragment"-->
-<!--        android:name="com.example.financefree.ProfileFragment"-->
-<!--        android:label="@string/profile_header"-->
-<!--        tools:layout="@layout/fragment_profile" />-->
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.financefree.HomeFragment"
@@ -39,6 +34,9 @@
         <action
             android:id="@+id/action_homeFragment_to_bankAccountsFragment2"
             app:destination="@id/bankAccountsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_toolsListDialogFragment"
+            app:destination="@id/toolsListDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/calendar"
@@ -51,4 +49,26 @@
         android:name="com.example.financefree.BankAccountFragment"
         android:label="fragment_bank_accounts"
         tools:layout="@layout/fragment_bank_account" />
+    <dialog
+        android:id="@+id/toolsListDialogFragment"
+        android:name="com.example.financefree.ToolsListDialogFragment"
+        android:label="fragment_tools_list"
+        tools:layout="@layout/fragment_tools_list" >
+        <action
+            android:id="@+id/action_toolsListDialogFragment_to_loanEstimatorFragment"
+            app:destination="@id/loanEstimatorFragment" />
+        <action
+            android:id="@+id/action_toolsListDialogFragment_to_taxEstimatorFragment"
+            app:destination="@id/taxEstimatorFragment" />
+    </dialog>
+    <fragment
+        android:id="@+id/loanEstimatorFragment"
+        android:name="com.example.financefree.LoanEstimatorFragment"
+        android:label="fragment_loan_estimator"
+        tools:layout="@layout/fragment_loan_estimator" />
+    <fragment
+        android:id="@+id/taxEstimatorFragment"
+        android:name="com.example.financefree.TaxEstimatorFragment"
+        android:label="fragment_tax_estimator"
+        tools:layout="@layout/fragment_tax_estimator" />
 </navigation>

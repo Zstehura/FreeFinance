@@ -1,6 +1,7 @@
 package com.example.financefree;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -23,8 +25,6 @@ import com.example.financefree.database.DatabaseManager;
 
 /**
  *  TODO:   Implement ads
- *          Data validation needed for dialogs
- *          Add warning message about security
  *          Add memory cleanup functions
  *          Add Tax estimation machine
  *          Add what if section?
@@ -36,6 +36,8 @@ import com.example.financefree.database.DatabaseManager;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MainActivity extends AppCompatActivity {
+    private String MEM_LENGTH_KEY;
+    private String WARNING_MESSAGE_KEY;
     private static final String CALC_HISTORY_KEY = "calc_hist";
 
     private enum Operation {
@@ -57,16 +59,33 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MEM_LENGTH_KEY = this.getString(R.string.mem_length_key);
+        WARNING_MESSAGE_KEY = this.getString(R.string.show_sec_msg_key);
 
         // Get database
         dm = new DatabaseManager(this.getApplication());
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Clear out old data
-        //SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        //int days = preferences.getInt("clear_data_older_than", 365);
+        int days = preferences.getInt(MEM_LENGTH_KEY, 365);
         //if(days > 0){
             //DatabaseManager.cleanUpDatabase(days);
         //}
+
+        // show the security message
+        if(preferences.getBoolean(WARNING_MESSAGE_KEY, true)){
+            AlertDialog d = new AlertDialog.Builder(this)
+                    .setTitle(R.string.sec_msg_title)
+                    .setMessage(R.string.security_message)
+                    .setPositiveButton(R.string.thx, (dialogInterface, i) -> {/* Do nothing */})
+                    .setNegativeButton(R.string.dont_show_again, ((dialogInterface, i) -> {
+                        SharedPreferences.Editor editor = preferences.edit();
+                        editor.putBoolean(WARNING_MESSAGE_KEY, false);
+                        editor.apply();
+                    }))
+                    .create();
+            d.show();
+        }
 
         // Set navigation
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);

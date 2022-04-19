@@ -12,4 +12,6 @@
     <dimen name="calc_btn_txt">10sp</dimen>
     <dimen name="calc_btn_margin">3dp</dimen>
     <dimen name="calc_btn_margin_xtra">5dp</dimen>
+    <dimen name="list_item_spacing">16dp</dimen>
+    <dimen name="list_item_spacing_half">8dp</dimen>
 </resources>

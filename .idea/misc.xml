@@ -28,7 +28,7 @@
         <entry key="app/src/main/res/layout/dialog_bank_statement.xml" value="0.22784810126582278" />
         <entry key="app/src/main/res/layout/dialog_bank_statement_details.xml" value="0.29721362229102166" />
         <entry key="app/src/main/res/layout/dialog_payment_details.xml" value="0.1752786220871327" />
-        <entry key="app/src/main/res/layout/dialog_recurring_payment.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/dialog_recurring_payment.xml" value="0.22" />
         <entry key="app/src/main/res/layout/dialog_recurring_payment_details.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/dialog_single_payment.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_bank_account.xml" value="0.2776268115942029" />
@@ -37,6 +37,7 @@
         <entry key="app/src/main/res/layout/fragment_calendar.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_calendar_item.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.2776268115942029" />
+        <entry key="app/src/main/res/layout/fragment_loan_estimator.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/fragment_month_picker.xml" value="0.3319746376811594" />
         <entry key="app/src/main/res/layout/fragment_month_year_picker_dialog.xml" value="0.317481884057971" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.30978260869565216" />
@@ -48,7 +49,7 @@
         <entry key="app/src/main/res/layout/test_calc.xml" value="0.302536231884058" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/xml/clear_data.xml" value="0.29846014492753625" />
-        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.335" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.29085872576177285" />
       </map>
     </option>
   </component>
