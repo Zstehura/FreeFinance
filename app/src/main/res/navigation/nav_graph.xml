@@ -23,9 +23,6 @@
             android:id="@+id/action_homeFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_profileFragment"
-            app:destination="@id/profileFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_calendar"
             app:destination="@id/calendar" />
         <action
@@ -60,6 +57,9 @@
         <action
             android:id="@+id/action_toolsListDialogFragment_to_taxEstimatorFragment"
             app:destination="@id/taxEstimatorFragment" />
+        <action
+            android:id="@+id/action_toolsListDialogFragment_to_annualViewFragment"
+            app:destination="@id/annualViewFragment" />
     </dialog>
     <fragment
         android:id="@+id/loanEstimatorFragment"
@@ -71,4 +71,9 @@
         android:name="com.example.financefree.TaxEstimatorFragment"
         android:label="fragment_tax_estimator"
         tools:layout="@layout/fragment_tax_estimator" />
+    <fragment
+        android:id="@+id/annualViewFragment"
+        android:name="com.example.financefree.AnnualViewFragment"
+        android:label="fragment_annual_view"
+        tools:layout="@layout/fragment_annual_view" />
 </navigation>

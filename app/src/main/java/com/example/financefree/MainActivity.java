@@ -24,9 +24,9 @@ import androidx.preference.PreferenceManager;
 import com.example.financefree.database.DatabaseManager;
 
 /**
- *  TODO:   Implement ads
- *          Add memory cleanup functions
+ *  TODO:   Implement ads / ad-free payment
  *          Add Tax estimation machine
+ *          Add annual view
  *          Add what if section?
  *          Add loan calculator
  *          *Set up Settings
@@ -36,7 +36,6 @@ import com.example.financefree.database.DatabaseManager;
 
 @SuppressWarnings("SpellCheckingInspection")
 public class MainActivity extends AppCompatActivity {
-    private String MEM_LENGTH_KEY;
     private String WARNING_MESSAGE_KEY;
     private static final String CALC_HISTORY_KEY = "calc_hist";
 
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        MEM_LENGTH_KEY = this.getString(R.string.mem_length_key);
+        final String memLengthKey = this.getString(R.string.mem_length_key);
         WARNING_MESSAGE_KEY = this.getString(R.string.show_sec_msg_key);
 
         // Get database
@@ -67,10 +66,11 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         // Clear out old data
-        int days = preferences.getInt(MEM_LENGTH_KEY, 365);
-        //if(days > 0){
-            //DatabaseManager.cleanUpDatabase(days);
-        //}
+        int days = preferences.getInt(memLengthKey, 365);
+        if(days > 0){
+            Thread t = new Thread(() -> DatabaseManager.cleanUpDatabase(days));
+            t.start();
+        }
 
         // show the security message
         if(preferences.getBoolean(WARNING_MESSAGE_KEY, true)){
