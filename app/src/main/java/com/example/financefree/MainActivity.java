@@ -25,6 +25,7 @@ import com.example.financefree.database.DatabaseManager;
 
 /**
  *  TODO:   Implement ads / ad-free payment
+ *          Add Notification options?
  *          Add Tax estimation machine
  *          Add annual view
  *          Add what if section?

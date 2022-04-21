@@ -10,14 +10,14 @@
             </Attribute>
           </value>
         </entry>
-        <entry key="/app/src/main/assets/tax_deductions.csv">
+        <entry key="/app/src/main/assets/income_brackets.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
             </Attribute>
           </value>
         </entry>
-        <entry key="/app/src/main/assets/taxes.csv">
+        <entry key="/app/src/main/assets/standard_deductions.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

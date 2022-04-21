@@ -21,19 +21,15 @@ public class TaxYear {
     public static class FilingNotFoundException extends Exception {}
 
     private static final String BRACKET_FILE_NAME = "income_brackets.csv";
-    private static final String CHILD_CREDIT_FILE_NAME = "child_credits.csv";
     private static final String STANDARD_DEDUCTION_FILE_NAME = "standard_deductions.csv";
     private static final List<String> BRACKET_CONTENTS = new ArrayList<>();
-    private static final List<String> CREDIT_CONTENTS = new ArrayList<>();
     private static final List<String> DEDUCTION_CONTENTS = new ArrayList<>();
     public static final List<String> FILING_STATUS = new ArrayList<>(Arrays.asList("married-joint","married-separate","single","head-of-house"));
 
-    private final Map<String, Credit> credits = new HashMap<>();        // goes after tax
     private final Map<String, Double> stdDeduction = new HashMap<>();   // goes before tax
     private final Map<String, List<Bracket>> brackets = new HashMap<>();
 
     private final int year;
-    private int children;
 
     public TaxYear(int year, Context context) throws IOException, YearNotFoundException {
         // get tax file
@@ -55,13 +51,13 @@ public class TaxYear {
                 int lineNumber = i;
                 while(!BRACKET_CONTENTS.get(lineNumber).equals(",,,,,")){
                     List<String> nums = new ArrayList<>(Arrays.asList(BRACKET_CONTENTS.get(lineNumber).split(",")));
-                    List<String> nextNums = new ArrayList<>(Arrays.asList(BRACKET_CONTENTS.get(lineNumber).split(",")));
+                    List<String> nextNums = new ArrayList<>(Arrays.asList(BRACKET_CONTENTS.get(lineNumber + 1).split(",")));
                     for(int n = 0; n < FILING_STATUS.size(); n++){
                         double ll,ul,r;
                         ll = Double.parseDouble(nums.get(2 + n)) + 1;
                         if(ll == 1) ll = 0;
                         r = Double.parseDouble(nums.get(1));
-                        if(nextNums.get(1).equals("")){
+                        if(nextNums.size() == 0){
                             ul = -1;
                         }
                         else{
@@ -78,28 +74,11 @@ public class TaxYear {
         if(!yearFound) throw new YearNotFoundException();
         yearFound = false;
 
-        for(int i = 0; i < CREDIT_CONTENTS.size(); i++){
-            if(CREDIT_CONTENTS.get(i).substring(0,4).equals(String.valueOf(year))){
-                yearFound = true;
-                List<String> heads = new ArrayList<>(Arrays.asList(CREDIT_CONTENTS.get(0).split(",")));
-                List<String> nums = new ArrayList<>(Arrays.asList(CREDIT_CONTENTS.get(i).split(",")));
-                for (int j = 2; j < (heads.size() - 1); j++) {
-                    double m = Double.parseDouble(nums.get(1));
-                    double r = Double.parseDouble(nums.get(5));
-                    double t = Double.parseDouble(nums.get(j));
-                    credits.put(heads.get(j), new Credit(m,r,t));
-                }
-            }
-        }
-
-        if(!yearFound) throw new YearNotFoundException();
-        yearFound = false;
-
         for(int i = 0; i < DEDUCTION_CONTENTS.size(); i++) {
             if(DEDUCTION_CONTENTS.get(i).substring(0,4).equals(String.valueOf(year))) {
                 yearFound = true;
-                List<String> heads = new ArrayList<>(Arrays.asList(CREDIT_CONTENTS.get(0).split(",")));
-                List<String> nums = new ArrayList<>(Arrays.asList(CREDIT_CONTENTS.get(i).split(",")));
+                List<String> heads = new ArrayList<>(Arrays.asList(DEDUCTION_CONTENTS.get(0).split(",")));
+                List<String> nums = new ArrayList<>(Arrays.asList(DEDUCTION_CONTENTS.get(i).split(",")));
                 for(int j = 1; j < nums.size(); j++){
                     stdDeduction.put(heads.get(j), Double.parseDouble(nums.get(j)));
                 }
@@ -113,20 +92,13 @@ public class TaxYear {
 
     private void readFiles(Context context) throws IOException {
         InputStream isb = context.getAssets().open(BRACKET_FILE_NAME);
-        InputStream isc = context.getAssets().open(CHILD_CREDIT_FILE_NAME);
         InputStream isd = context.getAssets().open(STANDARD_DEDUCTION_FILE_NAME);
         BufferedReader brb = new BufferedReader(new InputStreamReader(isb));
-        BufferedReader brc = new BufferedReader(new InputStreamReader(isc));
         BufferedReader brd = new BufferedReader(new InputStreamReader(isd));
         String s = brb.readLine();
         while (s != null){
             BRACKET_CONTENTS.add(s);
             s = brb.readLine();
-        }
-        s = brc.readLine();
-        while(s != null){
-            CREDIT_CONTENTS.add(s);
-            s = brc.readLine();
         }
         s = brd.readLine();
         while (s != null){
@@ -134,7 +106,7 @@ public class TaxYear {
             s = brd.readLine();
         }
 
-        isb.close(); isc.close(); isd.close();
+        isb.close(); isd.close();
     }
 
     public double getTaxOn(String fileAs, double income) throws FilingNotFoundException {
@@ -151,34 +123,17 @@ public class TaxYear {
                 }
             }
         }
-        tax -= credits.get(fileAs).getCredit(children, iActual);
-        if(tax > 0) return tax;
+        if(tax > 0) {
+            tax *= 100;
+            long temp = Math.round(tax);
+            tax = ((double) temp / 100);
+            return tax;
+        }
         else return 0;
     }
 
-    public void setChildren(int children){this.children = children;}
-    public int getChildren(){return children;}
     public int getYear() {return year;}
 
-    private static class Credit {
-        public Credit(double max, double rate, double threshold){
-            maxCredit = max;
-            rateDecline = rate;
-            this.threshold = threshold;
-        }
-        double maxCredit;
-        double rateDecline;
-        double threshold;
-
-        public double getCredit(int nChildren, double income){
-            double d = nChildren * maxCredit;
-            if(income > threshold) {
-                d -= ((income - threshold) * rateDecline);
-            }
-            if(d > 0) return d;
-            else return 0;
-        }
-    }
     private static class Bracket {
         public Bracket(double lowerLim, double upperLim, double rate){
             this.lowerLim = lowerLim;
