@@ -1,6 +1,5 @@
 package com.example.financefree.structures;
 
-import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.database.entities.BankStatement;
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
@@ -56,9 +55,23 @@ public final class Construction {
         return sp;
     }
 
-    public static SinglePayment makeSp(long bankId, double amuont, long date, String name, String notes, long spId) {
-        SinglePayment sp = makeSp( bankId, amuont, date, name, notes);
+    public static SinglePayment makeSp(long bankId, double amount, long date, String name, String notes, long spId) {
+        SinglePayment sp = makeSp( bankId, amount, date, name, notes);
         sp.sp_id = spId;
         return sp;
+    }
+
+    public static RecurringPayment makeRp(String name, String notes, long bankId, int freqNum, int typeOpt,
+                                          long startDate, long endDate, double amount){
+        RecurringPayment rp = new RecurringPayment();
+        rp.name = name;
+        rp.notes = notes;
+        rp.bank_id = bankId;
+        rp.frequency_number = freqNum;
+        rp.type_option = typeOpt;
+        rp.start_date = startDate;
+        rp.end_date = endDate;
+        rp.amount = amount;
+        return rp;
     }
 }

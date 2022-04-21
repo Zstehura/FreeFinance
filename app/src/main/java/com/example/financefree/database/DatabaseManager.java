@@ -127,6 +127,19 @@ public class DatabaseManager extends AndroidViewModel {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public static List<Payment> getAnnualPayments(int year){
+        List<Payment> paymentList = new ArrayList<>();
+        long yearStart = DateParser.getLong(0,1,year);
+        long yearEnd = DateParser.getLong(11,31,year);
+        List<RecurringPayment> rpl = db.daoRecurringPayment().getRpsBetween(yearStart,yearEnd);
+        for(RecurringPayment rp: rpl) {
+
+        }
+
+        return paymentList;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static void cleanUpDatabase(int memLength) {
         long d = DateParser.dateNumDaysAgo(memLength);
         db.daoRecurringPayment().deleteOlderThan(d);

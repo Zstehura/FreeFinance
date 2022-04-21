@@ -20,6 +20,8 @@ public interface DaoRecurringPayment {
     @Update
     void update(RecurringPayment rp);
 
+    @Query("SELECT * FROM RecurringPayment WHERE start_date <= :date2 AND end_date >= :date1")
+    List<RecurringPayment> getRpsBetween(long date1, long date2);
     @Query("DELETE FROM RecurringPayment WHERE 1 == 1")
     void deleteAll();
     @Query("SELECT * FROM RecurringPayment")

@@ -16,6 +16,27 @@ public final class DateParser {
     private DateParser(){}
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public static long addToDate(long date, int n, int field) {
+        if(field == Calendar.DAY_OF_MONTH || field == Calendar.DAY_OF_YEAR) {
+            return date + n;
+        }
+        else if(field == Calendar.WEEK_OF_YEAR || field == Calendar.WEEK_OF_MONTH){
+            return date + (7L * n);
+        }
+        else if(field == Calendar.MONTH) {
+            GregorianCalendar gc = getCal(date);
+            gc.add(Calendar.MONTH, n);
+            return getLong(gc);
+        }
+        else if(field == Calendar.YEAR) {
+            GregorianCalendar gc = getCal(date);
+            gc.add(Calendar.YEAR, n);
+            return getLong(gc);
+        }
+        return 0;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static long getLong(GregorianCalendar gc){
         return gc.toInstant().getEpochSecond() / 60 / 60 / 24;
     }

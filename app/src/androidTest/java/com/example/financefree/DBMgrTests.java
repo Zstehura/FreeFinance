@@ -36,7 +36,7 @@ public class DBMgrTests {
     @Before
     public void init(){
         dm = new DatabaseManager(ApplicationProvider.getApplicationContext());
-        dm.clearDatabase();
+        DatabaseManager.clearDatabase();
 
         ba = new BankAccount();
         ba.name = "First Bank";

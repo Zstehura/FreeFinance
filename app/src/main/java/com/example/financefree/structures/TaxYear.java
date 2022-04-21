@@ -12,8 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-// TODO: Create tests for this class
-//          write tax relevant functions in DB mgr
+//   TODO  write tax relevant functions in DB mgr
 
 @SuppressWarnings({"ConstantConditions", "SpellCheckingInspection"})
 public class TaxYear {
