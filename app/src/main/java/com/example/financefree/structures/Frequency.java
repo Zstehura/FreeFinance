@@ -127,6 +127,38 @@ public class Frequency {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
+    public static List<Payment> paymentsBetween(List<PaymentEdit> pel, RecurringPayment rp, long date1, long date2){
+        List<Long> dateList = occurencesBetween(rp, date1, date2);
+        List<Payment> paymentList = new ArrayList<>();
+        for(long d: dateList){
+            paymentList.add(new Payment(rp, d));
+        }
+
+        if(pel != null) {
+            for(PaymentEdit pe: pel) {
+                if(dateList.contains(pe.edit_date)){
+                    for(int i = 0; i < dateList.size(); i++){
+                        if(dateList.get(i) == pe.edit_date){
+                            if(pe.skip) {
+                                dateList.remove(i);
+                                paymentList.remove(i);
+                            }
+                            else {
+                                dateList.set(i, pe.new_date);
+                                Payment p = new Payment(pe, rp.name, rp.notes);
+                                paymentList.set(i, p);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        return paymentList;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<Long> occurencesBetween(List<PaymentEdit> pel, RecurringPayment rp, long date1, long date2){
         List<Long> dateList = occurencesBetween(rp, date1, date2);
         if(pel != null) {

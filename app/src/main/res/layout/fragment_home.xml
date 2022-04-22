@@ -41,11 +41,11 @@
             android:textAlignment="center"/>
 
         <Button
-            android:id="@+id/btnOther"
+            android:id="@+id/btnTools"
             android:layout_width="@dimen/button_square_side"
             android:layout_height="@dimen/button_square_side"
             android:layout_margin="@dimen/text_margin"
-            android:text="@string/temp"
+            android:text="@string/tools"
             android:textAlignment="center"/>
 
     </GridLayout>

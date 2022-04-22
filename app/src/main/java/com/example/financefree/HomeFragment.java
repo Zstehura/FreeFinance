@@ -68,10 +68,9 @@ public class HomeFragment extends Fragment {
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.settingsFragment);
         });
-
-        // TODO: Add 5th option
-        view.findViewById(R.id.btnOther).setOnClickListener(view1 -> {
-
+        view.findViewById(R.id.btnTools).setOnClickListener(view1 -> {
+            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.toolFragment);
         });
 
 

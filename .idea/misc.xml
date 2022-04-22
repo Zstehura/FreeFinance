@@ -45,13 +45,15 @@
         <entry key="app/src/main/res/layout/fragment_recurring_payment.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/fragment_recurring_payment_list.xml" value="0.302536231884058" />
         <entry key="app/src/main/res/layout/fragment_tax_estimator.xml" value="0.15885416666666666" />
+        <entry key="app/src/main/res/layout/fragment_tool_item.xml" value="0.36041666666666666" />
+        <entry key="app/src/main/res/layout/fragment_tool_item_list.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/nav_header_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/recurring_payments.xml" value="0.25" />
         <entry key="app/src/main/res/layout/recurring_payments_list.xml" value="0.29846014492753625" />
         <entry key="app/src/main/res/layout/test_calc.xml" value="0.302536231884058" />
         <entry key="app/src/main/res/menu/nav_menu.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/xml/clear_data.xml" value="0.29846014492753625" />
-        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.29085872576177285" />
+        <entry key="app/src/main/res/xml/root_preferences.xml" value="0.1305732484076433" />
       </map>
     </option>
   </component>

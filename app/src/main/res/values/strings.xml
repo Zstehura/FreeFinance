@@ -26,6 +26,9 @@
     <!-- Settings -->
     <string name="file_as">Filing As…</string>
     <string name="settings">Settings</string>
+    <string name="main_bank_account">Main Bank Account</string>
+    <string name="disp_main_bank_title">Display Main Bank Account Balance on Home Screen</string>
+    <string name="none">None</string>
 
     <!-- Misc button text, etc. -->
     <string name="thx">Okay, thank you :)</string>
@@ -65,5 +68,9 @@
     <string name="show_sec_msg_key">show_sec_msg</string>
     <string name="mem_length_key">mem_length</string>
     <string name="profile_header">Profile</string>
+    <string name="main_bank_key">main_bank_account</string>
+    <string name="file_as_key">file_as</string>
+    <string name="disp_main_bank_key">disp_main_bank</string>
+    <string name="tools">Tools</string>
 
 </resources>

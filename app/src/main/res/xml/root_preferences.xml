@@ -6,9 +6,22 @@
             app:defaultValue="single"
             app:entries="@array/fileas_entries"
             app:entryValues="@array/fileas_values"
-            app:key="file_as"
+            app:key="@string/file_as_key"
             app:title="@string/file_as"
             app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="@string/none"
+            app:key="@string/main_bank_key"
+            app:title="@string/main_bank_account"
+            app:useSimpleSummaryProvider="true"/>
+
+        <SwitchPreference
+            app:defaultValue="false"
+            app:key="@string/disp_main_bank_key"
+            app:title="@string/disp_main_bank_title"/>
+
+
 
     </PreferenceCategory>
 

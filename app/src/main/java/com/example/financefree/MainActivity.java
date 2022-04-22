@@ -1,7 +1,6 @@
 package com.example.financefree;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +31,9 @@ import com.example.financefree.database.DatabaseManager;
  *          Add loan calculator
  *          *Set up Settings
  *          *Add tools menu
+ *          Add settings:
+ *              display main bank balance on home
+ *              main bank
 */
 
 

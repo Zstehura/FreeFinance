@@ -32,8 +32,9 @@
             android:id="@+id/action_homeFragment_to_bankAccountsFragment2"
             app:destination="@id/bankAccountsFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_toolsListDialogFragment"
-            app:destination="@id/toolsListDialogFragment" />
+            android:id="@+id/action_homeFragment_to_toolFragment"
+            app:destination="@id/toolFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/calendar"
@@ -46,21 +47,6 @@
         android:name="com.example.financefree.BankAccountFragment"
         android:label="fragment_bank_accounts"
         tools:layout="@layout/fragment_bank_account" />
-    <dialog
-        android:id="@+id/toolsListDialogFragment"
-        android:name="com.example.financefree.ToolsListDialogFragment"
-        android:label="fragment_tools_list"
-        tools:layout="@layout/fragment_tools_list" >
-        <action
-            android:id="@+id/action_toolsListDialogFragment_to_loanEstimatorFragment"
-            app:destination="@id/loanEstimatorFragment" />
-        <action
-            android:id="@+id/action_toolsListDialogFragment_to_taxEstimatorFragment"
-            app:destination="@id/taxEstimatorFragment" />
-        <action
-            android:id="@+id/action_toolsListDialogFragment_to_annualViewFragment"
-            app:destination="@id/annualViewFragment" />
-    </dialog>
     <fragment
         android:id="@+id/loanEstimatorFragment"
         android:name="com.example.financefree.LoanEstimatorFragment"
@@ -76,4 +62,19 @@
         android:name="com.example.financefree.AnnualViewFragment"
         android:label="fragment_annual_view"
         tools:layout="@layout/fragment_annual_view" />
+    <fragment
+        android:id="@+id/toolFragment"
+        android:name="com.example.financefree.ToolFragment"
+        android:label="fragment_tool_item_list"
+        tools:layout="@layout/fragment_tool_item_list" >
+        <action
+            android:id="@+id/action_toolFragment_to_annualViewFragment"
+            app:destination="@id/annualViewFragment" />
+        <action
+            android:id="@+id/action_toolFragment_to_taxEstimatorFragment"
+            app:destination="@id/taxEstimatorFragment" />
+        <action
+            android:id="@+id/action_toolFragment_to_loanEstimatorFragment"
+            app:destination="@id/loanEstimatorFragment" />
+    </fragment>
 </navigation>

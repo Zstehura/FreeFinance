@@ -31,6 +31,8 @@ public interface DaoSinglePayment {
     List<SinglePayment> getAllForBankBetween(long date1, long date2, long bankId);
     @Query("SELECT * FROM SinglePayment WHERE sp_id == :id LIMIT 1")
     SinglePayment getPayment(long id);
+    @Query("SELECT * FROM SinglePayment WHERE date >= :date1 AND date <= :date2")
+    List<SinglePayment> getAllBetween(long date1, long date2);
 
     @Query("DELETE FROM SinglePayment WHERE date < :date")
     void deleteOlderThan(long date);

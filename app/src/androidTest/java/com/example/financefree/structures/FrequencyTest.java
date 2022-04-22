@@ -105,7 +105,7 @@ public class FrequencyTest {
         pe62.new_date = DateParser.getLong(8,16,2022);
         pe63 = Construction.makeEdit(rp6, DateParser.getLong(9,12,2022));
         pe63.new_amount = 600;
-        pe64 = Construction.makeEdit(rp6, DateParser.getLong(10,14,2022));
+        pe64 = Construction.makeEdit(rp6, DateParser.getLong(11,14,2022));
         pe64.new_bank_id = 2;
         pel6 = new ArrayList<>(Arrays.asList(pe61, pe62, pe63, pe64));
 
@@ -119,7 +119,158 @@ public class FrequencyTest {
         pe74.new_bank_id = 2;
         pel7 = new ArrayList<>(Arrays.asList(pe71, pe72, pe73, pe74));
     }
-    
+
+    @Test
+    public void testPaymentsBetween() {
+
+        // edits
+        // skip 2/12/2022
+        // 3/12/2022 -> 3/14/2022
+        // amount=600 4/12/2022
+        // bankId=2 5/12/2022
+        List<Payment> l1 = Frequency.paymentsBetween(pel1, rp1, DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        assert l1.get(0).date == DateParser.getLong(0,12,2022);
+        assert l1.get(1).date == DateParser.getLong(2,14,2022);
+        assert l1.get(2).date == DateParser.getLong(3,12,2022);
+        assert l1.get(3).date == DateParser.getLong(4,12,2022);
+        assert l1.get(4).date == DateParser.getLong(5,12,2022);
+        assert l1.get(5).date == DateParser.getLong(6,12,2022);
+        assert l1.get(6).date == DateParser.getLong(7,12,2022);
+        assert l1.get(7).date == DateParser.getLong(8,12,2022);
+        assert l1.get(8).date == DateParser.getLong(9,12,2022);
+        assert l1.get(9).date == DateParser.getLong(10,12,2022);
+        assert l1.get(10).date == DateParser.getLong(11,12,2022);
+        assert l1.size() == 11;
+        for(int i = 0; i < l1.size(); i++){
+            assert i == 2 || l1.get(i).amount == 500;
+            assert i == 3 || l1.get(i).bankId == 1;
+        }
+        assert l1.get(2).amount == 600;
+        assert l1.get(3).bankId == 2;
+
+        // edits
+        // skip 2/1/2022
+        // 3/15/2022 -> 3/14/2022
+        // amount=600 4/12/2022
+        // bankId=2 4/26/2022
+        List<Payment> l2 = Frequency.paymentsBetween(pel2, rp2,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        assert l2.get(0).date == DateParser.getLong(1,15,2022);
+        assert l2.get(1).date == DateParser.getLong(2,1,2022);
+        assert l2.get(2).date == DateParser.getLong(2,14,2022);
+        assert l2.get(3).date == DateParser.getLong(2,29,2022);
+        assert l2.get(4).date == DateParser.getLong(3,12,2022);
+        assert l2.get(5).date == DateParser.getLong(3,26,2022);
+        assert l2.size() == 6;
+        for(int i = 0; i < l2.size(); i++){
+            assert i == 4 || l2.get(i).amount == 500;
+            assert i == 5 || l2.get(i).bankId == 1;
+        }
+        assert l2.get(4).amount == 600;
+        assert l2.get(5).bankId == 2;
+
+        // edits
+        // skip 1/1/2022
+        // 2/12/2022 -> 2/14/2022
+        // amount=600 3/5/2022
+        // bankId=2 4/16/2022
+        List<Payment> l3 = Frequency.paymentsBetween(pel3, rp3,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        assert l3.get(0).date == DateParser.getLong(0,22,2022);
+        assert l3.get(1).date == DateParser.getLong(1,14,2022);
+        assert l3.get(2).date == DateParser.getLong(2,5,2022);
+        assert l3.get(3).date == DateParser.getLong(2,26,2022);
+        assert l3.get(4).date == DateParser.getLong(3,16,2022);
+        assert l3.get(5).date == DateParser.getLong(4,7,2022);
+        assert l3.size() == 6;
+        for(int i = 0; i < l3.size(); i++){
+            assert i == 2 || l3.get(i).amount == 500;
+            assert i == 4 || l3.get(i).bankId == 1;
+        }
+        assert l3.get(2).amount == 600;
+        assert l3.get(4).bankId == 2;
+
+        // edits
+        // skip 1/1/2022
+        // 3/1/2022 -> 3/4/2022
+        // amount=600 5/1/2022
+        // bankId=2 7/1/2022
+        List<Payment> l4 = Frequency.paymentsBetween(pel4, rp4,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        assert l4.get(0).date == DateParser.getLong(2,4,2022);
+        assert l4.get(1).date == DateParser.getLong(4,1,2022);
+        assert l4.get(2).date == DateParser.getLong(6,1,2022);
+        assert l4.get(3).date == DateParser.getLong(8,1,2022);
+        assert l4.get(4).date == DateParser.getLong(10,1,2022);
+        assert l4.size() == 5;
+        for(int i = 0; i < l4.size(); i++){
+            assert i == 1 || l4.get(i).amount == 500;
+            assert i == 2 || l4.get(i).bankId == 1;
+        }
+        assert l4.get(1).amount == 600;
+        assert l4.get(2).bankId == 2;
+
+        // edits
+        // skip 5/3/2022
+        // 5/17/2022 -> 5/16/2022
+        // amount=600 6/21/2022
+        // bankId=2 7/19/2022
+        List<Payment> l5 = Frequency.paymentsBetween(pel5, rp5,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        assert l5.get(0).date == DateParser.getLong(4,16,2022);
+        assert l5.get(1).date == DateParser.getLong(5,7,2022);
+        assert l5.get(2).date == DateParser.getLong(5,21,2022);
+        assert l5.get(3).date == DateParser.getLong(6,5,2022);
+        assert l5.get(4).date == DateParser.getLong(6,19,2022);
+        assert l5.get(5).date == DateParser.getLong(7,2,2022);
+        assert l5.get(6).date == DateParser.getLong(7,16,2022);
+        assert l5.get(7).date == DateParser.getLong(8,6,2022);
+        assert l5.get(8).date == DateParser.getLong(8,20,2022);
+        assert l5.size() == 9;
+        for(int i = 0; i < l5.size(); i++){
+            assert i == 2 || l5.get(i).amount == 500;
+            assert i == 4 || l5.get(i).bankId == 1;
+        }
+        assert l5.get(2).amount == 600;
+        assert l5.get(4).bankId == 2;
+
+        // edits
+        // skip 8/24/2022
+        // 9/14/2022 -> 9/16/2022
+        // amount=600 10/12/2022
+        // bankId=2 12/14/2022
+        List<Payment> l6 = Frequency.paymentsBetween(pel6, rp6,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        assert l6.get(0).date == DateParser.getLong(7,10,2022);
+        assert l6.get(1).date == DateParser.getLong(8,16,2022);
+        assert l6.get(2).date == DateParser.getLong(8,28,2022);
+        assert l6.get(3).date == DateParser.getLong(9,12,2022);
+        assert l6.get(4).date == DateParser.getLong(9,26,2022);
+        assert l6.get(5).date == DateParser.getLong(10,9,2022);
+        assert l6.get(6).date == DateParser.getLong(10,23,2022);
+        assert l6.get(7).date == DateParser.getLong(11,14,2022);
+        assert l6.get(8).date == DateParser.getLong(11,28,2022);
+        assert l6.size() == 9;
+        for(int i = 0; i < l6.size(); i++){
+            assert i == 3 || l6.get(i).amount == 500;
+            assert i == 7 || l6.get(i).bankId == 1;
+        }
+        assert l6.get(3).amount == 600;
+        assert l6.get(7).bankId == 2;
+
+        // edits
+        // skip 1/31/2022
+        // 2/28/2022 -> 2/27/2022
+        // amount=600 3/31/2022
+        // bankId=2 4/30/2022
+        List<Payment> l7 = Frequency.paymentsBetween(pel7, rp7,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        assert l7.get(0).date == DateParser.getLong(1,27,2022);
+        assert l7.get(1).date == DateParser.getLong(2,31,2022);
+        assert l7.get(2).date == DateParser.getLong(3,30,2022);
+        assert l7.size() == 3;
+        for(int i = 0; i < l7.size(); i++){
+            assert i == 1 || l7.get(i).amount == 500;
+            assert i == 2 || l7.get(i).bankId == 1;
+        }
+        assert l7.get(1).amount == 600;
+        assert l7.get(2).bankId == 2;
+    }
+
     @Test
     public void testOccurencesBetweenWithPE(){
         // edits

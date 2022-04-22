@@ -126,14 +126,33 @@ public class DatabaseManager extends AndroidViewModel {
         return list;
     }
 
+    // TODO: test \/ these three \/
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static List<Payment> getMonthlyPayments(int month, int year){
+        long start = DateParser.getLong(month, 1,year);
+        long end = DateParser.getLong(month+1, 1, year) - 1;
+        return getPaymentsBetween(start,end);
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static List<Payment> getAnnualPayments(int year){
-        List<Payment> paymentList = new ArrayList<>();
         long yearStart = DateParser.getLong(0,1,year);
         long yearEnd = DateParser.getLong(11,31,year);
-        List<RecurringPayment> rpl = db.daoRecurringPayment().getRpsBetween(yearStart,yearEnd);
-        for(RecurringPayment rp: rpl) {
+        return getPaymentsBetween(yearStart, yearEnd);
+    }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    private static List<Payment> getPaymentsBetween(long start, long end){
+        List<Payment> paymentList = new ArrayList<>();
+        List<RecurringPayment> rpl = db.daoRecurringPayment().getRpsBetween(start,end);
+        for(RecurringPayment rp: rpl) {
+            List<PaymentEdit> pel = db.daoPaymentEdit().getEditsForRpBetween(start, end, rp.rp_id);
+            paymentList.addAll(Frequency.paymentsBetween(pel, rp, start, end));
+        }
+        List<SinglePayment> spl = db.daoSinglePayment().getAllBetween(start, end);
+        for(SinglePayment sp: spl){
+            paymentList.add(new Payment(sp));
         }
 
         return paymentList;
