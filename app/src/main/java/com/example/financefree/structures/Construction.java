@@ -74,4 +74,11 @@ public final class Construction {
         rp.amount = amount;
         return rp;
     }
+
+    public static RecurringPayment makeRp(String name, String notes, long bankId, int freqNum, int typeOpt,
+                                          long startDate, long endDate, double amount, long rpId){
+        RecurringPayment rp = makeRp(name, notes, bankId, freqNum, typeOpt, startDate, endDate, amount);
+        rp.rp_id = rpId;
+        return rp;
+    }
 }
