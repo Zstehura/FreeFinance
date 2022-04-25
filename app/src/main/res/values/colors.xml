@@ -15,4 +15,5 @@
     <color name="dark_gray">#383838</color>
 
     <color name="dialog_title">@color/dark_gray</color>
+    <color name="tool_background">#5605B300</color>
 </resources>

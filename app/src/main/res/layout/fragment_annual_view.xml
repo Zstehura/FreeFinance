@@ -1,14 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AnnualViewFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!-- year -->
+    <LinearLayout
+        android:id="@+id/linAnnualYear"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/notes" />
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        android:padding="@dimen/text_margin"
+        android:gravity="center_horizontal">
 
-</FrameLayout>
+        <ImageButton
+            android:id="@+id/btnYearLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_left"
+            android:contentDescription="@string/decrease_year" />
+        <TextView
+            android:id="@+id/txtYear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/year_placeholder"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:theme="@style/MaterialAlertDialog.Material3.Title.Text"
+            android:textSize="@dimen/title_size"/>
+        <ImageButton
+            android:id="@+id/btnYearRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_right"
+            android:contentDescription="@string/increase_year" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollYearly"
+        android:layout_width="match_parent"
+        android:layout_height="@android:dimen/thumbnail_height"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linAnnualYear">
+        <GridLayout
+            android:id="@+id/gridYearly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="2"
+            android:layout_margin="@dimen/text_margin">
+
+            <TextView
+                android:id="@+id/lblYearPayment"
+                android:layout_width="@dimen/column_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/payment"
+                android:layout_marginEnd="@dimen/text_margin"/>
+            <TextView
+                android:id="@+id/lblYearAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/amount"
+                android:layout_gravity="end"/>
+
+        </GridLayout>
+    </ScrollView>
+
+    <!-- month -->
+    <LinearLayout
+        android:id="@+id/linAnnualMonth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/scrollYearly"
+        app:layout_constraintStart_toStartOf="parent"
+        android:orientation="horizontal"
+        android:padding="@dimen/text_margin"
+        android:gravity="center_horizontal">
+
+        <ImageButton
+            android:id="@+id/btnMonthLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_left"
+            android:contentDescription="@string/decrease_year" />
+        <TextView
+            android:id="@+id/txtMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/month_placeholder"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/text_margin"
+            android:theme="@style/MaterialAlertDialog.Material3.Title.Text"
+            android:textSize="@dimen/title_size"/>
+        <ImageButton
+            android:id="@+id/btnMonthRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_right"
+            android:contentDescription="@string/increase_year" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollMonthly"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/linAnnualMonth"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <GridLayout
+            android:id="@+id/gridMonthly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="2"
+            android:layout_margin="@dimen/text_margin">
+
+            <TextView
+                android:id="@+id/lblMonthPayment"
+                android:layout_width="@dimen/column_label_width"
+                android:layout_height="wrap_content"
+                android:text="@string/payment"
+                android:layout_marginEnd="@dimen/text_margin"/>
+            <TextView
+                android:id="@+id/lblMonthAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/amount"
+                android:layout_gravity="end"/>
+
+        </GridLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

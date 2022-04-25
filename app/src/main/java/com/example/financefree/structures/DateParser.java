@@ -88,6 +88,65 @@ public final class DateParser {
         return gc.get(Calendar.DAY_OF_MONTH);
     }
 
+    public static int monthToInt(String sMonth) {
+        switch (sMonth) {
+            case "January":
+                return Calendar.JANUARY;
+            case "February":
+                return Calendar.FEBRUARY;
+            case "March":
+                return Calendar.MARCH;
+            case "April":
+                return Calendar.APRIL;
+            case "May":
+                return Calendar.MAY;
+            case "June":
+                return Calendar.JUNE;
+            case "July":
+                return Calendar.JULY;
+            case "August":
+                return Calendar.AUGUST;
+            case "September":
+                return Calendar.SEPTEMBER;
+            case "October":
+                return Calendar.OCTOBER;
+            case "November":
+                return Calendar.NOVEMBER;
+            case "December":
+                return Calendar.DECEMBER;
+        }
+        return -1;
+    }
+    public static String monthToString(int iMonth) {
+        switch (iMonth) {
+            case Calendar.JANUARY:
+                return "January";
+            case Calendar.FEBRUARY:
+                return "February";
+            case Calendar.MARCH:
+                return "March";
+            case Calendar.APRIL:
+                return "April";
+            case Calendar.MAY:
+                return "May";
+            case Calendar.JUNE:
+                return "June";
+            case Calendar.JULY:
+                return "July";
+            case Calendar.AUGUST:
+                return "August";
+            case Calendar.SEPTEMBER:
+                return "September";
+            case Calendar.OCTOBER:
+                return "October";
+            case Calendar.NOVEMBER:
+                return "November";
+            case Calendar.DECEMBER:
+                return "December";
+        }
+        return "Month?";
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static boolean dateIncludedInRp(RecurringPayment rp, long date) {
         // Check edits, if its in there, then no need to calculate anything

@@ -72,5 +72,14 @@
     <string name="file_as_key">file_as</string>
     <string name="disp_main_bank_key">disp_main_bank</string>
     <string name="tools">Tools</string>
+    <string name="brobot_greeting">Hi! I\'m Brobot, and this is the FreeFinance app for simplified money stuff!</string>
+    <string name="year_placeholder">YEAR</string>
+    <string name="increase_year">Increase Year</string>
+    <string name="decrease_year">Decrease Year</string>
+    <string name="month_placeholder">MONTH</string>
+    <string name="total">Total</string>
+    <string name="overall">Overall</string>
+    <string name="brobot_tool_intro">Here are some extra tools to help you with your finances!</string>
+    <string name="annual_view">Annual View</string>
 
 </resources>

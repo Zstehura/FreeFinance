@@ -1,51 +1,38 @@
 package com.example.financefree;
 
-import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+
+import java.util.Objects;
 
 /**
  * A fragment representing a list of Items.
  */
 public class ToolFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ToolFragment() {
-    }
+    public ToolFragment() {}
 
-    // TODO: Customize parameter initialization
     @SuppressWarnings("unused")
     public static ToolFragment newInstance(int columnCount) {
-        ToolFragment fragment = new ToolFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
+
+        return new ToolFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
     }
 
     @Override
@@ -53,6 +40,24 @@ public class ToolFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tool_item_list, container, false);
 
+        CardView cvAnnual, cvTax, cvLoan;
+
+        cvAnnual = view.findViewById(R.id.itemAnnualView);
+        cvTax = view.findViewById(R.id.itemTaxEstimator);
+        cvLoan = view.findViewById(R.id.itemLoanCalc);
+
+        cvAnnual.setOnClickListener(view1 -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.annualViewFragment);
+        });
+        cvTax.setOnClickListener(view1 -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.taxEstimatorFragment);
+        });
+        cvLoan.setOnClickListener(view1 -> {
+            NavController navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+            navController.navigate(R.id.loanEstimatorFragment);
+        });
 
         return view;
     }
