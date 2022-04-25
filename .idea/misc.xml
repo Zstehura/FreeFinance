@@ -31,7 +31,7 @@
         <entry key="app/src/main/res/layout/dialog_recurring_payment.xml" value="0.22" />
         <entry key="app/src/main/res/layout/dialog_recurring_payment_details.xml" value="0.32472826086956524" />
         <entry key="app/src/main/res/layout/dialog_single_payment.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_annual_view.xml" value="0.1646586345381526" />
+        <entry key="app/src/main/res/layout/fragment_annual_view.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_bank_account.xml" value="0.2776268115942029" />
         <entry key="app/src/main/res/layout/fragment_bank_account_list.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_bank_accounts.xml" value="0.2776268115942029" />

@@ -45,27 +45,32 @@
         android:id="@+id/scrollYearly"
         android:layout_width="match_parent"
         android:layout_height="@android:dimen/thumbnail_height"
+        android:isScrollContainer="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/linAnnualYear">
         <GridLayout
             android:id="@+id/gridYearly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="2"
+            android:columnCount="2"
+            android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/text_margin">
 
             <TextView
                 android:id="@+id/lblYearPayment"
-                android:layout_width="@dimen/column_label_width"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/payment"
-                android:layout_marginEnd="@dimen/text_margin"/>
+                android:textSize="@dimen/dialog_text_size"
+                android:textStyle="bold"
+                android:text="@string/payment" />
             <TextView
                 android:id="@+id/lblYearAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/amount"
-                android:layout_gravity="end"/>
+                android:layout_gravity="end"
+                android:textStyle="bold"
+                android:textSize="@dimen/dialog_text_size"
+                android:text="@string/amount"/>
 
         </GridLayout>
     </ScrollView>
@@ -116,19 +121,23 @@
             android:id="@+id/gridMonthly"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="2"
+            android:columnCount="2"
             android:layout_margin="@dimen/text_margin">
 
             <TextView
                 android:id="@+id/lblMonthPayment"
                 android:layout_width="@dimen/column_label_width"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="@dimen/dialog_text_size"
                 android:text="@string/payment"
                 android:layout_marginEnd="@dimen/text_margin"/>
             <TextView
                 android:id="@+id/lblMonthAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:textSize="@dimen/dialog_text_size"
                 android:text="@string/amount"
                 android:layout_gravity="end"/>
 

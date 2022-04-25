@@ -28,6 +28,7 @@ import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.database.entities.RecurringPayment;
 import com.example.financefree.recyclers.RecurringPaymentRecyclerViewAdapter;
+import com.example.financefree.structures.CashFlow;
 import com.example.financefree.structures.DateParser;
 import com.example.financefree.structures.Frequency;
 
@@ -62,14 +63,21 @@ public class RecurringPaymentDialog extends DialogFragment {
 
     public TextView lblFreq, lblFreq2, lblEndDate;
     public CheckBox chkNoEnd;
-    public EditText txtName, txtFrequencyNum, txtAmount, txtStart,
+    public EditText txtName, txtFrequencyNum, txtStart,
             txtEnd, txtNotes;
-    public Spinner spnBank, spnFreqType, spnDow;
+    private EditText txtAmount;
+    public Spinner spnBank, spnFreqType, spnDow, spnCashFlow;
     public long bankId, rpId;
     public boolean isNew;
     public int freqNum, freqType, position;
     private RecurringPaymentDialogListener listener;
+    public CashFlow flow;
     private final Map<Long,String> mBanks = new HashMap<>();
+
+    public double getAmount() {
+        flow.setFlowMag(Double.parseDouble(txtAmount.getText().toString()));
+        return flow.getFlow();
+    }
 
     @Override
     public void onAttach(@NonNull Context context){
@@ -92,6 +100,8 @@ public class RecurringPaymentDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        flow = new CashFlow();
         Thread t = new Thread(() -> {
             List<BankAccount> l = DatabaseManager.getBankAccountDao().getAll();
             for(BankAccount ba: l){
@@ -118,6 +128,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         spnBank = dialog.findViewById(R.id.spnBankIdRecur);
         spnFreqType = dialog.findViewById(R.id.spnFreqTypeRecur);
         spnDow = dialog.findViewById(R.id.spnDowRecur);
+        spnCashFlow = dialog.findViewById(R.id.spnBeingPaidRecur);
 
 
         try {t.join();}
@@ -139,9 +150,12 @@ public class RecurringPaymentDialog extends DialogFragment {
                 lFreqs);
         ArrayAdapter<String> dowAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
                 Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
+        ArrayAdapter<String> flowAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
+                CashFlow.getChoices());
         spnBank.setAdapter(bankAdapter);
         spnFreqType.setAdapter(freqAdapter);
         spnDow.setAdapter(dowAdapter);
+        spnCashFlow.setAdapter(flowAdapter);
         spnBank.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
@@ -226,6 +240,13 @@ public class RecurringPaymentDialog extends DialogFragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
                 freqNum = -1;
             }
+        });
+        spnCashFlow.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) { flow.setCashFlow(position); }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {}
         });
         chkNoEnd.setOnClickListener(view -> {
             if(((CheckBox) view).isChecked()){

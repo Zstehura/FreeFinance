@@ -58,7 +58,7 @@ public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<Re
         RecurringPayment rp = new RecurringPayment();
         rp.name = dialog.txtName.getText().toString();
         rp.notes = dialog.txtNotes.getText().toString();
-        rp.amount = Double.parseDouble(dialog.txtAmount.getText().toString());
+        rp.amount = dialog.getAmount();
         rp.end_date = DateParser.getLong(dialog.txtEnd.getText().toString());
         rp.start_date = DateParser.getLong(dialog.txtStart.getText().toString());
         rp.bank_id = dialog.bankId;

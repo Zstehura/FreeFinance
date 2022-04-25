@@ -1,5 +1,6 @@
 package com.example.financefree;
 
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -10,8 +11,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.financefree.database.DatabaseManager;
@@ -20,6 +23,7 @@ import com.example.financefree.structures.Payment;
 
 import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -123,6 +127,12 @@ public class AnnualViewFragment extends Fragment {
             setMonth();
         });
 
+        GregorianCalendar gc = new GregorianCalendar();
+        nYear = gc.get(Calendar.YEAR);
+        nMonth = gc.get(Calendar.MONTH);
+        setYear();
+        setMonth();
+
         return view;
     }
 
@@ -146,12 +156,28 @@ public class AnnualViewFragment extends Fragment {
     private void addYearly(String name, double amount) {
         NumberFormat f = NumberFormat.getCurrencyInstance();
         String amnt = f.format(amount);
+        GridLayout.LayoutParams lp = new GridLayout.LayoutParams();
+        lp.setGravity(Gravity.END);
         TextView tvName = new TextView(getContext());
         TextView tvAmount = new TextView(getContext());
 
         tvName.setText(name);
         tvAmount.setText(amnt);
-        tvAmount.setGravity(Gravity.END);
+        tvAmount.setLayoutParams(lp);
+
+        if(amount > 0){
+            tvAmount.setTextColor(getResources().getColor(R.color.dark_green));
+            tvName.setTextColor(getResources().getColor(R.color.dark_green));
+        }
+        else {
+            tvAmount.setTextColor(getResources().getColor(R.color.dark_red));
+            tvName.setTextColor(getResources().getColor(R.color.dark_red));
+        }
+
+        if(name.equals(getString(R.string.total)) || name.equals(getString(R.string.overall))){
+            tvAmount.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            tvName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
 
         grdYear.addView(tvName);
         grdYear.addView(tvAmount);
@@ -159,12 +185,28 @@ public class AnnualViewFragment extends Fragment {
     private void addMonthly(String name, double amount) {
         NumberFormat f = NumberFormat.getCurrencyInstance();
         String amnt = f.format(amount);
+        GridLayout.LayoutParams lp = new GridLayout.LayoutParams();
+        lp.setGravity(Gravity.END);
         TextView tvName = new TextView(getContext());
         TextView tvAmount = new TextView(getContext());
 
         tvName.setText(name);
         tvAmount.setText(amnt);
-        tvAmount.setGravity(Gravity.END);
+        tvAmount.setLayoutParams(lp);
+
+        if(amount > 0){
+            tvAmount.setTextColor(getResources().getColor(R.color.dark_green));
+            tvName.setTextColor(getResources().getColor(R.color.dark_green));
+        }
+        else {
+            tvAmount.setTextColor(getResources().getColor(R.color.dark_red));
+            tvName.setTextColor(getResources().getColor(R.color.dark_red));
+        }
+
+        if(name.equals(getString(R.string.total)) || name.equals(getString(R.string.overall))){
+            tvAmount.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+            tvName.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        }
 
         grdMonth.addView(tvName);
         grdMonth.addView(tvAmount);
@@ -274,15 +316,15 @@ public class AnnualViewFragment extends Fragment {
             addMonthly(s, mapIn.get(sName));
             ttlIn += mapIn.get(sName);
         }
-        addYearly(getString(R.string.total), ttlIn);
+        addMonthly(getString(R.string.total), ttlIn);
 
         for(String sName: mapOut.keySet()){
             String s = "  " + sName;
             addMonthly(s, mapOut.get(sName));
             ttlOut += mapOut.get(sName);
         }
-        addYearly(getString(R.string.total), ttlOut);
+        addMonthly(getString(R.string.total), ttlOut);
 
-        addYearly(getString(R.string.overall), ttlIn + ttlOut);
+        addMonthly(getString(R.string.overall), ttlIn + ttlOut);
     }
 }
