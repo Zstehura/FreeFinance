@@ -26,11 +26,9 @@ import com.example.financefree.database.DatabaseManager;
  *  TODO:   Implement ads / ad-free payment
  *          Add Notification options?
  *          Add Tax estimation machine
- *          Add annual view
  *          Add what if section?
  *          Add loan calculator
  *          *Set up Settings
- *          *Add tools menu
  *          Add settings:
  *              display main bank balance on home
  *              main bank

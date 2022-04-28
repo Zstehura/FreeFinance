@@ -15,6 +15,12 @@
     </string>
     <string name="sec_msg_title">Important Security Message</string>
 
+    <!-- Brobot says... -->
+    <string name="brobot_tool_intro">Here are some extra tools to help you with your finances!</string>
+    <string name="annual_view">Annual View</string>
+    <string name="brobot_tax_est_greeting">Hey there! This is the Tax Estimation Machine! Here, you can see estimates of your income tax given your information in the app. You can also check the box below to change the values we calculated for you!</string>
+    <string name="brobot_greeting">Hi! I\'m Brobot, and this is the FreeFinance app for simplified money stuff!</string>
+
     <!-- Tools -->
     <string name="loan_calc_title">Loan Payment Calculator</string>
     <string name="loan_calc_desc">Calculator to find what a monthly payment would be given a set of variables</string>
@@ -71,15 +77,29 @@
     <string name="main_bank_key">main_bank_account</string>
     <string name="file_as_key">file_as</string>
     <string name="disp_main_bank_key">disp_main_bank</string>
+
+
+    <!-- Uncategorized -->
     <string name="tools">Tools</string>
-    <string name="brobot_greeting">Hi! I\'m Brobot, and this is the FreeFinance app for simplified money stuff!</string>
     <string name="year_placeholder">YEAR</string>
     <string name="increase_year">Increase Year</string>
     <string name="decrease_year">Decrease Year</string>
     <string name="month_placeholder">MONTH</string>
     <string name="total">Total</string>
     <string name="overall">Overall</string>
-    <string name="brobot_tool_intro">Here are some extra tools to help you with your finances!</string>
-    <string name="annual_view">Annual View</string>
+    <string name="use_my_payment_data">Use my payment data</string>
+    <string name="gross_income">Gross Income</string>
+    <string name="tax_year">Tax Year</string>
+    <string name="deductions">Deductions</string>
+    <string name="standard_deduction">Standard Deduction</string>
+    <string name="add_deduction">Add Deduction</string>
+    <string name="after_deuctions">After Deuctions</string>
+    <string name="total_deductions">Total Deductions</string>
+    <string name="tax_collected">Tax Collected</string>
+    <string name="tax">Tax</string>
+    <string name="credits">Credits</string>
+    <string name="add_credit">Add Credit</string>
+    <string name="total_credits">Total Credits</string>
+    <string name="friendly_neighborhood_brobot">Friendly neighborhood Brobot</string>
 
 </resources>

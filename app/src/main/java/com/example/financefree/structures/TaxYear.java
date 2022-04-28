@@ -12,12 +12,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-//   TODO  write tax relevant functions in DB mgr
-
 @SuppressWarnings({"ConstantConditions", "SpellCheckingInspection"})
 public class TaxYear {
     public static class YearNotFoundException extends Exception {}
     public static class FilingNotFoundException extends Exception {}
+
+    public static final int FIRST_YEAR_AVAILABLE = 2006;
+    public static final int LAST_YEAR_AVAILABLE = 2021;
 
     private static final String BRACKET_FILE_NAME = "income_brackets.csv";
     private static final String STANDARD_DEDUCTION_FILE_NAME = "standard_deductions.csv";
@@ -28,11 +29,17 @@ public class TaxYear {
     private final Map<String, Double> stdDeduction = new HashMap<>();   // goes before tax
     private final Map<String, List<Bracket>> brackets = new HashMap<>();
 
-    private final int year;
+    private double income;
+    private boolean usingStdDeduction;
+    private List<Double> deductions = new ArrayList<>();
+    private List<Double> credits = new ArrayList<>();
+    private int year;
+    private String fileAs;
 
     public TaxYear(int year, Context context) throws IOException, YearNotFoundException {
         // get tax file
         this.year = year;
+        usingStdDeduction = true;
         if(BRACKET_CONTENTS.size() == 0) readFiles(context);
 
         // initialize class variables
@@ -108,10 +115,11 @@ public class TaxYear {
         isb.close(); isd.close();
     }
 
-    public double getTaxOn(String fileAs, double income) throws FilingNotFoundException {
+    public double getTaxNoCreds() throws FilingNotFoundException {
         double tax = 0;
         if(!brackets.containsKey(fileAs)) throw new FilingNotFoundException();
-        double iActual = income - stdDeduction.get(fileAs);
+        double iActual = income - getDeductionSum();
+
         for(Bracket b: brackets.get(fileAs)){
             if(iActual > b.lowerLim){
                 if(b.upperLim == -1 || iActual < b.upperLim){
@@ -122,14 +130,54 @@ public class TaxYear {
                 }
             }
         }
+        if(tax > 0) return roundNum(tax);
+        else return 0;
+    }
+
+    public double getTax() throws FilingNotFoundException {
+        double tax = getTaxNoCreds();
+        tax -= getCreditSum();
         if(tax > 0) {
-            tax *= 100;
-            long temp = Math.round(tax);
-            tax = ((double) temp / 100);
-            return tax;
+            return roundNum(tax);
         }
         else return 0;
     }
+
+    private double roundNum(double num) {
+        double t1 = num * 100;
+        long t2 = Math.round(t1);
+        return ((double) t2 / 100);
+    }
+
+    public double getStdDeduction() { return stdDeduction.get(fileAs); }
+
+    public double getDeductionSum() {
+        double iActual = 0;
+        if(!usingStdDeduction) {
+            for(double d: deductions){ iActual += d;}
+        }
+        else{
+            iActual += stdDeduction.get(fileAs);
+        }
+        return iActual;
+    }
+    public double getIncome(){ return income;}
+    public double getCreditSum(){
+        double c = 0;
+        if(credits.size() > 0){
+            for(double d: credits) {c += d;}
+        }
+        return c;
+    }
+
+    public boolean isUsingStdDeduction() {return usingStdDeduction;}
+
+    public void setUsingStdDeduction(boolean usingStdDeduction) { this.usingStdDeduction = usingStdDeduction; }
+    public void setCredits(List<Double> credits) { this.credits = credits; }
+    public void setDeductions(List<Double> deductions) { this.deductions = deductions; }
+    public void setFileAs(String fileAs) { this.fileAs = fileAs; }
+    public void setIncome(double income) { this.income = income; }
+    public void setYear(int year) { this.year = year; }
 
     public int getYear() {return year;}
 
