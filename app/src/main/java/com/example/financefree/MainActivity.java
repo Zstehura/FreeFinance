@@ -2,7 +2,6 @@ package com.example.financefree;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -11,7 +10,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.NavController;
@@ -25,7 +24,6 @@ import com.example.financefree.database.DatabaseManager;
 /**
  *  TODO:   Implement ads / ad-free payment
  *          Add Notification options?
- *          Add Tax estimation machine
  *          Add what if section?
  *          Add loan calculator
  *          *Set up Settings
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btn1, btn2, btn3, btn4, btn5, btn6, btn7, btn8, btn9, btn0, btnDec, btnPlus,
                     btnMinus, btnMult, btnDivide, btnInv, btnExp, btnSqrt, btnEq, btnCE;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,9 +1,8 @@
 package com.example.financefree.recyclers;
 
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+
 
 import com.example.financefree.database.entities.BankAccount;
 
@@ -38,7 +37,7 @@ public class BankAccountRVContent {
     public static void addItem(BankAccount item) {
         addItem(createRvItem(item));
     }
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    
     public static void updateItem(BankAccount item) {
         for(int i = 0; i < ITEMS.size(); i++){
             if(ITEMS.get(i).itemId == item.bank_id){

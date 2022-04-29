@@ -1,6 +1,5 @@
 package com.example.financefree.recyclers;
 
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,7 +7,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.financefree.database.DatabaseManager;
@@ -56,7 +55,7 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
         holder.mItem = mValues.get(position);
         holder.mName.setText(String.valueOf(mValues.get(position).name));
         holder.mDetails.setText(mValues.get(position).details);
-        holder.lColor.setBackgroundColor(holder.itemView.getResources().getColor(mValues.get(position).color));
+        holder.lColor.setBackgroundColor(holder.itemView.getResources().getColor(mValues.get(position).color, null));
     }
 
     @Override
@@ -64,7 +63,7 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
         return mValues.size();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public void setItem(BankStatementDialog dialog) {
         if(dialog.isNew) {
             AtomicReference<Long> sId = new AtomicReference<>();
@@ -101,7 +100,7 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public void setItem(SinglePaymentDialog dialog) {
         if(dialog.isNew) {
             if(!dialog.isEdit){
@@ -184,7 +183,7 @@ public class DailyRecyclerViewAdapter extends RecyclerView.Adapter<DailyRecycler
         return mValues.get(position).bankId;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public void remove(int position) {
         if (mValues.get(position).isPayment) {
             mValues.remove(position);

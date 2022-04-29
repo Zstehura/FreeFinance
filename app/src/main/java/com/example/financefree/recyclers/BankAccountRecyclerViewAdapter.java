@@ -1,9 +1,8 @@
 package com.example.financefree.recyclers;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,16 +54,14 @@ public class BankAccountRecyclerViewAdapter extends RecyclerView.Adapter<BankAcc
         return mValues.size();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    
     public void setItem(BankAccountDialog dialog) {
         if(dialog.isNew) {
             AtomicReference<Long> id = new AtomicReference<>();
             BankAccount ba = new BankAccount();
             ba.name = dialog.bnkName.getText().toString();
             ba.notes = dialog.bnkNotes.getText().toString();
-            Thread t = new Thread(() -> {
-                id.set(DatabaseManager.getBankAccountDao().insert(ba));
-            });
+            Thread t = new Thread(() -> id.set(DatabaseManager.getBankAccountDao().insert(ba)));
             t.start();
             try {t.join();}
             catch (InterruptedException e) {e.printStackTrace();}
@@ -138,6 +135,7 @@ public class BankAccountRecyclerViewAdapter extends RecyclerView.Adapter<BankAcc
             void OnBAEditClick(int position);
         }
 
+        @androidx.annotation.NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mDetails.getText() + "'";

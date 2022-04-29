@@ -1,10 +1,9 @@
 package com.example.financefree.recyclers;
 
 import android.graphics.Color;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+
 
 import com.example.financefree.R;
 import com.example.financefree.structures.Payment;
@@ -54,7 +53,7 @@ public class DailyRVContent {
         addItem(createRVItem(item));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    
     public static void updateItem(Payment item) {
         for(int i = 0; i < ITEMS.size(); i++){
             if(ITEMS.get(i).itemId == (item.id * -1)){
@@ -63,7 +62,7 @@ public class DailyRVContent {
             }
         }
     }
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    
     public static void updateItem(Statement item) {
         for(int i = 0; i < ITEMS.size(); i++){
             if(ITEMS.get(i).itemId == item.bankId){

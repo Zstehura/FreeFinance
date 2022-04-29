@@ -3,10 +3,9 @@ package com.example.financefree.database;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.lifecycle.AndroidViewModel;
 import androidx.preference.Preference;
 
@@ -29,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
 public class DatabaseManager extends AndroidViewModel {
     private static AppDatabase db;
 
@@ -47,7 +45,7 @@ public class DatabaseManager extends AndroidViewModel {
     public static DaoSinglePayment getSinglePaymentDao() {return db.daoSinglePayment();}
     public static DaoPaymentEdit getPaymentEditDao() {return db.daoPaymentEdit();}
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public static List<Statement> getStatementsForDay(long date) {
         List<Statement> list = new ArrayList<>();
         for(BankAccount ba: db.daoBankAccount().getAll()){
@@ -81,6 +79,7 @@ public class DatabaseManager extends AndroidViewModel {
                 s.isCalculated = true;
             }
             else{
+                assert bs != null;
                 s = new Statement(bs, ba.name);
                 s.isCalculated = false;
             }
@@ -90,7 +89,7 @@ public class DatabaseManager extends AndroidViewModel {
         return list;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public static List<Payment> getPaymentsForDay(long date) {
         final String TAG = "PaymentGetter";
 
@@ -128,21 +127,21 @@ public class DatabaseManager extends AndroidViewModel {
 
     // TODO: test \/ these three \/
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public static List<Payment> getMonthlyPayments(int month, int year){
         long start = DateParser.getLong(month, 1,year);
         long end = DateParser.getLong(month+1, 1, year) - 1;
         return getPaymentsBetween(start,end);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public static List<Payment> getAnnualPayments(int year){
         long yearStart = DateParser.getLong(0,1,year);
         long yearEnd = DateParser.getLong(11,31,year);
         return getPaymentsBetween(yearStart, yearEnd);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     private static List<Payment> getPaymentsBetween(long start, long end){
         List<Payment> paymentList = new ArrayList<>();
         List<RecurringPayment> rpl = db.daoRecurringPayment().getRpsBetween(start,end);
@@ -158,7 +157,7 @@ public class DatabaseManager extends AndroidViewModel {
         return paymentList;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public static void cleanUpDatabase(int memLength) {
         long d = DateParser.dateNumDaysAgo(memLength);
         db.daoRecurringPayment().deleteOlderThan(d);

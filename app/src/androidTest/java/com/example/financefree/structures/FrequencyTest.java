@@ -1,9 +1,5 @@
 package com.example.financefree.structures;
 
-import static org.junit.Assert.*;
-
-import android.util.Log;
-
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
 
@@ -278,7 +274,7 @@ public class FrequencyTest {
         // 3/12/2022 -> 3/14/2022
         // amount=600 4/12/2022
         // bankId=2 5/12/2022
-        List<Long> l1 = Frequency.occurencesBetween(pel1, rp1, DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l1 = Frequency.occurrencesBetween(pel1, rp1, DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l1.get(0) == DateParser.getLong(0,12,2022);
         assert l1.get(1) == DateParser.getLong(2,14,2022);
         assert l1.get(2) == DateParser.getLong(3,12,2022);
@@ -297,7 +293,7 @@ public class FrequencyTest {
         // 3/15/2022 -> 3/14/2022
         // amount=600 4/12/2022
         // bankId=2 4/26/2022
-        List<Long> l2 = Frequency.occurencesBetween(pel2, rp2,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l2 = Frequency.occurrencesBetween(pel2, rp2,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l2.get(0) == DateParser.getLong(1,15,2022);
         assert l2.get(1) == DateParser.getLong(2,1,2022);
         assert l2.get(2) == DateParser.getLong(2,14,2022);
@@ -311,7 +307,7 @@ public class FrequencyTest {
         // 2/12/2022 -> 2/14/2022
         // amount=600 3/5/2022
         // bankId=2 4/16/2022
-        List<Long> l3 = Frequency.occurencesBetween(pel3, rp3,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l3 = Frequency.occurrencesBetween(pel3, rp3,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l3.get(0) == DateParser.getLong(0,22,2022);
         assert l3.get(1) == DateParser.getLong(1,14,2022);
         assert l3.get(2) == DateParser.getLong(2,5,2022);
@@ -325,7 +321,7 @@ public class FrequencyTest {
         // 3/1/2022 -> 3/4/2022
         // amount=600 5/1/2022
         // bankId=2 7/1/2022
-        List<Long> l4 = Frequency.occurencesBetween(pel4, rp4,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l4 = Frequency.occurrencesBetween(pel4, rp4,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l4.get(0) == DateParser.getLong(2,4,2022);
         assert l4.get(1) == DateParser.getLong(4,1,2022);
         assert l4.get(2) == DateParser.getLong(6,1,2022);
@@ -338,7 +334,7 @@ public class FrequencyTest {
         // 5/17/2022 -> 5/16/2022
         // amount=600 6/21/2022
         // bankId=2 7/19/2022
-        List<Long> l5 = Frequency.occurencesBetween(pel5, rp5,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l5 = Frequency.occurrencesBetween(pel5, rp5,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l5.get(0) == DateParser.getLong(4,16,2022);
         assert l5.get(1) == DateParser.getLong(5,7,2022);
         assert l5.get(2) == DateParser.getLong(5,21,2022);
@@ -355,7 +351,7 @@ public class FrequencyTest {
         // 9/14/2022 -> 9/16/2022
         // amount=600 10/12/2022
         // bankId=2 11/14/2022
-        List<Long> l6 = Frequency.occurencesBetween(pel6, rp6,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l6 = Frequency.occurrencesBetween(pel6, rp6,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l6.get(0) == DateParser.getLong(7,10,2022);
         assert l6.get(1) == DateParser.getLong(8,16,2022);
         assert l6.get(2) == DateParser.getLong(8,28,2022);
@@ -372,7 +368,7 @@ public class FrequencyTest {
         // 2/28/2022 -> 2/27/2022
         // amount=600 3/31/2022
         // bankId=2 4/30/2022
-        List<Long> l7 = Frequency.occurencesBetween(pel7, rp7,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l7 = Frequency.occurrencesBetween(pel7, rp7,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l7.get(0) == DateParser.getLong(1,27,2022);
         assert l7.get(1) == DateParser.getLong(2,31,2022);
         assert l7.get(2) == DateParser.getLong(3,30,2022);
@@ -385,7 +381,7 @@ public class FrequencyTest {
         // starts 1/1/2022
         // ends 12/31/2022
         // every month on the 12th
-        List<Long> l1 = Frequency.occurencesBetween(rp1,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l1 = Frequency.occurrencesBetween(rp1,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l1.get(0) == DateParser.getLong(0,12,2022);
         assert l1.get(1) == DateParser.getLong(1,12,2022);
         assert l1.get(2) == DateParser.getLong(2,12,2022);
@@ -404,7 +400,7 @@ public class FrequencyTest {
         // starts 2/1/2022
         // ends 4/30/2022
         // every 14 days
-        List<Long> l2 = Frequency.occurencesBetween(rp2,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l2 = Frequency.occurrencesBetween(rp2,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l2.get(0) == DateParser.getLong(1,1,2022);
         assert l2.get(1) == DateParser.getLong(1,15,2022);
         assert l2.get(2) == DateParser.getLong(2,1,2022);
@@ -418,7 +414,7 @@ public class FrequencyTest {
         // starts 1/1/2022
         // ends 5/10/2022
         // every 3 weeks
-        List<Long> l3 = Frequency.occurencesBetween(rp3,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l3 = Frequency.occurrencesBetween(rp3,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l3.get(0) == DateParser.getLong(0,1,2022);
         assert l3.get(1) == DateParser.getLong(0,22,2022);
         assert l3.get(2) == DateParser.getLong(1,12,2022);
@@ -432,7 +428,7 @@ public class FrequencyTest {
         // starts 1/1/2022
         // ends 12/31/2022
         // every 2 months
-        List<Long> l4 = Frequency.occurencesBetween(rp4,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l4 = Frequency.occurrencesBetween(rp4,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l4.get(0) == DateParser.getLong(0,1,2022);
         assert l4.get(1) == DateParser.getLong(2,1,2022);
         assert l4.get(2) == DateParser.getLong(4,1,2022);
@@ -445,7 +441,7 @@ public class FrequencyTest {
         // starts 5/1/2022
         // ends 9/20/2022
         // on the 1st and 3rd Tuesday every month
-        List<Long> l5 = Frequency.occurencesBetween(rp5,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l5 = Frequency.occurrencesBetween(rp5,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l5.get(0) == DateParser.getLong(4,3,2022);
         assert l5.get(1) == DateParser.getLong(4,17,2022);
         assert l5.get(2) == DateParser.getLong(5,7,2022);
@@ -462,7 +458,7 @@ public class FrequencyTest {
         // starts 8/1/2022
         // ends 12/31/2022
         // on the 2nd and 3rd Wednesday of every month
-        List<Long> l6 = Frequency.occurencesBetween(rp6,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l6 = Frequency.occurrencesBetween(rp6,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l6.get(0) == DateParser.getLong(7,10,2022);
         assert l6.get(1) == DateParser.getLong(7,24,2022);
         assert l6.get(2) == DateParser.getLong(8,14,2022);
@@ -479,7 +475,7 @@ public class FrequencyTest {
         // starts 1/1/2022
         // ends 5/3/2022
         // last day of every month
-        List<Long> l7 = Frequency.occurencesBetween(rp7,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
+        List<Long> l7 = Frequency.occurrencesBetween(rp7,DateParser.getLong(11,31,2021), DateParser.getLong(0,1,2023));
         assert l7.get(0) == DateParser.getLong(0,31,2022);
         assert l7.get(1) == DateParser.getLong(1,28,2022);
         assert l7.get(2) == DateParser.getLong(2,31,2022);

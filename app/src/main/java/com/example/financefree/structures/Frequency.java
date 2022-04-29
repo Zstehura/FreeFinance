@@ -1,15 +1,12 @@
 package com.example.financefree.structures;
 
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
+
+import com.example.financefree.database.entities.Loan;
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -52,6 +49,14 @@ public class Frequency {
         iNum = rp.frequency_number;
     }
 
+    
+    public Frequency(Loan loan) {
+        startDate = loan.start_date;
+        endDate = DateParser.addToDate(startDate, loan.term_Length, Calendar.YEAR);
+        typeOpt = loan.frequency_type;
+        iNum = loan.frequency_num;
+    }
+
     public static int getDow(String s){
         if(s.equals("Sunday"))    return Calendar.SUNDAY;
         if(s.equals("Monday"))    return Calendar.MONDAY;
@@ -72,6 +77,10 @@ public class Frequency {
         if(n == Calendar.SATURDAY)  return "Saturday";
         return "";
     }
+
+    /**
+     * Generalized Frequency Methods
+     */
 
     @NonNull
     @Override
@@ -103,7 +112,181 @@ public class Frequency {
         return s.toString();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+
+
+    
+    public static List<Long> occurrencesBetween(Frequency frequency, long date1, long date2) {
+        List<Long> dateList = new ArrayList<>();
+
+        //ensure the rp occurs in the range
+        if(date2 < frequency.startDate || date1 > frequency.endDate) return dateList;
+        long endThis = date2;
+        if(frequency.endDate < endThis) endThis = frequency.endDate;
+
+        if(frequency.typeOpt == 0) {           // On specific date every month
+            GregorianCalendar gc = DateParser.getCal(date1);
+            long d = DateParser.getLong(gc.get(Calendar.MONTH), frequency.iNum, gc.get(Calendar.YEAR));
+            do {
+                if(d >= date1) dateList.add(d);
+                d = DateParser.addToDate(d, 1, Calendar.MONTH);
+            } while(d < endThis);
+        }
+        else if(frequency.typeOpt == 1) {      // Every number of Days
+            long d = frequency.startDate;
+            while(d <= endThis) {
+                if(d >= date1) dateList.add(d);
+                d += frequency.iNum;
+            }
+        }
+        else if(frequency.typeOpt == 2) {     // Every number of Weeks
+            long d = frequency.startDate;
+            while (d <= endThis) {
+                if(d >= date1) dateList.add(d);
+                d = DateParser.addToDate(d, frequency.iNum, Calendar.WEEK_OF_MONTH);
+            }
+        }
+        else if(frequency.typeOpt == 3) {     // Every number of Months
+            long d = frequency.startDate;
+            while (d <= endThis) {
+                if(d >= date1) dateList.add(d);
+                d = DateParser.addToDate(d, frequency.iNum, Calendar.MONTH);
+            }
+        }
+        else if(frequency.typeOpt == 4) {     // Every month on the 1st and 3rd
+            GregorianCalendar gc = DateParser.getCal(frequency.startDate);
+            gc.set(Calendar.DAY_OF_MONTH, 1);
+            while (DateParser.getLong(gc) <= endThis){
+                while(gc.get(Calendar.DAY_OF_WEEK) != frequency.iNum){
+                    gc.add(Calendar.DAY_OF_MONTH, 1);
+                }
+                long d = DateParser.getLong(gc);
+                if(d <= endThis && d >= date1) dateList.add(d);
+                gc.add(Calendar.WEEK_OF_MONTH, 2);
+                d = DateParser.getLong(gc);
+                if(d <= endThis && d >= date1) dateList.add(d);
+                gc.add(Calendar.MONTH, 1);
+                gc.set(Calendar.DAY_OF_MONTH, 1);
+            }
+        }
+        else if(frequency.typeOpt == 5) {     // Every month on the 2nd and 4th
+            GregorianCalendar gc = DateParser.getCal(frequency.startDate);
+            gc.set(Calendar.DAY_OF_MONTH, 8);
+            while (DateParser.getLong(gc) <= endThis){
+                while(gc.get(Calendar.DAY_OF_WEEK) != frequency.iNum){
+                    gc.add(Calendar.DAY_OF_MONTH, 1);
+                }
+                long d = DateParser.getLong(gc);
+                if(d <= endThis && d >= date1) dateList.add(d);
+                gc.add(Calendar.WEEK_OF_MONTH, 2);
+                d = DateParser.getLong(gc);
+                if(d <= endThis && d >= date1) dateList.add(d);
+                gc.add(Calendar.MONTH, 1);
+                gc.set(Calendar.DAY_OF_MONTH, 8);
+            }
+        }
+        else if(frequency.typeOpt == 6) {     // On the last day of every month
+            GregorianCalendar gc = DateParser.getCal(frequency.startDate);
+            gc.add(Calendar.MONTH, 1);
+            gc.set(Calendar.DAY_OF_MONTH, 1);
+            gc.add(Calendar.DAY_OF_MONTH, -1);
+            while(DateParser.getLong(gc) <= endThis) {
+                long d = DateParser.getLong(gc);
+                if(d >= date1 && d <= endThis)dateList.add(d);
+                gc.add(Calendar.MONTH, 2);
+                gc.set(Calendar.DAY_OF_MONTH, 1);
+                gc.add(Calendar.DAY_OF_MONTH, -1);
+            }
+        }
+
+        return dateList;
+    }
+
+
+    
+    public static boolean occursOn(Frequency frequency, long date){
+        if(date < frequency.startDate || date > frequency.endDate) return false;
+
+        if(frequency.typeOpt == 0) {  // On specific date every month
+            GregorianCalendar gc = DateParser.getCal(date);
+            return gc.get(Calendar.DAY_OF_MONTH) == frequency.iNum;
+        }
+        else if(frequency.typeOpt == 1) {     // Every number of Days
+            long count = frequency.startDate;
+            while(count < date) {
+                count += frequency. iNum;
+            }
+            return count == date;
+        }
+        else if(frequency.typeOpt == 2) {     // Every number of Weeks
+            GregorianCalendar gcCount = DateParser.getCal(frequency.startDate);
+            while(DateParser.getLong(gcCount) < date){
+                gcCount.add(Calendar.WEEK_OF_YEAR, frequency. iNum);
+            }
+            return DateParser.getLong(gcCount) == date;
+        }
+        else if(frequency.typeOpt == 3) {     // Every number of Months
+            GregorianCalendar gcCount = DateParser.getCal(frequency.startDate);
+            while(DateParser.getLong(gcCount) < date){
+                gcCount.add(Calendar.MONTH, frequency. iNum);
+            }
+            return DateParser.getLong(gcCount) == date;
+        }
+        else if(frequency.typeOpt == 4) {     // Every month on the 1st and 3rd
+            GregorianCalendar gc = DateParser.getCal(date);
+            gc.set(Calendar.DAY_OF_MONTH, 1);
+            while(gc.get(Calendar.DAY_OF_WEEK) != frequency. iNum){
+                gc.add(Calendar.DAY_OF_MONTH, 1);
+            }
+            if(DateParser.getLong(gc) == date) return true;
+            gc.add(Calendar.WEEK_OF_MONTH, 2);
+            return DateParser.getLong(gc) == date;
+        }
+        else if(frequency.typeOpt == 5) {     // Every month on the 2nd and 4th
+            GregorianCalendar gc = DateParser.getCal(date);
+            gc.set(Calendar.DAY_OF_MONTH, 8);
+            while(gc.get(Calendar.DAY_OF_WEEK) != frequency. iNum){
+                gc.add(Calendar.DAY_OF_MONTH, 1);
+            }
+            if(DateParser.getLong(gc) == date) return true;
+            gc.add(Calendar.WEEK_OF_MONTH, 2);
+            return DateParser.getLong(gc) == date;
+        }
+        else if(frequency.typeOpt == 6) {     // On the last day of every month
+            GregorianCalendar gc = DateParser.getCal(date);
+            int m = gc.get(Calendar.MONTH);
+            gc.add(Calendar.DAY_OF_MONTH, 1);
+            return gc.get(Calendar.MONTH) != m;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Type specific Methods
+     */
+
+    
+    public static List<Long> occurrencesBetween(RecurringPayment rp, long date1, long date2){
+        return occurrencesBetween(new Frequency(rp), date1, date2);
+    }
+
+    
+    public static boolean occursOn(RecurringPayment rp, long date){
+        return occursOn(new Frequency(rp), date);
+    }
+
+    
+    public static List<Long> occurrencesBetween(Loan loan, long date1, long date2){
+        return occurrencesBetween(new Frequency(loan), date1, date2);
+    }
+
+    
+    public static boolean occursOn(Loan loan, long date) {
+        return occursOn(new Frequency(loan), date);
+    }
+
+    
     public static Payment occursOn(List<PaymentEdit> pel, RecurringPayment rp, long date){
         Payment p = new Payment(rp, date);
         boolean skip = false, addOn = false;
@@ -126,9 +309,9 @@ public class Frequency {
         else return null;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public static List<Payment> paymentsBetween(List<PaymentEdit> pel, RecurringPayment rp, long date1, long date2){
-        List<Long> dateList = occurencesBetween(rp, date1, date2);
+        List<Long> dateList = occurrencesBetween(rp, date1, date2);
         List<Payment> paymentList = new ArrayList<>();
         for(long d: dateList){
             paymentList.add(new Payment(rp, d));
@@ -158,9 +341,9 @@ public class Frequency {
         return paymentList;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static List<Long> occurencesBetween(List<PaymentEdit> pel, RecurringPayment rp, long date1, long date2){
-        List<Long> dateList = occurencesBetween(rp, date1, date2);
+    
+    public static List<Long> occurrencesBetween(List<PaymentEdit> pel, RecurringPayment rp, long date1, long date2){
+        List<Long> dateList = occurrencesBetween(rp, date1, date2);
         if(pel != null) {
             for(PaymentEdit pe: pel) {
                 if(dateList.contains(pe.edit_date) && (pe.skip || pe.new_date != pe.edit_date)){
@@ -178,149 +361,28 @@ public class Frequency {
         return dateList;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static List<Long> occurencesBetween(RecurringPayment rp, long date1, long date2){
-        List<Long> dateList = new ArrayList<>();
-
-        //ensure the rp occurs in the range
-        if(date2 < rp.start_date || date1 > rp.end_date) return dateList;
-        long endThis = date2;
-        if(rp.end_date < endThis) endThis = rp.end_date;
-        
-        if(rp.type_option == 0) {           // On specific date every month
-            GregorianCalendar gc = DateParser.getCal(date1);
-            long d = DateParser.getLong(gc.get(Calendar.MONTH), rp.frequency_number, gc.get(Calendar.YEAR));
-            do {
-                if(d >= date1) dateList.add(d);
-                d = DateParser.addToDate(d, 1, Calendar.MONTH);
-            } while(d < endThis);
+    public static int paymentsPerYear(Loan loan) {
+        if (loan.frequency_type == 0) { // "On specific date every month");
+            return 12;
         }
-        else if(rp.type_option == 1) {      // Every number of Days
-            long d = rp.start_date;
-            while(d <= endThis) {
-                if(d >= date1) dateList.add(d);
-                d += rp.frequency_number;
-            }
+        else if(loan.frequency_type == 1){ // "Every number of Days"
+            return Math.round((float) (365 / loan.frequency_num));
         }
-        else if(rp.type_option == 2) {     // Every number of Weeks
-            long d = rp.start_date;
-            while (d <= endThis) {
-                if(d >= date1) dateList.add(d);
-                d = DateParser.addToDate(d, rp.frequency_number, Calendar.WEEK_OF_MONTH);
-            }
+        else if(loan.frequency_type == 2){ // "Every number of Weeks"
+            return Math.round((float) (52 / loan.frequency_num));
         }
-        else if(rp.type_option == 3) {     // Every number of Months
-            long d = rp.start_date;
-            while (d <= endThis) {
-                if(d >= date1) dateList.add(d);
-                d = DateParser.addToDate(d, rp.frequency_number, Calendar.MONTH);
-            }
+        else if(loan.frequency_type == 3){ // "Every number of Months"
+            return Math.round((float) (12 / loan.frequency_num));
         }
-        else if(rp.type_option == 4) {     // Every month on the 1st and 3rd
-            GregorianCalendar gc = DateParser.getCal(rp.start_date);
-            gc.set(Calendar.DAY_OF_MONTH, 1);
-            while (DateParser.getLong(gc) <= endThis){
-                while(gc.get(Calendar.DAY_OF_WEEK) != rp.frequency_number){
-                    gc.add(Calendar.DAY_OF_MONTH, 1);
-                }
-                long d = DateParser.getLong(gc);
-                if(d <= endThis && d >= date1) dateList.add(d);
-                gc.add(Calendar.WEEK_OF_MONTH, 2);
-                d = DateParser.getLong(gc);
-                if(d <= endThis && d >= date1) dateList.add(d);
-                gc.add(Calendar.MONTH, 1);
-                gc.set(Calendar.DAY_OF_MONTH, 1);
-            }
+        else if(loan.frequency_type == 4) { // "Every month on the 1st and 3rd"
+            return 24;
         }
-        else if(rp.type_option == 5) {     // Every month on the 2nd and 4th
-            GregorianCalendar gc = DateParser.getCal(rp.start_date);
-            gc.set(Calendar.DAY_OF_MONTH, 8);
-            while (DateParser.getLong(gc) <= endThis){
-                while(gc.get(Calendar.DAY_OF_WEEK) != rp.frequency_number){
-                    gc.add(Calendar.DAY_OF_MONTH, 1);
-                }
-                long d = DateParser.getLong(gc);
-                if(d <= endThis && d >= date1) dateList.add(d);
-                gc.add(Calendar.WEEK_OF_MONTH, 2);
-                d = DateParser.getLong(gc);
-                if(d <= endThis && d >= date1) dateList.add(d);
-                gc.add(Calendar.MONTH, 1);
-                gc.set(Calendar.DAY_OF_MONTH, 8);
-            }
+        else if(loan.frequency_type == 5) { // "Every month on the 2nd and 4th"
+            return 24;
         }
-        else if(rp.type_option == 6) {     // On the last day of every month
-            GregorianCalendar gc = DateParser.getCal(rp.start_date);
-            gc.add(Calendar.MONTH, 1);
-            gc.set(Calendar.DAY_OF_MONTH, 1);
-            gc.add(Calendar.DAY_OF_MONTH, -1);
-            while(DateParser.getLong(gc) <= endThis) {
-                long d = DateParser.getLong(gc);
-                if(d >= date1 && d <= endThis)dateList.add(d);
-                gc.add(Calendar.MONTH, 2);
-                gc.set(Calendar.DAY_OF_MONTH, 1);
-                gc.add(Calendar.DAY_OF_MONTH, -1);
-            }
+        else if(loan.frequency_type == 6) { // "On the last day of every month"
+            return 12;
         }
-
-        return dateList;
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public static boolean occursOn(RecurringPayment rp, long date){
-        if(date < rp.start_date || date > rp.end_date) return false;
-
-        if(rp.type_option == 0) {  // On specific date every month
-            GregorianCalendar gc = DateParser.getCal(date);
-            return gc.get(Calendar.DAY_OF_MONTH) == rp.frequency_number;
-        }
-        else if(rp.type_option == 1) {     // Every number of Days
-            long count = rp.start_date;
-            while(count < date) {
-                count += rp. frequency_number;
-            }
-            return count == date;
-        }
-        else if(rp.type_option == 2) {     // Every number of Weeks
-            GregorianCalendar gcCount = DateParser.getCal(rp.start_date);
-            while(DateParser.getLong(gcCount) < date){
-                gcCount.add(Calendar.WEEK_OF_YEAR, rp. frequency_number);
-            }
-            return DateParser.getLong(gcCount) == date;
-        }
-        else if(rp.type_option == 3) {     // Every number of Months
-            GregorianCalendar gcCount = DateParser.getCal(rp.start_date);
-            while(DateParser.getLong(gcCount) < date){
-                gcCount.add(Calendar.MONTH, rp. frequency_number);
-            }
-            return DateParser.getLong(gcCount) == date;
-        }
-        else if(rp.type_option == 4) {     // Every month on the 1st and 3rd
-            GregorianCalendar gc = DateParser.getCal(date);
-            gc.set(Calendar.DAY_OF_MONTH, 1);
-            while(gc.get(Calendar.DAY_OF_WEEK) != rp. frequency_number){
-                gc.add(Calendar.DAY_OF_MONTH, 1);
-            }
-            if(DateParser.getLong(gc) == date) return true;
-            gc.add(Calendar.WEEK_OF_MONTH, 2);
-            return DateParser.getLong(gc) == date;
-        }
-        else if(rp.type_option == 5) {     // Every month on the 2nd and 4th
-            GregorianCalendar gc = DateParser.getCal(date);
-            gc.set(Calendar.DAY_OF_MONTH, 8);
-            while(gc.get(Calendar.DAY_OF_WEEK) != rp. frequency_number){
-                gc.add(Calendar.DAY_OF_MONTH, 1);
-            }
-            if(DateParser.getLong(gc) == date) return true;
-            gc.add(Calendar.WEEK_OF_MONTH, 2);
-            return DateParser.getLong(gc) == date;
-        }
-        else if(rp.type_option == 6) {     // On the last day of every month
-            GregorianCalendar gc = DateParser.getCal(date);
-            int m = gc.get(Calendar.MONTH);
-            gc.add(Calendar.DAY_OF_MONTH, 1);
-            return gc.get(Calendar.MONTH) != m;
-        }
-
-        return false;
+        return 0;
     }
 }

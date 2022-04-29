@@ -3,7 +3,6 @@ package com.example.financefree.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +13,7 @@ import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
@@ -173,7 +172,7 @@ public class SinglePaymentDialog extends DialogFragment {
                 .create();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public static SinglePaymentDialog newInstance(Payment p,long editId, long pId, boolean isNew, int position){
         SinglePaymentDialog f = new SinglePaymentDialog();
         Bundle args = new Bundle();

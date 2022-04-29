@@ -1,9 +1,8 @@
 package com.example.financefree.structures;
 
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+
 
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
@@ -58,21 +57,20 @@ public class Payment {
         this.cType = cType;
         this.id = id;
     }
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public Payment() {
         this(0, DateParser.getLong(1,1,2000), "new payment", 0, 's', 0);
     }
 
+    @NonNull
     @Override
     public String toString() {
         NumberFormat f = NumberFormat.getCurrencyInstance();
-        StringBuilder s = new StringBuilder();
-        s.append("[ '").append(name).append("' | ")
-                .append("id:").append(id).append(" | ")
-                .append("bankId:").append(bankId).append(" | ")
-                .append("type:").append(cType).append(" | ")
-                .append(DateParser.getString(date)).append(" | ")
-                .append(f.format(amount)).append(" ]");
-        return s.toString();
+        return "[ '" + name + "' | " +
+                "id:" + id + " | " +
+                "bankId:" + bankId + " | " +
+                "type:" + cType + " | " +
+                DateParser.getString(date) + " | " +
+                f.format(amount) + " ]";
     }
 }

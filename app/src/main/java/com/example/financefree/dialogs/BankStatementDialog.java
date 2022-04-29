@@ -3,7 +3,6 @@ package com.example.financefree.dialogs;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,7 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
@@ -127,7 +126,7 @@ public class BankStatementDialog extends DialogFragment {
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     @NonNull
     public static BankStatementDialog newInstance(BankStatement bs, int position, boolean isNew) {
         BankStatementDialog f = new BankStatementDialog();

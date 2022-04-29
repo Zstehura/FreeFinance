@@ -1,10 +1,9 @@
 package com.example.financefree;
 
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.fragment.app.Fragment;
 
 import android.view.Gravity;
@@ -71,7 +70,6 @@ public class AnnualViewFragment extends Fragment {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -166,12 +164,12 @@ public class AnnualViewFragment extends Fragment {
         tvAmount.setLayoutParams(lp);
 
         if(amount > 0){
-            tvAmount.setTextColor(getResources().getColor(R.color.dark_green));
-            tvName.setTextColor(getResources().getColor(R.color.dark_green));
+            tvAmount.setTextColor(getResources().getColor(R.color.dark_green,null));
+            tvName.setTextColor(getResources().getColor(R.color.dark_green,null));
         }
         else {
-            tvAmount.setTextColor(getResources().getColor(R.color.dark_red));
-            tvName.setTextColor(getResources().getColor(R.color.dark_red));
+            tvAmount.setTextColor(getResources().getColor(R.color.dark_red,null));
+            tvName.setTextColor(getResources().getColor(R.color.dark_red,null));
         }
 
         if(name.equals(getString(R.string.total)) || name.equals(getString(R.string.overall))){
@@ -195,12 +193,12 @@ public class AnnualViewFragment extends Fragment {
         tvAmount.setLayoutParams(lp);
 
         if(amount > 0){
-            tvAmount.setTextColor(getResources().getColor(R.color.dark_green));
-            tvName.setTextColor(getResources().getColor(R.color.dark_green));
+            tvAmount.setTextColor(getResources().getColor(R.color.dark_green, null));
+            tvName.setTextColor(getResources().getColor(R.color.dark_green,null));
         }
         else {
-            tvAmount.setTextColor(getResources().getColor(R.color.dark_red));
-            tvName.setTextColor(getResources().getColor(R.color.dark_red));
+            tvAmount.setTextColor(getResources().getColor(R.color.dark_red,null));
+            tvName.setTextColor(getResources().getColor(R.color.dark_red,null));
         }
 
         if(name.equals(getString(R.string.total)) || name.equals(getString(R.string.overall))){
@@ -213,7 +211,6 @@ public class AnnualViewFragment extends Fragment {
     }
 
     @SuppressWarnings("ConstantConditions")
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setYear() {
         AtomicReference<List<Payment>> list = new AtomicReference<>();
         Thread t = new Thread(() -> list.set(DatabaseManager.getAnnualPayments(nYear)));
@@ -271,7 +268,6 @@ public class AnnualViewFragment extends Fragment {
     }
 
     @SuppressWarnings("ConstantConditions")
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setMonth() {
         AtomicReference<List<Payment>> list = new AtomicReference<>();
         Thread t = new Thread(() -> list.set(DatabaseManager.getMonthlyPayments(nMonth, nYear)));

@@ -1,9 +1,8 @@
 package com.example.financefree.recyclers;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +23,7 @@ import java.util.concurrent.atomic.AtomicReference;
 /**
  * {@link RecyclerView.Adapter} that can display a {@link RecurringPaymentRVItem}.
  */
+@SuppressWarnings("NullableProblems")
 public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<RecurringPaymentRecyclerViewAdapter.ViewHolder> {
     public List<RecurringPaymentRVItem> mValues;
     private final ViewHolder.RPRVClickListener listener;
@@ -53,7 +53,7 @@ public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<Re
     @Override
     public long getItemId(int position) {return mValues.get(position).id;}
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     public void setItem(RecurringPaymentDialog dialog) {
         RecurringPayment rp = new RecurringPayment();
         rp.name = dialog.txtName.getText().toString();
@@ -68,9 +68,7 @@ public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<Re
         if(dialog.isNew) {
             AtomicReference<Long> id = new AtomicReference<>();
 
-            Thread t = new Thread(() -> {
-                id.set(DatabaseManager.getRecurringPaymentDao().insert(rp));
-            });
+            Thread t = new Thread(() -> id.set(DatabaseManager.getRecurringPaymentDao().insert(rp)));
             t.start();
             try {t.join();}
             catch (InterruptedException e) {e.printStackTrace();}

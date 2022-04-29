@@ -1,10 +1,9 @@
 package com.example.financefree;
 
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.preference.PreferenceManager;
@@ -78,7 +77,7 @@ public class TaxEstimatorFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -114,7 +113,7 @@ public class TaxEstimatorFragment extends Fragment {
 
         swiUseNativeData.setOnClickListener(view1 -> setUseData(swiUseNativeData.isChecked()));
         spnTaxYear.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
+            
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 setYear(i + TaxYear.FIRST_YEAR_AVAILABLE);
@@ -160,7 +159,7 @@ public class TaxEstimatorFragment extends Fragment {
     //  UI update/calculation methods
     //
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     private void setYear(int year) {
         AtomicReference<Double> calcInc = new AtomicReference<>();
         Thread t = new Thread(() -> {

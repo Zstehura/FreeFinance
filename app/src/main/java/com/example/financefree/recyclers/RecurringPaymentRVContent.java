@@ -1,9 +1,8 @@
 package com.example.financefree.recyclers;
 
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
+
 
 import com.example.financefree.database.entities.RecurringPayment;
 
@@ -39,7 +38,7 @@ public class RecurringPaymentRVContent {
     public static void addItem(RecurringPayment item){
         addItem(createRVItem(item));
     }
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    
     public static void updateItem(RecurringPayment rp) {
         for(int i = 0; i < ITEMS.size(); i++){
             if(ITEMS.get(i).id == rp.rp_id){

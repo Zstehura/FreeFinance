@@ -1,10 +1,9 @@
 package com.example.financefree;
 
 import android.app.AlertDialog;
-import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.RequiresApi;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +42,7 @@ public class RecurringPaymentFragment extends Fragment implements RecurringPayme
     @Override
     public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -72,7 +71,7 @@ public class RecurringPaymentFragment extends Fragment implements RecurringPayme
                 alertDialog.show();
             }
 
-            @RequiresApi(api = Build.VERSION_CODES.O)
+            
             @Override
             public void OnEditClicked(int position) {
                 long id = rprva.getItemId(position);
@@ -109,7 +108,7 @@ public class RecurringPaymentFragment extends Fragment implements RecurringPayme
         return view;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     @Override
     public void onDialogPositiveClick(RecurringPaymentDialog dialog) {
         Log.d("RPFrag", "Dialog Positive Click");

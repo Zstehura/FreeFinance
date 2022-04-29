@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -19,7 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
+
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
@@ -94,7 +93,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         super.onCreate(savedInstanceState);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     @SuppressLint("SetTextI18n")
     @NonNull
     @Override
@@ -304,7 +303,7 @@ public class RecurringPaymentDialog extends DialogFragment {
                 .create();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    
     @NonNull
     public static RecurringPaymentDialog newInstance(RecurringPayment rp, int position){
         RecurringPaymentDialog f = new RecurringPaymentDialog();
