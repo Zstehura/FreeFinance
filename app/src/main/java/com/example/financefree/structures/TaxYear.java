@@ -25,6 +25,7 @@ public class TaxYear {
     private static final List<String> BRACKET_CONTENTS = new ArrayList<>();
     private static final List<String> DEDUCTION_CONTENTS = new ArrayList<>();
     public static final List<String> FILING_STATUS = new ArrayList<>(Arrays.asList("married-joint","married-separate","single","head-of-house"));
+    public static final List<String> FILING_STATUS_H = new ArrayList<>(Arrays.asList("Married Filing Jointly","Married Filing Separate","Single","Head of Household"));
 
     private final Map<String, Double> stdDeduction = new HashMap<>();   // goes before tax
     private final Map<String, List<Bracket>> brackets = new HashMap<>();
@@ -41,7 +42,10 @@ public class TaxYear {
         this.year = year;
         usingStdDeduction = true;
         if(BRACKET_CONTENTS.size() == 0) readFiles(context);
+        setYearData(year);
+    }
 
+    private void setYearData(int year) throws YearNotFoundException {
         // initialize class variables
         for(String s: FILING_STATUS){
             brackets.put(s, new ArrayList<>());
@@ -115,6 +119,28 @@ public class TaxYear {
         isb.close(); isd.close();
     }
 
+    public static String getFilingKey(String s) {
+        if(FILING_STATUS.contains(s)) return s;
+        for(int i = 0; i < FILING_STATUS.size(); i++) {
+            if(FILING_STATUS_H.get(i).equals(s)) return FILING_STATUS.get(i);
+        }
+        return "ERROR";
+    }
+    public static String getFilingKey(int i) {
+        return FILING_STATUS.get(i);
+    }
+
+    public static int getFilingStatus(String s) {
+        int ret = 0;
+        for(int i = 0; i < FILING_STATUS.size(); i++){
+            if(FILING_STATUS.get(i).equals(s)) ret = i;
+        }
+        for(int i = 0; i < FILING_STATUS_H.size(); i++){
+            if(FILING_STATUS_H.get(i).equals(s)) ret = i;
+        }
+        return ret;
+    }
+
     public double getTaxNoCreds() throws FilingNotFoundException {
         double tax = 0;
         if(!brackets.containsKey(fileAs)) throw new FilingNotFoundException();
@@ -177,7 +203,10 @@ public class TaxYear {
     public void setDeductions(List<Double> deductions) { this.deductions = deductions; }
     public void setFileAs(String fileAs) { this.fileAs = fileAs; }
     public void setIncome(double income) { this.income = income; }
-    public void setYear(int year) { this.year = year; }
+    public void setYear(int year) throws YearNotFoundException {
+        setYearData(year);
+        this.year = year;
+    }
 
     public int getYear() {return year;}
 

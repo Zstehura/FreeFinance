@@ -71,78 +71,47 @@
                     android:id="@+id/txtGrossInc"
                     android:layout_width="@dimen/dialog_width"
                     android:layout_gravity="end"
+                    android:textAlignment="textEnd"
                     android:inputType="numberDecimal"
-                    android:autofillHints="" />
+                    android:autofillHints=""
+                    android:imeOptions="actionDone"/>
 
                 <TextView
                     android:text="@string/tax_year"
                     android:textColor="@color/black"
                     android:paddingBottom="@dimen/text_margin"/>
+
                 <Spinner
                     android:id="@+id/spnTaxYear"
+                    android:layout_width="@dimen/dialog_width"
                     android:layout_gravity="end"
-                    android:layout_width="@dimen/brobot_width"/>
+                    android:focusable="auto"
+                    android:textAlignment="textEnd" />
 
                 <TextView
                     android:text="@string/file_as"
                     android:textColor="@color/black"
                     android:paddingBottom="@dimen/text_margin"/>
+
                 <Spinner
                     android:id="@+id/spnFileAs"
+                    android:layout_width="@dimen/dialog_width"
                     android:layout_gravity="end"
-                    android:layout_width="@dimen/dialog_width"/>
+                    android:focusable="auto" />
 
                 <TextView
-                    android:text="@string/deductions"
-                    android:textColor="@color/black"/>
-
-                <GridLayout
-                    android:id="@+id/grdDeductions"
-                    android:columnCount="3"
-                    android:paddingBottom="@dimen/text_margin">
-                    <TextView
-                        android:id="@+id/lblDed1"
-                        android:text="@string/name"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:paddingHorizontal="@dimen/text_margin"/>
-                    <TextView
-                        android:id="@+id/lblDed2"
-                        android:text="@string/amount"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:paddingHorizontal="@dimen/text_margin"/>
-                    <TextView/>
-                    <TextView
-                        android:id="@+id/lblDed3"
-                        android:text="@string/standard_deduction"
-                        android:textColor="@color/black"
-                        android:paddingHorizontal="@dimen/text_margin"/>
-
-                    <EditText
-                        android:id="@+id/txtStdDeduction"
-                        android:layout_width="@dimen/brobot_width"
-                        android:inputType="numberDecimal"
-                        android:autofillHints="" />
-                    <TextView/>
-
-                    <Button
-                        android:id="@+id/btnAddDeduction"
-                        android:text="@string/add_deduction"
-                        android:visibility="gone"/>
-
-                </GridLayout>
-
-                <TextView
-                    android:text="@string/total_deductions"
+                    android:id="@+id/lblDed3"
+                    android:text="@string/standard_deduction"
                     android:textColor="@color/black"
                     android:paddingBottom="@dimen/text_margin"/>
-                <TextView
-                    android:id="@+id/txtTotalDeductions"
-                    android:text="@string/amount"
-                    android:layout_gravity="end"/>
+
+                <EditText
+                    android:id="@+id/txtStdDeduction"
+                    android:layout_gravity="end"
+                    android:layout_width="@dimen/dialog_width"
+                    android:inputType="numberDecimal"
+                    android:textAlignment="textEnd"
+                    android:autofillHints="" />
 
                 <TextView
                     android:text="@string/after_deuctions"
@@ -150,68 +119,6 @@
                     android:paddingBottom="@dimen/text_margin"/>
                 <TextView
                     android:id="@+id/txtAfterDeductions"
-                    android:text="@string/amount"
-                    android:layout_gravity="end"/>
-
-                <TextView
-                    android:text="@string/tax"
-                    android:textColor="@color/black"
-                    android:paddingBottom="@dimen/text_margin"/>
-                <TextView
-                    android:id="@+id/txtTax"
-                    android:text="@string/amount"
-                    android:layout_gravity="end"/>
-
-                <TextView
-                    android:visibility="visible"
-                    android:id="@+id/lblCredits"
-                    android:text="@string/credits"
-                    android:textColor="@color/black"
-                    android:paddingBottom="@dimen/text_margin"/>
-
-                <GridLayout
-                    android:id="@+id/grdCredits"
-                    android:visibility="visible"
-                    android:columnCount="3"
-                    android:paddingBottom="@dimen/text_margin">
-                    <TextView
-                        android:id="@+id/lblCred1"
-                        android:text="@string/name"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:paddingHorizontal="@dimen/text_margin"/>
-                    <TextView
-                        android:id="@+id/lblCred2"
-                        android:text="@string/amount"
-                        android:layout_gravity="center_horizontal"
-                        android:textColor="@color/black"
-                        android:textStyle="bold"
-                        android:paddingHorizontal="@dimen/text_margin"/>
-                    <TextView/>
-
-                    <EditText
-                        android:layout_width="@dimen/brobot_width"
-                        android:inputType="text"
-                        android:autofillHints="" />
-                    <EditText
-                        android:layout_width="@dimen/brobot_width"
-                        android:inputType="numberDecimal"
-                        android:autofillHints="" />
-                    <TextView/>
-
-                    <Button
-                        android:id="@+id/btnAddCredit"
-                        android:text="@string/add_credit" />
-                </GridLayout>
-
-                <TextView
-                    android:id="@+id/lblTotalCreds"
-                    android:text="@string/total_credits"
-                    android:textColor="@color/black"
-                    android:paddingBottom="@dimen/text_margin"/>
-                <TextView
-                    android:id="@+id/txtTotalCredits"
                     android:text="@string/amount"
                     android:layout_gravity="end"/>
 

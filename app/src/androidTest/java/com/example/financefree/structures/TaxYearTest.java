@@ -56,7 +56,9 @@ public class TaxYearTest {
     }
 
     public boolean getCalc(double income, String status ,double expected) throws TaxYear.FilingNotFoundException {
-        double actual = taxYear.getTaxOn(status, income);
+        taxYear.setIncome(income);
+        taxYear.setFileAs(status);
+        double actual = taxYear.getTax();
         return actual == expected;
     }
 }
