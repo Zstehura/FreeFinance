@@ -23,7 +23,6 @@ import com.example.financefree.database.DatabaseManager;
 /**
  *  TODO:   Implement ads / ad-free payment
  *          Add Notification options?
- *          Add what if section?
  *          Add loan calculator
  *          *Set up Settings
  *          Add settings:
