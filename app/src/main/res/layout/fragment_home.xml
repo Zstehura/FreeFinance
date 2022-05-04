@@ -21,7 +21,7 @@
             android:layout_width="@dimen/button_square_side"
             android:layout_height="@dimen/button_square_side"
             android:layout_margin="@dimen/text_margin"
-            android:text="@string/monthly"
+            android:text="@string/monthly_view"
             android:textAlignment="center"/>
 
         <Button

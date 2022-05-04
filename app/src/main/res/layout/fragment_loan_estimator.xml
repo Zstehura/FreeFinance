@@ -1,13 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".LoanEstimatorFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/brobot_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:text="@string/notes" />
-</androidx.core.widget.NestedScrollView>
+        android:layout_margin="@dimen/text_margin">
+
+        <ImageView
+            android:id="@+id/imgHomeBot"
+            android:layout_height="@dimen/brobot_height"
+            android:layout_width="@dimen/brobot_width"
+            android:src="@drawable/brobot_happy_mouth_open"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/brobots_beautiful_face" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            app:cardBackgroundColor="@color/light_blue"
+            app:cardCornerRadius="@dimen/brobot_corner_radius"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/imgHomeBot"
+            app:layout_constraintRight_toRightOf="parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="@string/brobot_loan_estimator_desc"
+                android:textStyle="bold"
+                android:layout_margin="@dimen/brobot_margin"/>
+        </androidx.cardview.widget.CardView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/brobot_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:padding="@dimen/text_margin">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="4"
+                tools:ignore="UselessParent">
+                <!-- Labels -->
+                <TextView/>
+                <TextView
+                    android:text="@string/value"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:text="@string/edit"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:text="@string/adjust"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"/>
+
+                <!-- Loan Type -->
+                <TextView
+                    android:paddingEnd="@dimen/text_margin"
+                    android:paddingStart="0dp"
+                    android:text="@string/loan_type"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/spnLoanType"/>
+                <Spinner
+                    android:id="@+id/spnLoanType"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="@dimen/spinner_med" />
+                <TextView/>
+                <TextView/>
+
+                <!-- <CheckBox
+                    android:id="@+id/chkEditType"/>
+                <CheckBox
+                    android:id="@+id/chkAdjustType"/>
+                    -->
+
+
+                <!-- Principle -->
+                <TextView
+                    android:text="@string/principle"
+                    android:textColor="@color/black"
+                    android:paddingEnd="@dimen/text_margin"
+                    android:paddingStart="0dp"
+                    android:labelFor="@id/txtPrinciple"/>
+                <EditText
+                    android:id="@+id/txtPrinciple"
+                    android:inputType="numberDecimal"
+                    android:imeOptions="actionDone"
+                    android:width="@dimen/brobot_width"
+                    android:autofillHints="" />
+                <CheckBox
+                    android:id="@+id/chkEditPrinciple"/>
+                <CheckBox
+                    android:id="@+id/chkAdjustPrinciple"/>
+
+                <!-- APR -->
+                <TextView
+                    android:text="@string/annual_percent"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/txtApr"
+                    android:paddingEnd="@dimen/text_margin"
+                    android:paddingStart="0dp"/>
+                <EditText
+                    android:id="@+id/txtApr"
+                    android:inputType="numberDecimal"
+                    android:imeOptions="actionDone"
+                    android:width="@dimen/brobot_width"
+                    android:autofillHints="" />
+                <CheckBox
+                    android:id="@+id/chkEditApr"/>
+                <CheckBox
+                    android:id="@+id/chkAdjustApr"/>
+
+                <!-- Start Date -->
+                <TextView
+                    android:paddingEnd="@dimen/text_margin"
+                    android:paddingStart="0dp"
+                    android:text="@string/start_date"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/txtStartDate"/>
+                <EditText
+                    android:id="@+id/txtStartDate"
+                    android:inputType="date"
+                    android:imeOptions="actionDone"
+                    android:width="@dimen/brobot_width"
+                    android:autofillHints="" />
+                <CheckBox
+                    android:id="@+id/chkEditStart"/>
+                <CheckBox
+                    android:id="@+id/chkAdjustStart"/>
+
+                <!-- End date -->
+                <TextView
+                    android:paddingEnd="@dimen/text_margin"
+                    android:paddingStart="0dp"
+                    android:text="@string/end_date"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/txtEndDate"/>
+                <EditText
+                    android:id="@+id/txtEndDate"
+                    android:inputType="date"
+                    android:imeOptions="actionDone"
+                    android:width="@dimen/brobot_width"
+                    android:autofillHints="" />
+                <CheckBox
+                    android:id="@+id/chkEditEnd"/>
+                <CheckBox
+                    android:id="@+id/chkAdjustEnd"/>
+
+                <!-- Term in Years -->
+                <TextView
+                    android:paddingEnd="@dimen/text_margin"
+                    android:paddingStart="0dp"
+                    android:text="@string/term_in_years"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/txtTermLength"/>
+                <EditText
+                    android:id="@+id/txtTermLength"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:width="@dimen/brobot_width"
+                    android:autofillHints="" />
+                <CheckBox
+                    android:id="@+id/chkEditTermLen"/>
+                <CheckBox
+                    android:id="@+id/chkAdjustTermLen"/>
+
+                <!-- Frequency -->
+                <TextView
+                    android:paddingEnd="@dimen/text_margin"
+                    android:paddingStart="0dp"
+                    android:text="@string/frequency"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/spnFrequency"/>
+                <Spinner
+                    android:id="@+id/spnFrequency"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="@dimen/spinner_med" />
+                <CheckBox
+                    android:id="@+id/chkEditFreq"/>
+                <CheckBox
+                    android:id="@+id/chkAdjustFreq"/>
+
+                <!-- Payment Amount -->
+                <TextView
+                    android:paddingEnd="@dimen/text_margin"
+                    android:paddingStart="0dp"
+                    android:text="@string/payment_amount"
+                    android:textColor="@color/black"
+                    android:labelFor="@id/txtPaymentAmount"/>
+                <EditText
+                    android:id="@+id/txtPaymentAmount"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:width="@dimen/brobot_width"
+                    android:autofillHints="" />
+                <CheckBox
+                    android:id="@+id/chkEditPayAmnt"/>
+                <CheckBox
+                    android:id="@+id/chkAdjustPayAmnt"/>
+            </GridLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

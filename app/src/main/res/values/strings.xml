@@ -43,6 +43,8 @@
     <string name="home">Home</string>
     <string name="cancel">Cancel</string>
     <string name="Calendar">Monthly</string>
+    <string name="monthly">Monthly</string>
+    <string name="bimonthly">Bi-Monthly</string>
     <string name="clear_all_data">Clear All Data</string>
     <string name="name">Name</string>
     <string name="amount">Amount</string>
@@ -52,7 +54,7 @@
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
     <string name="notes">Notes</string>
-    <string name="monthly">Monthly\n View</string>
+    <string name="monthly_view">Monthly\n View</string>
     <string name="payments">View Payments</string>
     <string name="BankLists">View Banks</string>
     <string name="temp">replace me!</string>
@@ -101,5 +103,15 @@
     <string name="add_credit">Add Credit</string>
     <string name="total_credits">Total Credits</string>
     <string name="friendly_neighborhood_brobot">Friendly neighborhood Brobot</string>
+    <string name="brobot_loan_estimator_desc">Hi! This is the Loan estimator tool where you can adjust values on a hypothetical loan to see what your payment would be. Check the box in the row of the value you\'d like to change, and check the second box of the value you\'d like me to automatically adjust!</string>
+    <string name="brobots_beautiful_face">Brobot\'s beautiful face</string>
+    <string name="principle">Principle</string>
+    <string name="adjust">Adjust</string>
+    <string name="edit">Edit</string>
+    <string name="value">Value</string>
+    <string name="annual_percent">Annual Percent</string>
+    <string name="term_in_years">Term in Years</string>
+    <string name="loan_type">Loan Type</string>
+    <string name="payment_amount">Payment Amount</string>
 
 </resources>
