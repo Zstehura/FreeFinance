@@ -5,11 +5,11 @@ import androidx.room.PrimaryKey;
 
 @Entity
 public class NotificationInfo {
-    @PrimaryKey
-    public String note_id;
+    @PrimaryKey (autoGenerate = true)
+    public long notif_id;
 
-    public int frequency_type;
-    public int frequency_num;
+    public long notif_time;
+    public String title;
     public String message;
     public long payment_id;
     public char payment_type;   // r or s

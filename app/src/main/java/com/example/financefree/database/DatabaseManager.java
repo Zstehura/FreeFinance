@@ -11,6 +11,7 @@ import androidx.preference.Preference;
 
 import com.example.financefree.database.daos.DaoBankAccount;
 import com.example.financefree.database.daos.DaoBankStatement;
+import com.example.financefree.database.daos.DaoNotificationInfo;
 import com.example.financefree.database.daos.DaoPaymentEdit;
 import com.example.financefree.database.daos.DaoRecurringPayment;
 import com.example.financefree.database.daos.DaoSinglePayment;
@@ -36,10 +37,8 @@ public class DatabaseManager extends AndroidViewModel {
         db = AppDatabase.getDatabase(application.getApplicationContext());
     }
 
-
-    public static DaoBankAccount getBankAccountDao(){
-        return db.daoBankAccount();
-    }
+    public static DaoNotificationInfo getNotificationInfoDao() { return db.daoNotificationInfo();}
+    public static DaoBankAccount getBankAccountDao(){ return db.daoBankAccount(); }
     public static DaoBankStatement getBankStatementDao() {return db.daoBankStatement();}
     public static DaoRecurringPayment getRecurringPaymentDao() {return db.daoRecurringPayment();}
     public static DaoSinglePayment getSinglePaymentDao() {return db.daoSinglePayment();}

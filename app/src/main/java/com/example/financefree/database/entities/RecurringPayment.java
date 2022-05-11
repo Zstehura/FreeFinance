@@ -2,6 +2,7 @@ package com.example.financefree.database.entities;
 
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(foreignKeys = {
@@ -9,7 +10,8 @@ import androidx.room.PrimaryKey;
                 parentColumns = "bank_id",
                 childColumns = "bank_id",
                 onUpdate = ForeignKey.CASCADE,
-                onDelete = ForeignKey.CASCADE)})
+                onDelete = ForeignKey.CASCADE)},
+indices = {@Index(value = "bank_id", name = "rp_bank_ids")})
 public class RecurringPayment {
     @PrimaryKey(autoGenerate = true)
     public long rp_id;

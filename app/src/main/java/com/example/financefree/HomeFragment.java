@@ -6,11 +6,17 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.BankAccount;
+import com.example.financefree.database.entities.NotificationInfo;
+import com.example.financefree.notifier.NotificationReceiver;
+
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +35,7 @@ public class HomeFragment extends Fragment {
      *
      * @return A new instance of fragment HomeFragment.
      */
-    public static HomeFragment newInstance(String param1, String param2) {
+    public static HomeFragment newInstance() {
         return new HomeFragment();
     }
 
@@ -67,8 +73,17 @@ public class HomeFragment extends Fragment {
             navController.navigate(R.id.settingsFragment);
         });
         view.findViewById(R.id.btnTools).setOnClickListener(view1 -> {
-            NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
-            navController.navigate(R.id.toolFragment);
+            NotificationInfo ni = new NotificationInfo();
+            ni.notif_id = 1;
+            Date d = new Date();
+            ni.notif_time = d.getTime() + (90 * 1000);
+            ni.title = "This is a test!";
+            ni.message = "Testing... Testing... 123\ntest";
+            NotificationReceiver.scheduleNotification(this.getContext(), ni);
+            Thread t = new Thread(() -> DatabaseManager.getNotificationInfoDao().insert(ni));
+            t.start();
+            //NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
+            //navController.navigate(R.id.toolFragment);
         });
 
 
