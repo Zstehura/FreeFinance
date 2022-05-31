@@ -113,5 +113,7 @@
     <string name="term_in_years">Term in Years</string>
     <string name="loan_type">Loan Type</string>
     <string name="payment_amount">Payment Amount</string>
+    <string name="channel_name">FreeFinanceAppNotifier</string>
+    <string name="channel_description">Notificaiton Channel for the FreeFinance applocation</string>
 
 </resources>

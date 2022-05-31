@@ -1,16 +1,6 @@
 package com.example.financefree.structures;
 
-import android.util.Log;
-
-import java.util.GregorianCalendar;
-
 public class LoanCalculator {
-
-    // TODO: create tests
-    //      write more options
-    //      create fragment
-    //      allow user to adjust settings
-    //      already added in the chart library (https://weeklycoding.com/mpandroidchart/)
 
     private double principle;
     private int numMonths;
