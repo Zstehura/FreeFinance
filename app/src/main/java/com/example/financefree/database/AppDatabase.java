@@ -8,19 +8,17 @@ import androidx.room.RoomDatabase;
 
 import com.example.financefree.database.daos.DaoBankAccount;
 import com.example.financefree.database.daos.DaoBankStatement;
-import com.example.financefree.database.daos.DaoNotificationInfo;
 import com.example.financefree.database.daos.DaoPaymentEdit;
 import com.example.financefree.database.daos.DaoRecurringPayment;
 import com.example.financefree.database.daos.DaoSinglePayment;
 import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.database.entities.BankStatement;
-import com.example.financefree.database.entities.NotificationInfo;
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
 import com.example.financefree.database.entities.SinglePayment;
 
 @Database(entities = {BankAccount.class, BankStatement.class, PaymentEdit.class, RecurringPayment.class,
-        SinglePayment.class, NotificationInfo.class},
+        SinglePayment.class},
         version = 4, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract DaoBankAccount daoBankAccount();
@@ -28,7 +26,6 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract DaoPaymentEdit daoPaymentEdit();
     public abstract DaoRecurringPayment daoRecurringPayment();
     public abstract DaoSinglePayment daoSinglePayment();
-    public abstract DaoNotificationInfo daoNotificationInfo();
 
     private static AppDatabase INSTANCE;
     public static AppDatabase getDatabase(final Context context){

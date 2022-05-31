@@ -3,8 +3,6 @@ package com.example.financefree.structures;
 
 import androidx.annotation.NonNull;
 
-
-import com.example.financefree.database.entities.Loan;
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
 
@@ -47,14 +45,6 @@ public class Frequency {
         endDate = rp.end_date;
         typeOpt = rp.type_option;
         iNum = rp.frequency_number;
-    }
-
-    
-    public Frequency(Loan loan) {
-        startDate = loan.start_date;
-        endDate = DateParser.addToDate(startDate, loan.term_Length, Calendar.YEAR);
-        typeOpt = loan.frequency_type;
-        iNum = loan.frequency_num;
     }
 
     public static int getDow(String s){
@@ -275,17 +265,6 @@ public class Frequency {
     public static boolean occursOn(RecurringPayment rp, long date){
         return occursOn(new Frequency(rp), date);
     }
-
-    
-    public static List<Long> occurrencesBetween(Loan loan, long date1, long date2){
-        return occurrencesBetween(new Frequency(loan), date1, date2);
-    }
-
-    
-    public static boolean occursOn(Loan loan, long date) {
-        return occursOn(new Frequency(loan), date);
-    }
-
     
     public static Payment occursOn(List<PaymentEdit> pel, RecurringPayment rp, long date){
         Payment p = new Payment(rp, date);
@@ -359,30 +338,5 @@ public class Frequency {
         }
 
         return dateList;
-    }
-
-    public static int paymentsPerYear(Loan loan) {
-        if (loan.frequency_type == 0) { // "On specific date every month");
-            return 12;
-        }
-        else if(loan.frequency_type == 1){ // "Every number of Days"
-            return Math.round((float) (365 / loan.frequency_num));
-        }
-        else if(loan.frequency_type == 2){ // "Every number of Weeks"
-            return Math.round((float) (52 / loan.frequency_num));
-        }
-        else if(loan.frequency_type == 3){ // "Every number of Months"
-            return Math.round((float) (12 / loan.frequency_num));
-        }
-        else if(loan.frequency_type == 4) { // "Every month on the 1st and 3rd"
-            return 24;
-        }
-        else if(loan.frequency_type == 5) { // "Every month on the 2nd and 4th"
-            return 24;
-        }
-        else if(loan.frequency_type == 6) { // "On the last day of every month"
-            return 12;
-        }
-        return 0;
     }
 }
