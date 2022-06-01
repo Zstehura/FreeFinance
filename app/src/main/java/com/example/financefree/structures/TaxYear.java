@@ -2,6 +2,8 @@ package com.example.financefree.structures;
 
 import android.content.Context;
 
+import com.example.financefree.R;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,7 +27,7 @@ public class TaxYear {
     private static final List<String> BRACKET_CONTENTS = new ArrayList<>();
     private static final List<String> DEDUCTION_CONTENTS = new ArrayList<>();
     public static final List<String> FILING_STATUS = new ArrayList<>(Arrays.asList("married-joint","married-separate","single","head-of-house"));
-    public static final List<String> FILING_STATUS_H = new ArrayList<>(Arrays.asList("Married Filing Jointly","Married Filing Separate","Single","Head of Household"));
+    private static List<String> FILING_STATUS_H;// = new ArrayList<>(getRes //Arrays.asList("Married Filing Jointly","Married Filing Separate","Single","Head of Household"));
 
     private final Map<String, Double> stdDeduction = new HashMap<>();   // goes before tax
     private final Map<String, List<Bracket>> brackets = new HashMap<>();
@@ -41,9 +43,14 @@ public class TaxYear {
         // get tax file
         this.year = year;
         usingStdDeduction = true;
-        if(BRACKET_CONTENTS.size() == 0) readFiles(context);
+        FILING_STATUS_H = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.tax_filing_status)));
+        if(BRACKET_CONTENTS.size() == 0) {
+            readFiles(context);
+        }
         setYearData(year);
     }
+
+    public static List<String> getFilingStatusH() {return FILING_STATUS_H;}
 
     private void setYearData(int year) throws YearNotFoundException {
         // initialize class variables

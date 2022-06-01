@@ -2,26 +2,19 @@ package com.example.financefree;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-
-import androidx.appcompat.widget.SwitchCompat;
-import androidx.fragment.app.Fragment;
-import androidx.preference.PreferenceManager;
-
-import android.text.InputType;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.GridLayout;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.fragment.app.Fragment;
+import androidx.preference.PreferenceManager;
 
 import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.structures.Payment;
@@ -30,10 +23,8 @@ import com.example.financefree.structures.TaxYear;
 import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -107,7 +98,7 @@ public class TaxEstimatorFragment extends Fragment {
         ArrayAdapter<String> yrAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
                 yrs);
         ArrayAdapter<String> fileAsAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
-                TaxYear.FILING_STATUS_H);
+                TaxYear.getFilingStatusH());
         spnTaxYear.setAdapter(yrAdapter);
         spnFilingAs.setAdapter(fileAsAdapter);
 

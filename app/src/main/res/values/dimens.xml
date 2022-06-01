@@ -20,4 +20,5 @@
     <dimen name="column_label_width">100dp</dimen>
     <dimen name="brobot_corner_radius">4dp</dimen>
     <dimen name="brobot_margin">10dp</dimen>
+    <dimen name="loan_value_width">150dp</dimen>
 </resources>

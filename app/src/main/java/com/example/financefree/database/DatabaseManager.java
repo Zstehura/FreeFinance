@@ -20,6 +20,8 @@ import com.example.financefree.structures.Payment;
 import com.example.financefree.structures.Statement;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 
@@ -37,7 +39,6 @@ public class DatabaseManager extends AndroidViewModel {
     public static DaoSinglePayment getSinglePaymentDao() {return db.daoSinglePayment();}
     public static DaoPaymentEdit getPaymentEditDao() {return db.daoPaymentEdit();}
 
-    
     public static List<Statement> getStatementsForDay(long date) {
         List<Statement> list = new ArrayList<>();
         for(BankAccount ba: db.daoBankAccount().getAll()){
@@ -51,7 +52,9 @@ public class DatabaseManager extends AndroidViewModel {
                 cAmount = bs.amount;
             }
             else {
-                mostRecent = DateParser.dateNumDaysAgo(365);
+                GregorianCalendar gc = new GregorianCalendar();
+                gc.add(Calendar.YEAR, -1);
+                mostRecent = DateParser.getLong(gc);
                 cAmount =0;
             }
 

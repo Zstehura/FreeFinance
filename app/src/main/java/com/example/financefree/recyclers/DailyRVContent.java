@@ -1,9 +1,6 @@
 package com.example.financefree.recyclers;
 
-import android.graphics.Color;
-
 import androidx.annotation.NonNull;
-
 
 import com.example.financefree.R;
 import com.example.financefree.structures.Payment;

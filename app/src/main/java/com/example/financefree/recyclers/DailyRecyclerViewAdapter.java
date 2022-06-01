@@ -7,17 +7,14 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.financefree.database.DatabaseManager;
-import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.database.entities.BankStatement;
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
 import com.example.financefree.database.entities.SinglePayment;
 import com.example.financefree.databinding.FragmentCalendarItemBinding;
-import com.example.financefree.dialogs.BankAccountDialog;
 import com.example.financefree.dialogs.BankStatementDialog;
 import com.example.financefree.dialogs.SinglePaymentDialog;
 import com.example.financefree.structures.Construction;

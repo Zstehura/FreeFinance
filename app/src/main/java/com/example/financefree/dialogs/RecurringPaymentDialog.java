@@ -4,9 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,21 +16,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
-import com.example.financefree.RecurringPaymentFragment;
 import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.BankAccount;
 import com.example.financefree.database.entities.RecurringPayment;
-import com.example.financefree.recyclers.RecurringPaymentRecyclerViewAdapter;
 import com.example.financefree.structures.CashFlow;
 import com.example.financefree.structures.DateParser;
 import com.example.financefree.structures.Frequency;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,10 +130,11 @@ public class RecurringPaymentDialog extends DialogFragment {
         lBanks = new ArrayList<>(mBanks.values());
         lFreqs = new ArrayList<>(mFreqs.values());
 
+
         if(lBanks.size() < 1) {
             return new AlertDialog.Builder(getContext())
-                    .setTitle("A Bank Account is REQUIRED to add payments")
-                    .setPositiveButton("Ok", (dialogInterface, i) -> {})
+                    .setTitle(R.string.bank_required_warning)
+                    .setPositiveButton(R.string.ok, (dialogInterface, i) -> {})
                     .create();
         }
 
@@ -148,7 +143,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         ArrayAdapter<String> freqAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
                 lFreqs);
         ArrayAdapter<String> dowAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
-                Arrays.asList("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"));
+                DateParser.getDowList());
         ArrayAdapter<String> flowAdapter = new ArrayAdapter<>(this.getActivity(), android.R.layout.simple_dropdown_item_1line,
                 CashFlow.getChoices());
         spnBank.setAdapter(bankAdapter);

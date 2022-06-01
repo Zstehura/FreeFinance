@@ -2,19 +2,16 @@ package com.example.financefree;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-
-
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.database.entities.RecurringPayment;
-import com.example.financefree.dialogs.BankAccountDialog;
 import com.example.financefree.dialogs.DetailsDialogRP;
 import com.example.financefree.dialogs.RecurringPaymentDialog;
 import com.example.financefree.recyclers.RecurringPaymentRecyclerViewAdapter;
@@ -58,15 +55,15 @@ public class RecurringPaymentFragment extends Fragment implements RecurringPayme
             @Override
             public void OnDeleteClicked(int position) {
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                        .setTitle("Are you sure you'd like to delete " + rprva.getItemName(position) + "?")
-                        .setPositiveButton("Delete", (dialogInterface, i) -> {
+                        .setTitle(getString(R.string.are_you_sure_delete) + rprva.getItemName(position) + "?")
+                        .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
                             Thread t = new Thread(() -> DatabaseManager.getRecurringPaymentDao().deleteById(rprva.getItemId(position)));
                             t.start();
                             try {t.join();}
                             catch (InterruptedException e) {e.printStackTrace();}
                             rprva.remove(position);
                         })
-                        .setNegativeButton("Cancel", (dialogInterface, i) -> {})
+                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {})
                         .create();
                 alertDialog.show();
             }

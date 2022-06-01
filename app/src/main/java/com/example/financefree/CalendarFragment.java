@@ -100,7 +100,6 @@ public class CalendarFragment extends Fragment implements
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    
     private void updateDay(long date) {
         AtomicReference<List<Payment>> paymentList = new AtomicReference<>();
         AtomicReference<List<Statement>> statementList = new AtomicReference<>();
@@ -146,8 +145,8 @@ public class CalendarFragment extends Fragment implements
     public void OnDailyDeleteClick(int position) {
         DailyRVContent.DailyRVItem dvi = drva.mValues.get(position);
         AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                .setTitle("Delete")
-                .setPositiveButton("Delete", (dialogInterface, i) -> {
+                .setTitle(R.string.delete)
+                .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
                     Thread t;
 
                     if(dvi.isPayment){
@@ -189,7 +188,7 @@ public class CalendarFragment extends Fragment implements
                     catch (InterruptedException e) {e.printStackTrace();}
                     updateDay(currentDate);
                 })
-                .setNegativeButton("Cancel", (dialogInterface, i) -> {/* Do nothing */})
+                .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {/* Do nothing */})
                 .create();
         alertDialog.show();
     }

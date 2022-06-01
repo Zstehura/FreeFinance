@@ -1,8 +1,6 @@
 package com.example.financefree.structures;
 
-
 import androidx.annotation.NonNull;
-
 
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;

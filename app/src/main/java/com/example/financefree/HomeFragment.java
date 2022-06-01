@@ -45,10 +45,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        BankAccount ba = new BankAccount();
-        ba.name = "Test Account";
-        ba.notes = "";
-
         view.findViewById(R.id.btnMonthly).setOnClickListener(view1 -> {
             NavController navController = Navigation.findNavController(getActivity(), R.id.nav_host_fragment);
             navController.navigate(R.id.calendar);

@@ -44,7 +44,7 @@ public class DetailsDialogBA extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.bank_account)
-                .setPositiveButton("Ok", (dialogInterface, i) -> {})
+                .setPositiveButton(R.string.ok, (dialogInterface, i) -> {})
                 .setView(dialog)
                 .create();
     }

@@ -23,19 +23,18 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     public boolean onPreferenceClick(@NonNull Preference preference) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 
-        if(preference.getKey().equals("clear_all_data")){
-            builder.setMessage("Caution! This will delete ALL data currently contained on this app. " +
-                    "You will not be able to recover any of it after confirming.")
+        if(preference.getKey().equals(getString(R.string.clear_all_data_key))){
+            builder.setMessage(getString(R.string.delete_all_warning))
                     .setCancelable(true)
-                    .setPositiveButton("Delete", (dialogInterface, i) -> {
-                        Toast.makeText(getContext(), "Clearing Data...", Toast.LENGTH_LONG).show();
+                    .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
+                        Toast.makeText(getContext(), R.string.clearing_data, Toast.LENGTH_LONG).show();
                         Thread t = new Thread(DatabaseManager::clearDatabase);
                         t.start();
                         try {t.join();}
                         catch (InterruptedException e){e.printStackTrace();}
-                        Toast.makeText(getContext(), "Data cleared",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.data_cleared, Toast.LENGTH_SHORT).show();
                     })
-                    .setNegativeButton("Cancel",((dialogInterface, i) -> {
+                    .setNegativeButton(R.string.cancel,((dialogInterface, i) -> {
                         // Exit without deleting
                         dialogInterface.cancel();
                     }));

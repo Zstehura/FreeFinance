@@ -28,5 +28,20 @@
         <item>720</item>
         <item>-1</item>
     </integer-array>
+    <string-array name="tax_filing_status">
+        <item>Married Filing Jointly</item>
+        <item>Married Filing Separate</item>
+        <item>Single</item>
+        <item>Head of Household</item>
+    </string-array>
+    <string-array name="frequency_options">
+        <item>On specific date every month</item>
+        <item>Every number of Days</item>
+        <item>Every number of Weeks</item>
+        <item>Every number of Months</item>
+        <item>Every month on the 1st and 3rd</item>
+        <item>Every month on the 2nd and 4th</item>
+        <item>On the last day of every month</item>
+    </string-array>
 
 </resources>

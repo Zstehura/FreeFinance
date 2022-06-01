@@ -1,12 +1,18 @@
 package com.example.financefree.structures;
 
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+
 import androidx.annotation.NonNull;
 
+import com.example.financefree.R;
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -18,6 +24,10 @@ public class Frequency {
     private static final String END_DATE_KEY = "end";
     private static final String TYPE_KEY = "type";
     private static final String NUM_KEY = "num";
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat SDF_DOW = new SimpleDateFormat("EEEEE");
+    @SuppressLint("SimpleDateFormat")
+    private static final SimpleDateFormat SDF_MON = new SimpleDateFormat("MMMMM");
 
     private static final Map<Integer, String> TYPE_OPTIONS = new HashMap<>();
 
@@ -26,17 +36,15 @@ public class Frequency {
     public int typeOpt;
     public int iNum;
 
-    public static Map<Integer, String> typeOptions(){
-        if(TYPE_OPTIONS.size() < 5){
-            TYPE_OPTIONS.clear();
-            TYPE_OPTIONS.put(0, "On specific date every month");
-            TYPE_OPTIONS.put(1, "Every number of Days");
-            TYPE_OPTIONS.put(2, "Every number of Weeks");
-            TYPE_OPTIONS.put(3, "Every number of Months");
-            TYPE_OPTIONS.put(4, "Every month on the 1st and 3rd");
-            TYPE_OPTIONS.put(5, "Every month on the 2nd and 4th");
-            TYPE_OPTIONS.put(6, "On the last day of every month");
+    public static void init(Context context) {
+        TYPE_OPTIONS.clear();
+        List<String> l = Arrays.asList(context.getResources().getStringArray(R.array.frequency_options));
+        for(int i = 0; i < l.size(); i++) {
+            TYPE_OPTIONS.put(i, l.get(i));
         }
+    }
+
+    public static Map<Integer, String> typeOptions(){
         return TYPE_OPTIONS;
     }
 
@@ -45,27 +53,6 @@ public class Frequency {
         endDate = rp.end_date;
         typeOpt = rp.type_option;
         iNum = rp.frequency_number;
-    }
-
-    public static int getDow(String s){
-        if(s.equals("Sunday"))    return Calendar.SUNDAY;
-        if(s.equals("Monday"))    return Calendar.MONDAY;
-        if(s.equals("Tuesday"))   return Calendar.TUESDAY;
-        if(s.equals("Wednesday")) return Calendar.WEDNESDAY;
-        if(s.equals("Thursday"))  return Calendar.THURSDAY;
-        if(s.equals("Friday"))    return Calendar.FRIDAY;
-        if(s.equals("Saturday"))  return Calendar.SATURDAY;
-        return -1;
-    }
-    public static String getDow(int n){
-        if(n == Calendar.SUNDAY)    return "Sunday";
-        if(n == Calendar.MONDAY)    return "Monday";
-        if(n == Calendar.TUESDAY)   return "Tuesday";
-        if(n == Calendar.WEDNESDAY) return "Wednesday";
-        if(n == Calendar.THURSDAY)  return "Thursday";
-        if(n == Calendar.FRIDAY)    return "Friday";
-        if(n == Calendar.SATURDAY)  return "Saturday";
-        return "";
     }
 
     /**
@@ -79,7 +66,7 @@ public class Frequency {
         if(typeOpt >= 4 && typeOpt <= 6) {
             s.append(typeOptions().get(typeOpt));
             if(typeOpt == 4 || typeOpt == 5){
-                s.append(" ").append(getDow(iNum));
+                s.append(" ").append(DateParser.getDow(iNum));
             }
         }
         else if(typeOpt >= 1){
@@ -101,9 +88,6 @@ public class Frequency {
 
         return s.toString();
     }
-
-
-
     
     public static List<Long> occurrencesBetween(Frequency frequency, long date1, long date2) {
         List<Long> dateList = new ArrayList<>();
@@ -251,7 +235,6 @@ public class Frequency {
         return false;
     }
 
-
     /**
      * Type specific Methods
      */
@@ -261,7 +244,6 @@ public class Frequency {
         return occurrencesBetween(new Frequency(rp), date1, date2);
     }
 
-    
     public static boolean occursOn(RecurringPayment rp, long date){
         return occursOn(new Frequency(rp), date);
     }
@@ -287,7 +269,6 @@ public class Frequency {
         }
         else return null;
     }
-
     
     public static List<Payment> paymentsBetween(List<PaymentEdit> pel, RecurringPayment rp, long date1, long date2){
         List<Long> dateList = occurrencesBetween(rp, date1, date2);
@@ -320,7 +301,6 @@ public class Frequency {
         return paymentList;
     }
 
-    
     public static List<Long> occurrencesBetween(List<PaymentEdit> pel, RecurringPayment rp, long date1, long date2){
         List<Long> dateList = occurrencesBetween(rp, date1, date2);
         if(pel != null) {

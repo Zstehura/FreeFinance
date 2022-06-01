@@ -70,15 +70,15 @@ public class BankAccountFragment extends Fragment implements BankAccountDialog.B
             @Override
             public void OnBADeleteClick(int position) {
                 AlertDialog alertDialog = new AlertDialog.Builder(getContext())
-                        .setTitle("Are you sure you'd like to delete " + barva.getItemName(position) + "?")
-                        .setPositiveButton("Delete", (dialogInterface, i) -> {
+                        .setTitle(getString(R.string.are_you_sure_delete) + barva.getItemName(position) + "?")
+                        .setPositiveButton(R.string.delete, (dialogInterface, i) -> {
                             Thread t = new Thread(() -> DatabaseManager.getBankAccountDao().deleteById(barva.getItemId(position)));
                             t.start();
                             try {t.join();}
                             catch (InterruptedException e) {e.printStackTrace();}
                             barva.remove(position);
                         })
-                        .setNegativeButton("Cancel", (dialogInterface, i) -> {})
+                        .setNegativeButton(R.string.cancel, (dialogInterface, i) -> {})
                         .create();
                 alertDialog.show();
             }

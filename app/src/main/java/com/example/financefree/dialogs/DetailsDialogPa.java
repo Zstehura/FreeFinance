@@ -16,7 +16,6 @@ import com.example.financefree.R;
 import com.example.financefree.database.DatabaseManager;
 import com.example.financefree.structures.DateParser;
 import com.example.financefree.structures.Payment;
-import com.example.financefree.structures.Statement;
 
 import java.text.NumberFormat;
 import java.util.concurrent.atomic.AtomicReference;
@@ -60,7 +59,7 @@ public class DetailsDialogPa extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.payment)
-                .setPositiveButton("Ok", (dialogInterface, i) -> {})
+                .setPositiveButton(R.string.ok, (dialogInterface, i) -> {})
                 .setView(dialog)
                 .create();
     }

@@ -1,8 +1,6 @@
 package com.example.financefree.recyclers;
 
-
 import androidx.annotation.NonNull;
-
 
 import com.example.financefree.database.entities.BankAccount;
 
@@ -48,7 +46,7 @@ public class BankAccountRVContent {
     }
 
     private static BankAccountRVItem createRvItem(BankAccount eba) {
-        int charLim = 25;
+        int charLim = 50;
         String desc = eba.notes;
         if(desc.length() > charLim) {
             StringBuilder str = new StringBuilder();

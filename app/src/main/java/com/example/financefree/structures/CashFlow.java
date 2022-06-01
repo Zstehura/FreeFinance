@@ -1,12 +1,16 @@
 package com.example.financefree.structures;
 
+import com.example.financefree.FreeFinanceContext;
+import com.example.financefree.R;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class CashFlow {
-    public static final String CASH_IN = "I'm being paid";
-    public static final String CASH_OUT = "I'm paying them";
+    public static final String CASH_IN = FreeFinanceContext.getContext().getString(R.string.im_being_paid);
+    public static final String CASH_OUT = FreeFinanceContext.getContext().getString(R.string.im_paying_them);
     private static final List<String> CHOICES = new ArrayList<>();
+    
     static {
         CHOICES.add(CASH_IN);
         CHOICES.add(CASH_OUT);

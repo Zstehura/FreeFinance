@@ -14,9 +14,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.financefree.R;
 import com.example.financefree.database.DatabaseManager;
-import com.example.financefree.database.entities.RecurringPayment;
 import com.example.financefree.structures.DateParser;
-import com.example.financefree.structures.Frequency;
 import com.example.financefree.structures.Statement;
 
 import java.text.NumberFormat;
@@ -58,7 +56,7 @@ public class DetailsDialogSt extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setTitle(R.string.statement)
-                .setPositiveButton("Ok", (dialogInterface, i) -> {})
+                .setPositiveButton(R.string.ok, (dialogInterface, i) -> {})
                 .setView(dialog)
                 .create();
     }
