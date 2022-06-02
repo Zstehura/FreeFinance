@@ -127,5 +127,6 @@
     <string name="are_you_sure_delete">\"Are you sure you\'d like to delete \"</string>
     <string name="calc_hist_key">calc_hist</string>
     <string name="length_months">Length (in Months)</string>
+    <string name="never">Never</string>
 
 </resources>

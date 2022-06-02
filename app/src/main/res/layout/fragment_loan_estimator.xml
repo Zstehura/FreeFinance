@@ -5,6 +5,8 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +71,8 @@
                 android:layout_width="@dimen/loan_value_width"
                 android:autofillHints=""
                 android:paddingHorizontal="@dimen/text_margin"
-                android:imeOptions="actionDone"/>
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_color"/>
             <CheckBox
                 android:id="@+id/chkEdAmount"
                 android:layout_gravity="center_horizontal"/>
@@ -90,7 +93,8 @@
                 android:layout_width="@dimen/loan_value_width"
                 android:autofillHints=""
                 android:paddingHorizontal="@dimen/text_margin"
-                android:imeOptions="actionDone"/>
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_color"/>
             <CheckBox
                 android:id="@+id/chkEdApr"
                 android:layout_gravity="center_horizontal"/>
@@ -112,7 +116,8 @@
                 android:layout_width="@dimen/loan_value_width"
                 android:autofillHints=""
                 android:paddingHorizontal="@dimen/text_margin"
-                android:imeOptions="actionDone"/>
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_color"/>
             <CheckBox
                 android:id="@+id/chkEdLen"
                 android:layout_gravity="center_horizontal"/>
@@ -133,7 +138,8 @@
                 android:layout_width="@dimen/loan_value_width"
                 android:autofillHints=""
                 android:paddingHorizontal="@dimen/text_margin"
-                android:imeOptions="actionDone"/>
+                android:imeOptions="actionDone"
+                android:textColor="@color/text_color"/>
             <CheckBox
                 android:id="@+id/chkEdPayment"
                 android:layout_gravity="center_horizontal"/>
