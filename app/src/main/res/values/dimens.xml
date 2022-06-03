@@ -21,4 +21,5 @@
     <dimen name="brobot_corner_radius">4dp</dimen>
     <dimen name="brobot_margin">10dp</dimen>
     <dimen name="loan_value_width">150dp</dimen>
+    <dimen name="chart_std_height">400dp</dimen>
 </resources>

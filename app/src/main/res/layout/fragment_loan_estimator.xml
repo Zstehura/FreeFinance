@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-
-
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/linBrobot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin">
+        android:layout_margin="@dimen/text_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
 
         <ImageView
             android:id="@+id/imgHomeBot"
@@ -18,7 +19,8 @@
             android:layout_width="@dimen/brobot_width"
             android:src="@drawable/brobot_happy_mouth_open"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/brobots_beautiful_face" />
 
         <androidx.cardview.widget.CardView
             android:layout_height="wrap_content"
@@ -39,113 +41,125 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <GridLayout
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/linBrobot"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="4">
-            <TextView/>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:text="@string/value"
-                android:textColor="@color/black"/>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:text="@string/edit"
-                android:textColor="@color/black"/>
-            <TextView
-                android:layout_gravity="center_horizontal"
-                android:text="@string/adjust"
-                android:textColor="@color/black"/>
+            android:orientation="vertical">
+            <GridLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="4">
+                <TextView/>
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/value"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/edit"
+                    android:textColor="@color/black"/>
+                <TextView
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/adjust"
+                    android:textColor="@color/black"/>
 
-            <!-- Loan Amount -->
-            <TextView
-                android:text="@string/amount"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dialog_subtext_size"
-                android:paddingHorizontal="@dimen/text_margin"
-                android:labelFor="@id/txtAmountLoan"/>
-            <EditText
-                android:id="@+id/txtAmountLoan"
-                android:inputType="numberDecimal"
-                android:layout_width="@dimen/loan_value_width"
-                android:autofillHints=""
-                android:paddingHorizontal="@dimen/text_margin"
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_color"/>
-            <CheckBox
-                android:id="@+id/chkEdAmount"
-                android:layout_gravity="center_horizontal"/>
-            <CheckBox
-                android:id="@+id/chkAdAmount"
-                android:layout_gravity="center_horizontal"/>
+                <!-- Loan Amount -->
+                <TextView
+                    android:text="@string/amount"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:paddingHorizontal="@dimen/text_margin"
+                    android:labelFor="@id/txtAmountLoan"/>
+                <EditText
+                    android:id="@+id/txtAmountLoan"
+                    android:inputType="numberDecimal"
+                    android:layout_width="@dimen/loan_value_width"
+                    android:autofillHints=""
+                    android:paddingHorizontal="@dimen/text_margin"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/text_color"/>
+                <CheckBox
+                    android:id="@+id/chkEdAmount"
+                    android:layout_gravity="center_horizontal"/>
+                <CheckBox
+                    android:id="@+id/chkAdAmount"
+                    android:layout_gravity="center_horizontal"/>
 
-            <!-- Loan APR -->
-            <TextView
-                android:text="@string/annual_percent"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dialog_subtext_size"
-                android:paddingHorizontal="@dimen/text_margin"
-                android:labelFor="@id/txtAprLoan"/>
-            <EditText
-                android:id="@+id/txtAprLoan"
-                android:inputType="numberDecimal"
-                android:layout_width="@dimen/loan_value_width"
-                android:autofillHints=""
-                android:paddingHorizontal="@dimen/text_margin"
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_color"/>
-            <CheckBox
-                android:id="@+id/chkEdApr"
-                android:layout_gravity="center_horizontal"/>
-            <CheckBox
-                android:id="@+id/chkAdApr"
-                android:layout_gravity="center_horizontal"
-                android:visibility="gone"/>
+                <!-- Loan APR -->
+                <TextView
+                    android:text="@string/annual_percent"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:paddingHorizontal="@dimen/text_margin"
+                    android:labelFor="@id/txtAprLoan"/>
+                <EditText
+                    android:id="@+id/txtAprLoan"
+                    android:inputType="numberDecimal"
+                    android:layout_width="@dimen/loan_value_width"
+                    android:autofillHints=""
+                    android:paddingHorizontal="@dimen/text_margin"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/text_color"/>
+                <CheckBox
+                    android:id="@+id/chkEdApr"
+                    android:layout_gravity="center_horizontal"/>
+                <CheckBox
+                    android:id="@+id/chkAdApr"
+                    android:layout_gravity="center_horizontal"
+                    android:visibility="gone"/>
 
-            <!-- Loan Length -->
-            <TextView
-                android:text="@string/length_months"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dialog_subtext_size"
-                android:paddingHorizontal="@dimen/text_margin"
-                android:labelFor="@id/txtLoanLen"/>
-            <EditText
-                android:id="@+id/txtLoanLen"
-                android:inputType="number"
-                android:layout_width="@dimen/loan_value_width"
-                android:autofillHints=""
-                android:paddingHorizontal="@dimen/text_margin"
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_color"/>
-            <CheckBox
-                android:id="@+id/chkEdLen"
-                android:layout_gravity="center_horizontal"/>
-            <CheckBox
-                android:id="@+id/chkAdLen"
-                android:layout_gravity="center_horizontal"/>
+                <!-- Loan Length -->
+                <TextView
+                    android:text="@string/length_months"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:paddingHorizontal="@dimen/text_margin"
+                    android:labelFor="@id/txtLoanLen"/>
+                <EditText
+                    android:id="@+id/txtLoanLen"
+                    android:inputType="number"
+                    android:layout_width="@dimen/loan_value_width"
+                    android:autofillHints=""
+                    android:paddingHorizontal="@dimen/text_margin"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/text_color"/>
+                <CheckBox
+                    android:id="@+id/chkEdLen"
+                    android:layout_gravity="center_horizontal"/>
+                <CheckBox
+                    android:id="@+id/chkAdLen"
+                    android:layout_gravity="center_horizontal"/>
 
-            <!-- Loan Payment -->
-            <TextView
-                android:text="@string/payment"
-                android:textColor="@color/black"
-                android:textSize="@dimen/dialog_subtext_size"
-                android:paddingHorizontal="@dimen/text_margin"
-                android:labelFor="@id/txtAmountLoan"/>
-            <EditText
-                android:id="@+id/txtPaymentLoan"
-                android:inputType="numberDecimal"
-                android:layout_width="@dimen/loan_value_width"
-                android:autofillHints=""
-                android:paddingHorizontal="@dimen/text_margin"
-                android:imeOptions="actionDone"
-                android:textColor="@color/text_color"/>
-            <CheckBox
-                android:id="@+id/chkEdPayment"
-                android:layout_gravity="center_horizontal"/>
-            <CheckBox
-                android:id="@+id/chkAdPayment"
-                android:layout_gravity="center_horizontal"/>
-        </GridLayout>
+                <!-- Loan Payment -->
+                <TextView
+                    android:text="@string/payment"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dialog_subtext_size"
+                    android:paddingHorizontal="@dimen/text_margin"
+                    android:labelFor="@id/txtAmountLoan"/>
+                <EditText
+                    android:id="@+id/txtPaymentLoan"
+                    android:inputType="numberDecimal"
+                    android:layout_width="@dimen/loan_value_width"
+                    android:autofillHints=""
+                    android:paddingHorizontal="@dimen/text_margin"
+                    android:imeOptions="actionDone"
+                    android:textColor="@color/text_color"/>
+                <CheckBox
+                    android:id="@+id/chkEdPayment"
+                    android:layout_gravity="center_horizontal"/>
+                <CheckBox
+                    android:id="@+id/chkAdPayment"
+                    android:layout_gravity="center_horizontal"/>
+            </GridLayout>
+            <com.anychart.AnyChartView
+                android:id="@+id/chrtBarGraph"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/chart_std_height"/>
+        </LinearLayout>
     </ScrollView>
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

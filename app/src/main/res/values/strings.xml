@@ -128,5 +128,6 @@
     <string name="calc_hist_key">calc_hist</string>
     <string name="length_months">Length (in Months)</string>
     <string name="never">Never</string>
+    <string name="monthly_loan_balance">Monthly Loan Balance</string>
 
 </resources>

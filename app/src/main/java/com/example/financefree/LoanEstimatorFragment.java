@@ -2,7 +2,6 @@ package com.example.financefree;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +14,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.core.cartesian.series.Column;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.HoverMode;
+import com.anychart.enums.Position;
+import com.anychart.enums.TooltipPositionMode;
 import com.example.financefree.structures.LoanCalculator;
 
 import java.text.NumberFormat;
+import java.util.List;
 
 // TODO: Add in chart below numbers, etc.
 
+@SuppressWarnings("SpellCheckingInspection")
 public class LoanEstimatorFragment extends Fragment {
 
     public LoanEstimatorFragment() { }
@@ -28,6 +38,7 @@ public class LoanEstimatorFragment extends Fragment {
     private final LoanCalculator lc = new LoanCalculator(10000, 48, 0.06, 250);
     private final NumberFormat nfp = NumberFormat.getPercentInstance();
     private final NumberFormat nfc = NumberFormat.getCurrencyInstance();
+    private Cartesian cartesian;
 
     private final TextView.OnEditorActionListener nfcListener = (textView, i, keyEvent) -> {
         textView.setText(nfc.format(getNum((EditText) textView)));
@@ -44,16 +55,16 @@ public class LoanEstimatorFragment extends Fragment {
         return false;
     };
     private final CompoundButton.OnCheckedChangeListener chkAdListener = (compoundButton, b) -> {
-        if(compoundButton.isChecked()) uncheckAdChksExc(compoundButton.getId());
+        if(compoundButton.isChecked()) {
+            uncheckAdChksExc(compoundButton.getId());
+        }
+        disableTxtsExc();
     };
     private final CompoundButton.OnCheckedChangeListener chkEdListener = (compoundButton, b) -> {
         if(compoundButton.isChecked()) {
             uncheckEdChksExc(compoundButton.getId());
-            disableTxtsExc(compoundButton.getId());
         }
-        else {
-            disableTxtsExc(0);
-        }
+        disableTxtsExc();
     };
     private final View.OnFocusChangeListener etFocusListener = (view, b) -> {
         if(b && view instanceof EditText) {
@@ -65,6 +76,7 @@ public class LoanEstimatorFragment extends Fragment {
         return new LoanEstimatorFragment();
     }
 
+    private AnyChartView chrtView;
     private EditText etAmt, etPct, etLen, etPmt;
     private CheckBox chkEdAmt, chkEdPct, chkEdLen, chkEdPmt,
                     chkAdAmt, chkAdLen, chkAdPmt;
@@ -92,14 +104,40 @@ public class LoanEstimatorFragment extends Fragment {
         chkEdPct = view.findViewById(R.id.chkEdApr);
         chkEdLen = view.findViewById(R.id.chkEdLen);
         chkEdPmt = view.findViewById(R.id.chkEdPayment);
+        chrtView = view.findViewById(R.id.chrtBarGraph);
 
         etAmt.setText(nfc.format(10000));
         etPct.setText(nfp.format(.06));
         etLen.setText(String.valueOf(48));
         etPmt.setText(nfc.format(lc.calcPayment()));
 
+        cartesian = AnyChart.column();
+        List<DataEntry> data = lc.getBalances();
+        Column column = cartesian.column(data);
+        column.tooltip()
+                .titleFormat("{%X}")
+                .position(Position.CENTER_BOTTOM)
+                .anchor(Anchor.CENTER_BOTTOM)
+                .offsetX(0d)
+                .offsetY(5d)
+                .format("${%Value}{groupsSeparator: }");
+        cartesian.animation(true);
+        cartesian.title(getString(R.string.monthly_loan_balance));
+        cartesian.yScale().minimum(0d);
+        cartesian.yAxis(0).labels().format("${%Value}{groupsSeparator: }");
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        cartesian.interactivity().hoverMode(HoverMode.BY_X);
+
+        cartesian.xAxis(0).title("Month");
+        cartesian.yAxis(0).title("Balance");
+
+        chrtView.setChart(cartesian);
+
         setListeners();
-        disableTxtsExc(0);
+        disableTxtsExc();
+        updateChart();
+
         return view;
     }
 
@@ -107,6 +145,10 @@ public class LoanEstimatorFragment extends Fragment {
         etAmt.setOnEditorActionListener(nfcListener);
         etPct.setOnEditorActionListener(nfpListener);
         etPmt.setOnEditorActionListener(nfcListener);
+        etLen.setOnEditorActionListener(((textView, i, keyEvent) -> {
+            updateNums(getNum((EditText) textView));
+            return false;
+        }));
         etAmt.setOnFocusChangeListener(etFocusListener);
         etPmt.setOnFocusChangeListener(etFocusListener);
         etPct.setOnFocusChangeListener(etFocusListener);
@@ -126,11 +168,18 @@ public class LoanEstimatorFragment extends Fragment {
         return Double.parseDouble(s);
     }
 
-    private void disableTxtsExc(int chkId) {
-        etAmt.setEnabled(chkId == chkEdAmt.getId());
-        etLen.setEnabled(chkId == chkEdLen.getId());
-        etPct.setEnabled(chkId == chkEdPct.getId());
-        etPmt.setEnabled(chkId == chkEdPmt.getId());
+    private void disableTxtsExc() {
+        etAmt.setEnabled(adChkSelected() && chkEdAmt.isChecked());
+        etLen.setEnabled(adChkSelected() && chkEdLen.isChecked());
+        etPct.setEnabled(adChkSelected() && chkEdPct.isChecked());
+        etPmt.setEnabled(adChkSelected() && chkEdPmt.isChecked());
+    }
+    private boolean adChkSelected() {
+        return chkAdLen.isChecked() || chkAdAmt.isChecked() || chkAdPmt.isChecked();
+    }
+    private boolean edChkSelected() {
+        return chkEdLen.isChecked() || chkEdAmt.isChecked() ||
+                chkEdPct.isChecked() || chkEdPmt.isChecked();
     }
 
     private void uncheckEdChksExc(int chkId) {
@@ -142,6 +191,7 @@ public class LoanEstimatorFragment extends Fragment {
             chkAdAmt.setChecked(false);
             chkAdAmt.setEnabled(false);
         }
+
         if(chkId != chkEdLen.getId()) {
             chkEdLen.setChecked(false);
             chkAdLen.setEnabled(true);
@@ -150,14 +200,16 @@ public class LoanEstimatorFragment extends Fragment {
             chkAdLen.setChecked(false);
             chkAdLen.setEnabled(false);
         }
+
         if(chkId != chkEdPct.getId()) chkEdPct.setChecked(false);
+
         if(chkId != chkEdPmt.getId()) {
             chkEdPmt.setChecked(false);
             chkAdPmt.setEnabled(true);
         }
         else {
             chkAdPmt.setChecked(false);
-            chkAdAmt.setEnabled(false);
+            chkAdPmt.setEnabled(false);
         }
     }
 
@@ -201,5 +253,18 @@ public class LoanEstimatorFragment extends Fragment {
         else {
             Log.e("LoanEstimator", "No adjust checked");
         }
+        if(etLen.getText().toString().equals(getString(R.string.never))){
+            chrtView.setVisibility(View.GONE);
+        }
+        else {
+            chrtView.setVisibility(View.VISIBLE);
+            updateChart();
+        }
     }
+
+    private void updateChart() {
+        List<DataEntry> data = lc.getBalances();
+        cartesian.data(data);
+    }
+
 }
