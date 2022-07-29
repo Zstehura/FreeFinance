@@ -20,6 +20,8 @@
     <string name="annual_view">Annual View</string>
     <string name="brobot_tax_est_greeting">Hey there! This is the Tax Estimation Machine! Here, you can see estimates of your income tax given your information in the app. You can also check the box below to change the values we calculated for you!</string>
     <string name="brobot_greeting">Hi! I\'m Brobot, and this is the FreeFinance app for simplified money stuff!</string>
+    <string name="brobot_greeting_w_bank">"Hi! I\'m Brobot, and this is the FreeFinance app for simplified money stuff! "
+            "Your bank account [acctName] currently has a balance of [balance]"</string>
     <string name="brobots_beautiful_face">Brobot\'s beautiful face</string>
     <string name="friendly_neighborhood_brobot">Friendly neighborhood Brobot</string>
     <string name="brobot_loan_estimator_desc">Hi! This is the Loan estimator tool where you can adjust values on a hypothetical loan to see what your payment would be. Check the box in the row of the value you\'d like to change, and check the second box of the value you\'d like me to automatically adjust!</string>

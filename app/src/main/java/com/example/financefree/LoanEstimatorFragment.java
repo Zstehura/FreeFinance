@@ -14,21 +14,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.anychart.AnyChart;
-import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.charts.Cartesian;
-import com.anychart.core.cartesian.series.Column;
-import com.anychart.enums.Anchor;
-import com.anychart.enums.HoverMode;
-import com.anychart.enums.Position;
-import com.anychart.enums.TooltipPositionMode;
 import com.example.financefree.structures.LoanCalculator;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
-
-// TODO: Add in chart below numbers, etc.
 
 @SuppressWarnings("SpellCheckingInspection")
 public class LoanEstimatorFragment extends Fragment {
@@ -38,7 +36,7 @@ public class LoanEstimatorFragment extends Fragment {
     private final LoanCalculator lc = new LoanCalculator(10000, 48, 0.06, 250);
     private final NumberFormat nfp = NumberFormat.getPercentInstance();
     private final NumberFormat nfc = NumberFormat.getCurrencyInstance();
-    private Cartesian cartesian;
+    //private Cartesian cartesian;
 
     private final TextView.OnEditorActionListener nfcListener = (textView, i, keyEvent) -> {
         textView.setText(nfc.format(getNum((EditText) textView)));
@@ -76,7 +74,8 @@ public class LoanEstimatorFragment extends Fragment {
         return new LoanEstimatorFragment();
     }
 
-    private AnyChartView chrtView;
+    //private AnyChartView chrtView;
+    private BarChart barChart;
     private EditText etAmt, etPct, etLen, etPmt;
     private CheckBox chkEdAmt, chkEdPct, chkEdLen, chkEdPmt,
                     chkAdAmt, chkAdLen, chkAdPmt;
@@ -104,13 +103,52 @@ public class LoanEstimatorFragment extends Fragment {
         chkEdPct = view.findViewById(R.id.chkEdApr);
         chkEdLen = view.findViewById(R.id.chkEdLen);
         chkEdPmt = view.findViewById(R.id.chkEdPayment);
-        chrtView = view.findViewById(R.id.chrtBarGraph);
+        barChart = view.findViewById(R.id.bar_chart);
+        //chrtView = view.findViewById(R.id.chrtBarGraph);
 
         etAmt.setText(nfc.format(10000));
         etPct.setText(nfp.format(.06));
         etLen.setText(String.valueOf(48));
         etPmt.setText(nfc.format(lc.calcPayment()));
 
+
+        Description d = new Description();
+        d.setEnabled(false);
+        barChart.setDescription(d);
+
+        XAxis xAxis = barChart.getXAxis();
+        //change the position of x-axis to the bottom
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        //set the horizontal distance of the grid line
+        xAxis.setGranularity(1f);
+        //hiding the x-axis line, default true if not set
+        xAxis.setDrawAxisLine(false);
+        //hiding the vertical grid lines, default true if not set
+        xAxis.setDrawGridLines(false);
+
+        YAxis leftAxis = barChart.getAxisLeft();
+        //hiding the left y-axis line, default true if not set
+        leftAxis.setDrawAxisLine(false);
+
+        YAxis rightAxis = barChart.getAxisRight();
+        //hiding the right y-axis line, default true if not set
+        rightAxis.setDrawAxisLine(false);
+
+        Legend legend = barChart.getLegend();
+        legend.setEnabled(false);
+        //setting the shape of the legend form to line, default square shape
+        // legend.setForm(Legend.LegendForm.LINE);
+        // //setting the text size of the legend
+        // legend.setTextSize(11f);
+        // //setting the alignment of legend toward the chart
+        // legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        // legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        // //setting the stacking direction of legend
+        // legend.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        // //setting the location of legend outside the chart, default false if not set
+        // legend.setDrawInside(false);
+
+        /*
         cartesian = AnyChart.column();
         List<DataEntry> data = lc.getBalances();
         Column column = cartesian.column(data);
@@ -133,6 +171,7 @@ public class LoanEstimatorFragment extends Fragment {
         cartesian.yAxis(0).title("Balance");
 
         chrtView.setChart(cartesian);
+         */
 
         setListeners();
         disableTxtsExc();
@@ -254,17 +293,33 @@ public class LoanEstimatorFragment extends Fragment {
             Log.e("LoanEstimator", "No adjust checked");
         }
         if(etLen.getText().toString().equals(getString(R.string.never))){
-            chrtView.setVisibility(View.GONE);
+            //chrtView.setVisibility(View.GONE);
         }
         else {
-            chrtView.setVisibility(View.VISIBLE);
+            //chrtView.setVisibility(View.VISIBLE);
             updateChart();
         }
     }
 
     private void updateChart() {
-        List<DataEntry> data = lc.getBalances();
-        cartesian.data(data);
+        //List<DataEntry> data = lc.getBalances();
+        //cartesian.data(data);
+
+        List<Double> values = new ArrayList<>(lc.getBalances());
+        List<BarEntry> entries = new ArrayList<>();
+
+        for(int i = 0; i < values.size(); i++) {
+            BarEntry temp = new BarEntry(i, values.get(i).floatValue());
+            entries.add(temp);
+        }
+
+        BarDataSet barDataSet = new BarDataSet(entries, ""); // MyResources.getRes().getString(R.string.monthly_loan_balance));
+        barDataSet.setColor(MyResources.getRes().getColor(R.color.dark_green, null));
+        barDataSet.setDrawValues(false);
+
+        BarData data = new BarData(barDataSet);
+        barChart.setData(data);
+        barChart.invalidate();
     }
 
 }

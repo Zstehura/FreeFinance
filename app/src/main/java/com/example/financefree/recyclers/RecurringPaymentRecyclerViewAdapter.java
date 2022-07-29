@@ -15,6 +15,7 @@ import com.example.financefree.dialogs.RecurringPaymentDialog;
 import com.example.financefree.recyclers.RecurringPaymentRVContent.RecurringPaymentRVItem;
 import com.example.financefree.databinding.FragmentRecurringPaymentBinding;
 import com.example.financefree.structures.DateParser;
+import com.example.financefree.structures.Frequency;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
@@ -63,7 +64,13 @@ public class RecurringPaymentRecyclerViewAdapter extends RecyclerView.Adapter<Re
         rp.start_date = DateParser.getLong(dialog.txtStart.getText().toString());
         rp.bank_id = dialog.bankId;
         rp.type_option = dialog.freqType;
-        rp.frequency_number = dialog.freqNum;
+        if(rp.type_option >= 4 && rp.type_option <= 6) {  // 1st & 3rd OR 2nd & 4th OR Last
+            rp.frequency_number = dialog.freqNum;
+        }
+        else if(rp.type_option >= 1){      // Every...
+            rp.frequency_number = Integer.parseInt(dialog.txtFrequencyNum.getText().toString());
+        }
+        else rp.frequency_number = 0;
 
         if(dialog.isNew) {
             AtomicReference<Long> id = new AtomicReference<>();

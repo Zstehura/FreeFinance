@@ -291,7 +291,7 @@ public class RecurringPaymentDialog extends DialogFragment {
         txtFrequencyNum.setText(String.valueOf(freqNum));
 
         return new AlertDialog.Builder(getActivity())
-                .setTitle(R.string.bank_account)
+                .setTitle(R.string.recurring_payments)
                 .setView(dialog)
                 .setPositiveButton(R.string.set, (dialogInterface, i) -> listener.onDialogPositiveClick(RecurringPaymentDialog.this))
                 .setNegativeButton(R.string.cancel, (dialogInterface, i) -> listener.onDialogNegativeClick(RecurringPaymentDialog.this))

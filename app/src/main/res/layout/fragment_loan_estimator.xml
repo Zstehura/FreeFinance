@@ -156,10 +156,10 @@
                     android:id="@+id/chkAdPayment"
                     android:layout_gravity="center_horizontal"/>
             </GridLayout>
-            <com.anychart.AnyChartView
-                android:id="@+id/chrtBarGraph"
+            <com.github.mikephil.charting.charts.BarChart
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/chart_std_height"/>
+                android:layout_height="@dimen/chart_std_height"
+                android:id="@+id/bar_chart"/>
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

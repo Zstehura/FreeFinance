@@ -118,9 +118,9 @@ public final class DateParser {
         while(gc.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
             gc.add(Calendar.DAY_OF_WEEK, 1);
         }
-        for(int i = 0; i < 12; i++){
+        for(int i = 0; i < 7; i++){
             l.add(SDF_DOW.format(gc.getTime()));
-            gc.add(Calendar.MONTH, 1);
+            gc.add(Calendar.DAY_OF_WEEK, 1);
         }
         return l;
     }

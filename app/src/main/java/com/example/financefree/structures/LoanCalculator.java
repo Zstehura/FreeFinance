@@ -1,8 +1,5 @@
 package com.example.financefree.structures;
 
-import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.chart.common.dataentry.ValueDataEntry;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +32,20 @@ public class LoanCalculator {
         numMonths = (int) Math.round(y * 12);
     }
 
+    public List<Double> getBalances() {
+        List<Double> l = new ArrayList<>();
+        double bal = principle;
+        l.add(bal);
+        for(int i = 0; i < numMonths; i++) {
+            bal *= (1 + (apr / 12));
+            bal -= payment;
+
+            l.add(bal);
+        }
+        return l;
+    }
+
+    /*
     public List<DataEntry> getBalances() {
         List<DataEntry> l = new ArrayList<>();
         double bal = principle;
@@ -49,6 +60,7 @@ public class LoanCalculator {
 
         return l;
     }
+     */
 
     public double getBalanceAtMonth(int monthNum) {
         if(monthNum == numMonths) return 0;

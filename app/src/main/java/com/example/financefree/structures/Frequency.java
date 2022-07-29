@@ -6,6 +6,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.example.financefree.MyResources;
 import com.example.financefree.R;
 import com.example.financefree.database.entities.PaymentEdit;
 import com.example.financefree.database.entities.RecurringPayment;
@@ -36,15 +37,13 @@ public class Frequency {
     public int typeOpt;
     public int iNum;
 
-    public static void init(Context context) {
-        TYPE_OPTIONS.clear();
-        List<String> l = Arrays.asList(context.getResources().getStringArray(R.array.frequency_options));
-        for(int i = 0; i < l.size(); i++) {
-            TYPE_OPTIONS.put(i, l.get(i));
-        }
-    }
-
     public static Map<Integer, String> typeOptions(){
+        if(TYPE_OPTIONS.isEmpty()) {
+            List<String> l = Arrays.asList(MyResources.getRes().getStringArray(R.array.frequency_options));
+            for(int i = 0; i < l.size(); i++) {
+                TYPE_OPTIONS.put(i, l.get(i));
+            }
+        }
         return TYPE_OPTIONS;
     }
 
@@ -63,13 +62,13 @@ public class Frequency {
     @Override
     public String toString() {
         StringBuilder s = new StringBuilder();
-        if(typeOpt >= 4 && typeOpt <= 6) {
+        if(typeOpt >= 4 && typeOpt <= 6) {  // 1st & 3rd OR 2nd & 4th OR Last
             s.append(typeOptions().get(typeOpt));
             if(typeOpt == 4 || typeOpt == 5){
                 s.append(" ").append(DateParser.getDow(iNum));
             }
         }
-        else if(typeOpt >= 1){
+        else if(typeOpt >= 1){      // Every...
             s.append("Every ");
             if(iNum != 1) s.append(iNum).append(" ");
             if(typeOpt == 1) s.append("day");
@@ -77,7 +76,7 @@ public class Frequency {
             else if(typeOpt == 3) s.append("month");
             if(iNum != 1) s.append("s");
         }
-        else if(typeOpt == 0) {
+        else if(typeOpt == 0) {     // specific day of each month
             s.append("On the ").append(iNum);
             if(s.charAt(s.length()-1) == '1') s.append("st");
             else if(s.charAt(s.length()-1) == '2') s.append("nd");

@@ -21,13 +21,13 @@
         <item>2 years</item>
         <item>Never</item>
     </string-array>
-    <integer-array name="clear_data_values">
+    <string-array name="clear_data_values">
         <item>90</item>
         <item>180</item>
         <item>365</item>
         <item>720</item>
         <item>-1</item>
-    </integer-array>
+    </string-array>
     <string-array name="tax_filing_status">
         <item>Married Filing Jointly</item>
         <item>Married Filing Separate</item>

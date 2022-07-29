@@ -1,14 +1,14 @@
 package com.example.financefree.structures;
 
-import com.example.financefree.FreeFinanceContext;
+import com.example.financefree.MyResources;
 import com.example.financefree.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CashFlow {
-    public static final String CASH_IN = FreeFinanceContext.getContext().getString(R.string.im_being_paid);
-    public static final String CASH_OUT = FreeFinanceContext.getContext().getString(R.string.im_paying_them);
+    public static final String CASH_IN = MyResources.getRes().getString(R.string.im_being_paid);
+    public static final String CASH_OUT = MyResources.getRes().getString(R.string.im_paying_them);
     private static final List<String> CHOICES = new ArrayList<>();
     
     static {
@@ -19,7 +19,7 @@ public class CashFlow {
     private boolean cashIn;
     private double flow;
 
-    public CashFlow(){
+    public CashFlow() {
         cashIn = true;
         flow = 0;
     }
